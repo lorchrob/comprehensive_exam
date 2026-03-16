@@ -1349,21 +1349,12 @@ Consider the following attack trace with intruder $I$. In this trace, the capita
 $P_1$, $P_2$, and $I$ denote principals
 (earlier, $A$ and $B$ denoted roles).
 
-$\begin{array}{ll}
-I \rightarrow P_1 : \mathsf{a\_enc}(\langle P_2, I \rangle, \mathsf{pk}(P_1)) & 
-(4) \textnormal{ The intruder initiates, replacing the first nonce} \\ 
-&\;\;\;\;\; \text{ with his identity } I.\\[4pt]
-P_1 \rightarrow P_2 : \mathsf{a\_enc}(\langle I, \langle N_{P_1}, P_1 \rangle \rangle, \mathsf{pk}(P_2)) & 
-(5) \;P_1 \textnormal{ responds as expected.}\\[4pt]
-P_2 \rightarrow I : \mathsf{a\_enc}(\langle \langle N_{P_1}, P_1 \rangle, \langle N_{P_2}, P_2\rangle\rangle,\mathsf{pk}(I)) & 
-(6) \;P_2 \textnormal { took }(5)\textnormal{ as an initiation, confusing the pair } \langle N_{P_1}, P_1 \rangle \\ 
-& \;\;\;\;\; \textnormal { with a nonce! This is the response.}\\
-& \;\;\;\;\;\;\textnormal{But, it leaks } N_{P_1} \textnormal{ to }I\textnormal{...}\\[4pt]
-I \rightarrow P_1 : \mathsf{a\_enc}(N_{P_1}, \mathsf{pk}(P_1)) & 
-(7) \;I\textnormal{ has successfully impersonated }P_2
-\end{array}$
-
-\note{Use draw.io}
+\begin{figure}[h!]
+  \centering
+  \includegraphics{figs/type_confusion_attack.pdf}
+  \caption{Type confusion attack on Updated Needham--Schroeder public-key protocol (Figure \ref{fig:ns-type-confusion})}
+  \label{fig:type-confusion-attack}
+\end{figure}
 
 The ``type confusion aspect" of the attack is exhibited in step $(6)$ of the execution---$P_2$ was expecting a message of format $(1)$ (from above), but instead got one of format $(2)$. The attack works because $P_1$ does not destruct the pair in the protocol---if so, the incoming message would not unify with $P_1$'s expected message format. This also explains why using the triple $\langle N_a, N_b, B \rangle$ is not vulnerable to the same attack.
 
