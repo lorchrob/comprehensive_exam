@@ -1,6 +1,7 @@
 FIGS := $(wildcard figs/*)
+FIGS := $(wildcard figs/*)
 
-main.pdf: main.tex $(FIGS)
+main.pdf: main.tex metatheorem_table.tex tool_table.tex $(FIGS) 
 	pdflatex main.tex
 	pdflatex main.tex
 
