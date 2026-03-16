@@ -1,4 +1,7 @@
-main.pdf: main.tex
+FIGS := $(wildcard figs/*)
+
+main.pdf: main.tex $(FIGS)
+	pdflatex main.tex
 	pdflatex main.tex
 
 clean:
