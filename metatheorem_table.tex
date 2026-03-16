@@ -1,0 +1,90 @@
+\definecolor{grouponeLight}{RGB}{222,235,247}
+\definecolor{grouponeDark}{RGB}{158,202,225}
+\definecolor{grouptwoLight}{RGB}{229,245,224}
+\definecolor{grouptwoDark}{RGB}{161,217,155}
+\definecolor{groupthreeLight}{RGB}{254,230,206}
+\definecolor{groupthreeDark}{RGB}{253,174,107}
+\definecolor{groupfourLight}{RGB}{239,237,245}
+\definecolor{groupfourDark}{RGB}{188,189,220}
+
+\begin{table}[h!]
+\small
+\centering
+\begin{tabular}{|p{2cm}|p{1.6cm}p{2.6cm}p{2.6cm}p{1.7cm}p{2.6cm}|}
+\hline
+\textbf{Paper} &
+\textbf{Formalism} &
+\textbf{Restrictions} &
+\textbf{Benefit} &
+\textbf{Fragment decidable?} &
+\textbf{Formal}\newline\textbf{guarantees} \newline (wrt unbounded) \\
+\hline
+
+\rowcolor{grouponeDark}
+Rusinowitch \& Turuani \cite{bounded_sessions} & DY & bounded sessions & NP-completeness & yes & AS \\ 
+
+\rowcolor{grouponeLight}
+Durgin eg al. \cite{bounded_undecidable} & multiset rewriting & bound message size and $|\mathcal{D}|$ & EXPTIME-completeness & yes & AS \\
+
+\rowcolor{grouponeDark}
+Ramanujam \& Suresh \cite{tagged_bounded_secrecy} & DY & tagged protocols, bounded messages, secrecy properties & decidability & yes & AC, PC \\
+
+\hhline{|======|}
+
+\rowcolor{grouptwoDark}
+Dolev et al. \cite{pingpong} & DY & ping-pong \cite{pingpong} protocols & PTIME-completeness & yes & AS, PS, AC, PC \\ 
+
+\rowcolor{grouptwoLight}
+Ramanujam \& Suresh \cite{context_explicit} & DY & context-explicit \cite{context_explicit} protocols, secrecy properties & NEXP-time & yes & AS, PS, AC, PC \\
+
+\rowcolor{grouptwoDark}
+D'Osualdo et al. \cite{depth_bounded} & applied $\pi$-calculus & depth-bounded protocols \cite{depth_bounded} & decidability & yes & AS, PS, AC, PC \\
+
+\rowcolor{grouptwoLight}
+Lowe \cite{small_model} & DY & context-explicit, inferrable identities, no temporary secrets, secrecy properties & small model theorem (one session with one principal per role) & yes & AS, PS, AC, PC \\
+
+\hhline{|======|}
+
+\rowcolor{groupthreeDark}
+ Cortier et al. \cite{bound_sessions} & applied \newline $\pi$-calculus & Type compliance, simple protocols$^*$, no else branches$^*$  & heuristically soundly bound number of sessions & no & AS, PS \\
+
+\rowcolor{groupthreeLight}
+  Chrétien et al. \cite{typing_for_free} & applied \newline $\pi$-calculus & type compliance, convergent \newline equational theory & cut ill-typed \newline attacks from search space & no & PS, AS \\
+
+\rowcolor{groupthreeDark}
+   Lowe \& Schneider \cite{tagging} & strand spaces & tagged protocols & cut ill-typed \newline attacks from search space & no & PS, AS \\
+
+\rowcolor{groupthreeLight}
+   Blanchet \& Podelski \cite{tagging_enforces_termination} & applied $\pi$-calculus/ Horn clauses & tagged protocols & termination & no & PS \\
+
+
+\hhline{|======|}
+
+\rowcolor{groupfourDark}
+Nielson et al. \cite{cubic_time} & DY & secrecy properties & termination (through approximation)  & yes & PS, AC \\
+
+\rowcolor{groupfourLight}
+Goubault-Larrecq \cite{ai_1} & DY & secrecy properties & termination (through approximation) & yes & PS, AC \\
+
+\rowcolor{groupfourDark}
+Heather \& Schneider \cite{ai_2} & CSP & auth properties  & termination (through approximation) & yes & PS, AC \\
+
+ \hline
+
+
+\end{tabular}
+\begin{flushleft}
+\vspace{0.3em}
+DY is shorthand for any formalism that closely follows the original Dolev-Yao encoding 
+\cite{dolev_yao}. It is very similar in spirit to strand spaces \cite{strand_spaces}, 
+and can only encode simple (stateless, purely cryptographic) protocols.
+\newline\newline
+Blue (first group) denotes approaches \emph{sacrificing completeness for decidability}. Green (second group) denotes approaches \emph{syntactically restricting protocols for decidability}. Orange (third group) denotes approaches to \emph{heuristically cut the search space} (without a termination guarantee). Purple (fourth group) denotes approaches \emph{sacrificing soundness for termination}.
+\newline\newline
+$^*$Only needed for equivalence properties. 
+\end{flushleft}
+
+\caption{Symbolic model metatheorems}
+\label{tab:metatheorems}
+\end{table}
+

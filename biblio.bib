@@ -1,0 +1,1246 @@
+@techreport{linear_logic,
+  title={The logical meeting point of multiset rewriting and process algebra: Progress report},
+  author={Cervesato, Iliano},
+  year={2004},
+  institution={Technical Memo CHACS-5540-153, Center for High Assurance Computer Systems}
+}
+@InProceedings{kind2,
+author="Champion, Adrien
+and Mebsout, Alain
+and Sticksel, Christoph
+and Tinelli, Cesare",
+editor="Chaudhuri, Swarat
+and Farzan, Azadeh",
+title="The Kind 2 Model Checker",
+booktitle="Computer Aided Verification",
+year="2016",
+publisher="Springer International Publishing",
+address="Cham",
+pages="510--517",
+abstract="Kind 2 is an open-source, multi-engine, SMT-based model checker for safety properties of finite- and infinite-state synchronous reactive systems. It takes as input models written in an extension of the Lustre language that allows the specification of assume-guarantee-style contracts for system components. Kind 2 was implemented from scratch based on techniques used by its predecessor, the PKind model checker. This paper discusses a number of improvements over PKind in terms of invariant generation. It also introduces two main features: contract-based compositional reasoning and certificate generation.",
+isbn="978-3-319-41540-6"
+}
+
+
+@InProceedings{nuxmv,
+author="Cavada, Roberto
+and Cimatti, Alessandro
+and Dorigatti, Michele
+and Griggio, Alberto
+and Mariotti, Alessandro
+and Micheli, Andrea
+and Mover, Sergio
+and Roveri, Marco
+and Tonetta, Stefano",
+editor="Biere, Armin
+and Bloem, Roderick",
+title="The nuXmv Symbolic Model Checker",
+booktitle="Computer Aided Verification",
+year="2014",
+publisher="Springer International Publishing",
+address="Cham",
+pages="334--342",
+abstract="This paper describes the nuXmv symbolic model checker for finite- and infinite-state synchronous transition systems. nuXmv is the evolution of the nuXmv open source model checker. It builds on and extends nuXmv along two main directions. For finite-state systems it complements the basic verification techniques of nuXmv with state-of-the-art verification algorithms. For infinite-state systems, it extends the nuXmv language with new data types, namely Integers and Reals, and it provides advanced SMT-based model checking techniques.",
+isbn="978-3-319-08867-9"
+}
+
+
+
+@article{proverif_correspondences,
+author = {Bruno Blanchet},
+title ={Automatic verification of correspondences for security protocols*},
+
+journal = {Journal of Computer Security},
+volume = {17},
+number = {4},
+pages = {363-434},
+year = {2009},
+doi = {10.3233/JCS-2009-0339},
+
+URL = { 
+    
+        https://doi.org/10.3233/JCS-2009-0339
+    
+    
+
+},
+eprint = { 
+    
+        https://doi.org/10.3233/JCS-2009-0339
+    
+    
+
+}
+,
+    abstract = { We present a new technique for verifying correspondences in security protocols. In particular, correspondences can be used to formalize authentication. Our technique is fully automatic, it can handle an unbounded number of sessions of the protocol, and it is efficient in practice. It significantly extends a previous technique for the verification of secrecy. The protocol is represented in an extension of the pi calculus with fairly arbitrary cryptographic primitives. This protocol representation includes the specification of the correspondence to be verified, but no other annotation. This representation is then translated into an abstract representation by Horn clauses, which is used to prove the desired correspondence. Our technique has been proved correct and implemented. We have tested it on various protocols from the literature. The experimental results show that these protocols can be verified by our technique in less than 1 s. }
+}
+
+@book{textbook,
+author = {Stallings, William},
+title = {Cryptography and Network Security: Principles and Practice},
+year = {2002},
+isbn = {0130914290},
+publisher = {Pearson Education},
+edition = {3rd},
+abstract = {From the Publisher:Stallings has provided a state-of-the-art text covering the basic issues and principles and surveying cryptographic and network security techniques. The later part of the book deals with the real-world practice of network security: practical applications that have been implemented and are in use to provide network security. This book is intended for both an academic and a professional audience.}
+}
+
+@INPROCEEDINGS{tamarin_xor,
+  author={Dreier, Jannik and Hirschi, Lucca and Radomirovic, Sasa and Sasse, Ralf},
+  booktitle={2018 IEEE 31st Computer Security Foundations Symposium (CSF)}, 
+  title={Automated Unbounded Verification of Stateful Cryptographic Protocols with Exclusive OR}, 
+  year={2018},
+  volume={},
+  number={},
+  pages={359-373},
+  keywords={Protocols;Mathematical model;Tools;Cryptography;Analytical models;Computational modeling;Formal-Verification;Cryptographic-Protocols;Symbolic-Model;Tamarin;Exclusive-OR},
+  doi={10.1109/CSF.2018.00033}}
+
+
+
+@InProceedings{padding_oracle,
+author="Bleichenbacher, Daniel",
+editor="Krawczyk, Hugo",
+title="Chosen ciphertext attacks against protocols based on the RSA encryption standard PKCS {\#}1",
+booktitle="Advances in Cryptology --- CRYPTO '98",
+year="1998",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="1--12",
+abstract="This paper introduces a new adaptive chosen ciphertext attack against certain protocols based on RSA. We show that an RSA private-key operation can be performed if the attacker has access to an oracle that, for any chosen ciphertext, returns only one bit telling whether the ciphertext corresponds to some unknown block of data encrypted using PKCS {\#}1. An example of a protocol susceptible to our attack is SSL V.3.0.",
+isbn="978-3-540-68462-6"
+}
+
+
+@article{vote_privacy,
+author = {Stéphanie Delaune and Steve Kremer and Mark Ryan},
+title ={Verifying privacy-type properties of electronic voting protocols},
+
+journal = {Journal of Computer Security},
+volume = {17},
+number = {4},
+pages = {435-487},
+year = {2009},
+doi = {10.3233/JCS-2009-0340},
+
+URL = { 
+    
+        https://doi.org/10.3233/JCS-2009-0340
+    
+    
+
+},
+eprint = { 
+    
+        https://doi.org/10.3233/JCS-2009-0340
+    
+    
+
+}
+,
+    abstract = { Electronic voting promises the possibility of a convenient, efficient and secure facility for recording and tallying votes in an election. Recently highlighted inadequacies of implemented systems have demonstrated the importance of formally verifying the underlying voting protocols. We study three privacy-type properties of electronic voting protocols: in increasing order of strength, they are vote-privacy, receipt-freeness and coercion-resistance.We use the applied pi calculus, a formalism well adapted to modelling such protocols, which has the advantages of being based on well-understood concepts. The privacy-type properties are expressed using observational equivalence and we show in accordance with intuition that coercion-resistance implies receipt-freeness, which implies vote-privacy.We illustrate our definitions on three electronic voting protocols from the literature. Ideally, these three properties should hold even if the election officials are corrupt. However, protocols that were designed to satisfy receipt-freeness or coercion-resistance may not do so in the presence of corrupt officials. Our model and definitions allow us to specify and easily change which authorities are supposed to be trustworthy. }
+}
+
+@article{trace_eq,
+title = {A survey of symbolic methods for establishing equivalence-based properties in cryptographic protocols},
+journal = {Journal of Logical and Algebraic Methods in Programming},
+volume = {87},
+pages = {127-144},
+year = {2017},
+issn = {2352-2208},
+doi = {https://doi.org/10.1016/j.jlamp.2016.10.005},
+url = {https://www.sciencedirect.com/science/article/pii/S235222081630133X},
+author = {Stéphanie Delaune and Lucca Hirschi},
+keywords = {Cryptographic protocols, Symbolic models, Privacy-related properties, Behavioural equivalence},
+abstract = {Cryptographic protocols aim at securing communications over insecure networks such as the Internet, where dishonest users may listen to communications and interfere with them. A secure communication has a different meaning depending on the underlying application. It ranges from the confidentiality of a data to e.g. verifiability in electronic voting systems. Another example of a security notion is privacy. Formal symbolic models have proved their usefulness for analysing the security of protocols. Until quite recently, most results focused on trace properties like confidentiality or authentication. There are however several security properties, which cannot be defined (or cannot be naturally defined) as trace properties and require a notion of behavioural equivalence. Typical examples are anonymity, and privacy related properties. During the last decade, several results and verification tools have been developed to analyse equivalence-based security properties. We propose here a synthesis of decidability and undecidability results for equivalence-based security properties. Moreover, we give an overview of existing verification tools that may be used to verify equivalence-based security properties.}
+}
+
+@InProceedings{open_bs,
+author="Tiu, Alwen",
+editor="Shao, Zhong",
+title="A Trace Based Bisimulation for the Spi Calculus: An Extended Abstract",
+booktitle="Programming Languages and Systems",
+year="2007",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="367--382",
+abstract="A notion of open bisimulation is formulated for the spi calculus, an extension of the $\pi$-calculus with cryptographic primitives. In this formulation, open bisimulation is indexed by pairs of symbolic traces, which represent the history of interactions between the environment with the pairs of processes being checked for bisimilarity. The use of symbolic traces allows for a symbolic treatment of bound input in bisimulation checking which avoids quantification over input values. Open bisimilarity is shown to be sound with respect to testing equivalence, and futher, it is shown to be an equivalence relation on processes and a congruence on finite processes.",
+isbn="978-3-540-76637-7"
+}
+
+
+
+@article{10.1145/373243.360213,
+author = {Abadi, Mart\'{\i}n and Fournet, C\'{e}dric},
+title = {Mobile values, new names, and secure communication},
+year = {2001},
+issue_date = {March 2001},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {36},
+number = {3},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/373243.360213},
+doi = {10.1145/373243.360213},
+abstract = {We study the interaction of the "new" construct with a rich but common form of (first-order) communication. This interaction is crucial in security protocols, which are the main motivating examples for our work; it also appears in other programming-language contexts. Specifically, we introduce a simple, general extension of the pi calculus with value passing, primitive functions, and equations among terms. We develop semantics and proof techniques for this extended language and apply them in reasoning about some security protocols.},
+journal = {SIGPLAN Not.},
+month = jan,
+pages = {104–115},
+numpages = {12}
+}
+
+@inproceedings{apc,
+author = {Abadi, Mart\'{\i}n and Fournet, C\'{e}dric},
+title = {Mobile values, new names, and secure communication},
+year = {2001},
+isbn = {1581133367},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/360204.360213},
+doi = {10.1145/360204.360213},
+abstract = {We study the interaction of the "new" construct with a rich but common form of (first-order) communication. This interaction is crucial in security protocols, which are the main motivating examples for our work; it also appears in other programming-language contexts. Specifically, we introduce a simple, general extension of the pi calculus with value passing, primitive functions, and equations among terms. We develop semantics and proof techniques for this extended language and apply them in reasoning about some security protocols.},
+booktitle = {Proceedings of the 28th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+pages = {104–115},
+numpages = {12},
+location = {London, United Kingdom},
+series = {POPL '01}
+}
+
+@Inbook{easycrypt,
+author="Barthe, Gilles
+and Dupressoir, Fran{\c{c}}ois
+and Gr{\'e}goire, Benjamin
+and Kunz, C{\'e}sar
+and Schmidt, Benedikt
+and Strub, Pierre-Yves",
+editor="Aldini, Alessandro
+and Lopez, Javier
+and Martinelli, Fabio",
+title="EasyCrypt: A Tutorial",
+bookTitle="Foundations of Security Analysis and Design VII: FOSAD 2012/2013 Tutorial Lectures",
+year="2014",
+publisher="Springer International Publishing",
+address="Cham",
+pages="146--166",
+abstract="Cryptography plays a key role in the security of modern communication and computer infrastructures; therefore, it is of paramount importance to design cryptographic systems that yield strong security guarantees. To achieve this goal, cryptographic systems are supported by security proofs that establish an upper bound for the probability that a resource-constrained adversary is able to break the cryptographic system. In most cases, security proofs are reductionist, i.e. they construct from an (arbitrary but computationally bounded) adversary that would break the security of the cryptographic construction with some reasonable probability another computationally bounded adversary that would break a hardness assumption with reasonable probability. This approach, known as provable security, is in principle able to deliver rigorous and detailed mathematical proofs. However, new cryptographic designs (and consequently their security analyses) are increasingly complex, and there is a growing emphasis on shifting from algorithmic descriptions to implementation-level descriptions that account for implementation details, recommendations from standards when they exist, and possibly side-channels. As a consequence, cryptographic proofs are becoming increasingly error-prone and difficult to check. One promising solution to address these concerns is to develop machine-checked frameworks that support the construction and automated verification of cryptographic systems. Although many such frameworks exist for the symbolic model of cryptography, comparatively little work has been done to develop machine-checked frameworks to reason directly in the computational model commonly used by cryptographers",
+isbn="978-3-319-10082-1",
+doi="10.1007/978-3-319-10082-1_6",
+url="https://doi.org/10.1007/978-3-319-10082-1_6"
+}
+
+@misc{crypthol,
+      author = {David A.  Basin and Andreas Lochbihler and S.  Reza Sefidgar},
+      title = {{CryptHOL}: Game-based Proofs in Higher-order Logic},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2017/753},
+      year = {2017},
+      url = {https://eprint.iacr.org/2017/753}
+}
+
+@article{typing_for_free,
+author = {Chr\'{e}tien, R\'{e}my and Cortier, V\'{e}ronique and Dallon, Antoine and Delaune, St\'{e}phanie},
+title = {Typing Messages for Free in Security Protocols},
+year = {2019},
+issue_date = {January 2020},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {21},
+number = {1},
+issn = {1529-3785},
+url = {https://doi.org/10.1145/3343507},
+doi = {10.1145/3343507},
+abstract = {Security properties of cryptographic protocols are typically expressed as reachability or equivalence properties. Secrecy and authentication are examples of reachability properties, while privacy properties such as untraceability, vote secrecy, or anonymity are generally expressed as behavioral equivalence in a process algebra that models security protocols.Our main contribution is to reduce the search space for attacks for reachability as well as equivalence properties. Specifically, we show that if there is an attack then there is one that is well-typed. Our result holds for a large class of typing systems, a family of equational theories that encompasses all standard primitives, and protocols without else branches. For many standard protocols, we deduce that it is sufficient to look for attacks that follow the format of the messages expected in an honest execution, therefore considerably reducing the search space.},
+journal = {ACM Trans. Comput. Logic},
+month = sep,
+articleno = {1},
+numpages = {52},
+keywords = {Security protocols, symbolic model, trace equivalence, verification}
+}
+
+
+@InProceedings{tagging_enforces_termination,
+author="Blanchet, Bruno
+and Podelski, Andreas",
+editor="Gordon, Andrew D.",
+title="Verification of Cryptographic Protocols: Tagging Enforces Termination",
+booktitle="Foundations of Software Science and Computation Structures",
+year="2003",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="136--152",
+abstract="In experiments with a resolution-based verification method for cryptographic protocols, we could enforce its termination by tagging, a syntactic transformation of messages that leaves attack-free executions invariant. In this paper, we generalize the experimental evidence: we prove that the verification method always terminates for tagged protocols.",
+isbn="978-3-540-36576-1"
+}
+
+@INPROCEEDINGS{small_model,
+  author={Lowe, G.},
+  booktitle={Proceedings. 11th IEEE Computer Security Foundations Workshop (Cat. No.98TB100238)}, 
+  title={Towards a completeness result for model checking of security protocols}, 
+  year={1998},
+  volume={},
+  number={},
+  pages={96-105},
+  keywords={Protocols;Mathematical model;Computer security;Mathematics;Computer science;Authentication;Communication system control;Control systems;Communication networks;Information security},
+  doi={10.1109/CSFW.1998.683159}}
+@INPROCEEDINGS{depth_bounded,
+  author={D’Osualdo, Emanuele and Ong, Luke and Tiu, Alwen},
+  booktitle={2017 IEEE 30th Computer Security Foundations Symposium (CSF)}, 
+  title={Deciding Secrecy of Security Protocols for an Unbounded Number of Sessions: The Case of Depth-Bounded Processes}, 
+  year={2017},
+  volume={},
+  number={},
+  pages={464-480},
+  keywords={Protocols;Cryptography;Calculus;Standards;Manganese;Syntactics;depth-bounded process;security protocols;protocol secrecy;well-structured transition system},
+  doi={10.1109/CSF.2017.32}}
+
+
+@INPROCEEDINGS{bound_sessions,
+  author={Cortier, Véronique and Dallon, Antoine and Delaune, Stéphanie},
+  booktitle={2022 IEEE 35th Computer Security Foundations Symposium (CSF)}, 
+  title={A small bound on the number of sessions for security protocols}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={33-48},
+  keywords={Analytical models;Protocols;Computational modeling;Authentication;Standards;security protocols;symbolic model;verification},
+  doi={10.1109/CSF54842.2022.9919670}}
+@article{comp_soundness,
+  title={Reconciling two views of cryptography (the computational soundness of formal encryption)},
+  author={Abadi, Martin and Rogaway, Phillip},
+  journal={Journal of cryptology},
+  volume={15},
+  number={2},
+  pages={103--127},
+  year={2002},
+  publisher={Springer}
+}
+
+@article{horn_semantics,
+author = {Van Emden, M. H. and Kowalski, R. A.},
+title = {The Semantics of Predicate Logic as a Programming Language},
+year = {1976},
+issue_date = {Oct. 1976},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {23},
+number = {4},
+issn = {0004-5411},
+url = {https://doi.org/10.1145/321978.321991},
+doi = {10.1145/321978.321991},
+abstract = {Sentences in first-order predicate logic can be usefully interpreted as programs. In this paper the operational and fixpoint semantics of predicate logic programs are defined, and the connections with the proof theory and model theory of logic are investigated. It is concluded that operational semantics is a part of proof theory and that fixpoint semantics is a special case of model-theoretic semantics.},
+journal = {J. ACM},
+month = oct,
+pages = {733–742},
+numpages = {10}
+}
+
+@article{fm,
+  title={The economic impacts of inadequate infrastructure for software testing},
+  author={Planning, Strategic},
+  journal={National Institute of Standards and Technology},
+  volume={1},
+  number={2002},
+  pages={1},
+  year={2002}
+}
+
+@inproceedings{dystar,
+  TITLE = {{DY* : A Modular Symbolic Verification Framework for Executable Cryptographic Protocol Code}},
+  AUTHOR = {Bhargavan, Karthikeyan and Bichhawat, Abhishek and Do, Quoc Huy and Hosseyni, Pedram and K{\"u}sters, Ralf and Schmitz, Guido and W{\"u}rtele, Tim},
+  URL = {https://inria.hal.science/hal-03178425},
+  BOOKTITLE = {{EuroS\&P 2021 - 6th IEEE European Symposium on Security and Privacy}},
+  ADDRESS = {Virtual, Austria},
+  YEAR = {2021},
+  MONTH = Sep,
+  PDF = {https://inria.hal.science/hal-03178425v1/file/dy-star-eurosp21.pdf},
+  HAL_ID = {hal-03178425},
+  HAL_VERSION = {v1},
+}
+
+@article{unification_algo,
+author = {Martelli, Alberto and Montanari, Ugo},
+title = {An Efficient Unification Algorithm},
+year = {1982},
+issue_date = {April 1982},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {4},
+number = {2},
+issn = {0164-0925},
+url = {https://doi.org/10.1145/357162.357169},
+doi = {10.1145/357162.357169},
+journal = {ACM Trans. Program. Lang. Syst.},
+month = apr,
+pages = {258–282},
+numpages = {25}
+}
+
+
+
+
+@article{hyperproperties,
+author = {Michael R. Clarkson and Fred B. Schneider},
+title ={Hyperproperties},
+
+journal = {Journal of Computer Security},
+volume = {18},
+number = {6},
+pages = {1157-1210},
+year = {2010},
+doi = {10.3233/JCS-2009-0393},
+
+URL = { 
+    
+    
+        https://journals.sagepub.com/doi/abs/10.3233/JCS-2009-0393
+    
+
+},
+eprint = { 
+    
+    
+        https://journals.sagepub.com/doi/pdf/10.3233/JCS-2009-0393
+    
+
+}
+,
+    abstract = { Trace properties, which have long been used for reasoning about systems, are sets of execution traces. Hyperproperties, introduced here, are sets of trace properties. Hyperproperties can express security policies, such as secure information flow and service level agreements, that trace properties cannot. Safety and liveness are generalized to hyperproperties, and every hyperproperty is shown to be the intersection of a safety hyperproperty and a liveness hyperproperty. A verification technique for safety hyperproperties is given and is shown to generalize prior techniques for verifying secure information flow. Refinement is shown to be applicable with safety hyperproperties. A topological characterization of hyperproperties is given. }
+}
+
+@article{bilinear,
+  title={An introduction to pairing-based cryptography},
+  author={Menezes, Alfred},
+  journal={Recent trends in cryptography},
+  volume={477},
+  pages={47--65},
+  year={2009}
+}
+
+@INPROCEEDINGS{strand_spaces_msr,
+  author={Cervesato, I. and Durgin, N. and Mitchell, J. and Lincoln, P. and Scedrov, A.},
+  booktitle={Proceedings 13th IEEE Computer Security Foundations Workshop. CSFW-13}, 
+  title={Relating strands and multiset rewriting for security protocol analysis}, 
+  year={2000},
+  volume={},
+  number={},
+  pages={35-51},
+  keywords={Cryptographic protocols;Data security;Access protocols;Protection;Cryptography;Computer security;Contracts;State-space methods;Logic;Information security},
+  doi={10.1109/CSFW.2000.856924}}
+
+
+@article{ofmc,
+  title={OFMC: A symbolic model checker for security protocols},
+  author={Basin, David and M{\"o}dersheim, Sebastian and Vigano, Luca},
+  journal={International Journal of Information Security},
+  volume={4},
+  number={3},
+  pages={181--208},
+  year={2005},
+  publisher={Springer}
+}
+
+@INPROCEEDINGS{sat_equiv,
+  author={Cortier, Véronique and Dallon, Antoine and Delaune, Stéphanie},
+  booktitle={2017 IEEE 30th Computer Security Foundations Symposium (CSF)}, 
+  title={SAT-Equiv: An Efficient Tool for Equivalence Properties}, 
+  year={2017},
+  volume={},
+  number={},
+  pages={481-494},
+  keywords={Protocols;Tools;Privacy;Planning;Security;Algorithm design and analysis;Algebra;formal methods;equivalence properties;applied pi-calculus},
+  doi={10.1109/CSF.2017.15}}
+
+
+@INPROCEEDINGS{deepsec,
+  author={Cheval, Vincent and Kremer, Steve and Rakotonirina, Itsaka},
+  booktitle={2018 IEEE Symposium on Security and Privacy (SP)}, 
+  title={DEEPSEC: Deciding Equivalence Properties in Security Protocols Theory and Practice}, 
+  year={2018},
+  volume={},
+  number={},
+  pages={529-546},
+  keywords={Tools;Protocols;Complexity theory;Calculus;Encryption;Security protocols;Automated verification;Equivalence properties},
+  doi={10.1109/SP.2018.00033}}
+
+
+@techreport{4g_lte,
+  author      = {{3rd Generation Partnership Project}},
+  title       = {{Evolved Universal Terrestrial Radio Access (E-UTRA) and Evolved Universal Terrestrial Radio Access Network (E-UTRAN); Overall Description}},
+  institution = {3GPP},
+  type        = {Technical Specification},
+  number      = {TS 36.300},
+  year        = {2022},
+  url         = {https://www.3gpp.org/dynareport/36300.htm}
+}
+
+@INPROCEEDINGS{lowe_auth,
+  author={Lowe, G.},
+  booktitle={Proceedings 10th Computer Security Foundations Workshop}, 
+  title={A hierarchy of authentication specifications}, 
+  year={1997},
+  volume={},
+  number={},
+  pages={31-43},
+  keywords={Authentication;Protocols;Algebra;Mathematics;Computer science;Computer security;System testing;Control systems;Stress},
+  doi={10.1109/CSFW.1997.596782}}
+
+
+@article{pfs,
+  title={Authentication and authenticated key exchanges},
+  author={Diffie, Whitfield and Van Oorschot, Paul C and Wiener, Michael J},
+  journal={Designs, Codes and cryptography},
+  volume={2},
+  number={2},
+  pages={107--125},
+  year={1992},
+  publisher={Springer}
+}
+
+@techreport{5g,
+  author      = {{3rd Generation Partnership Project}},
+  title       = {{NR; NR and NG-RAN Overall Description; Stage 2}},
+  institution = {3GPP},
+  type        = {Technical Specification},
+  number      = {TS 38.300},
+  year        = {2022},
+  url         = {https://www.3gpp.org/dynareport/38300.htm}
+}
+
+
+@article{needham_schroeder,
+author = {Needham, Roger M. and Schroeder, Michael D.},
+title = {Using encryption for authentication in large networks of computers},
+year = {1978},
+issue_date = {Dec. 1978},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {21},
+number = {12},
+issn = {0001-0782},
+url = {https://doi.org/10.1145/359657.359659},
+doi = {10.1145/359657.359659},
+abstract = {Use of encryption to achieve authenticated communication in computer networks is discussed. Example protocols are presented for the establishment of authenticated connections, for the management of authenticated mail, and for signature verification and document integrity guarantee. Both conventional and public-key encryption algorithms are considered as the basis for protocols.},
+journal = {Commun. ACM},
+month = dec,
+pages = {993–999},
+numpages = {7},
+keywords = {authentication, data encryption standard, encryption, networks, protocols, public-key cryptosystems, security}
+}
+
+@INPROCEEDINGS{ai_2,
+  author={Heather, J. and Schneider, S.},
+  booktitle={Proceedings 13th IEEE Computer Security Foundations Workshop. CSFW-13}, 
+  title={Towards automatic verification of authentication protocols on an unbounded network}, 
+  year={2000},
+  volume={},
+  number={},
+  pages={132-143},
+  keywords={Authentication;Cryptographic protocols;Logic;Computer science;Computer security;Cryptography;State-space methods;Communication networks;Body sensor networks;Algebra},
+  doi={10.1109/CSFW.2000.856932}}
+
+@InProceedings{ai_1,
+author="Goubault-Larrecq, Jean",
+editor="Rolim, Jos{\'e}",
+title="A Method for Automatic Cryptographic Protocol Verification",
+booktitle="Parallel and Distributed Processing",
+year="2000",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="977--984",
+abstract="We present an automatic, terminating method for verifying confidentiality properties, and to a lesser extent freshness properties of cryptographic protocols. It is based on a safe abstract interpretation of cryptographic protocols using a specific extension of tree automata, V-parameterized tree automata, which mix automata-theoretic techniques with deductive features. Contrary to most model-checking approaches, this method offers actual security guarantees. It owes much to D. Bolignano's ways of modeling cryptographic protocols and to D. Monniaux' seminal idea of using tree automata to verify cryptographic protocols by abstract interpretation. It extends the latter by adding new deductive abilities, and by offering the possibility of analyzing protocols in the presence of parallel multi-session principals, following some ideas by M. Debbabi, M. Mejri, N. Tawbi, and I. Yahmadi.",
+isbn="978-3-540-45591-2"
+}
+
+
+
+@inproceedings{spi_calculus,
+  title={A calculus for cryptographic protocols: The spi calculus},
+  author={Abadi, Mart{\'\i}n and Gordon, Andrew D},
+  booktitle={Proceedings of the 4th ACM Conference on Computer and Communications Security},
+  pages={36--47},
+  year={1997}
+}
+@article{cubic_time,
+title = {Cryptographic Analysis in Cubic Time},
+journal = {Electronic Notes in Theoretical Computer Science},
+volume = {62},
+pages = {7-23},
+year = {2002},
+note = {TOSCA 2001, Theory of Concurrency, Higher Order Languages and Types},
+issn = {1571-0661},
+doi = {https://doi.org/10.1016/S1571-0661(04)00316-0},
+url = {https://www.sciencedirect.com/science/article/pii/S1571066104003160},
+author = {Flemming Nielson and Hanne Riis Nielson and Helmut Seidl},
+abstract = {The spi-calculus is a variant of the polyadic π-calculus that admits symmetric cryptography and that admits expressing communication protocols in a precise though still abstract way. This paper shows that context-independent control flow analysis can be calculated in cubic time despite the fact that the spi-calculus operates over an infinite universe of values. Our approach is based on Horn Clauses with Sharing and we develop transformations to pass from the infinite to the finite and to deal with the polyadic nature of input and output. We prove that this suffices for obtaining a cubic time implementation without sacrificing precision and without making simplifying assumptions on the nature of keys.}
+}
+@InProceedings{tagged_bounded_secrecy,
+author="Ramanujam, R.
+and Suresh, S. P.",
+editor="Pandya, Paritosh K.
+and Radhakrishnan, Jaikumar",
+title="Tagging Makes Secrecy Decidable with Unbounded Nonces as Well",
+booktitle="FST TCS 2003: Foundations of Software Technology and Theoretical Computer Science",
+year="2003",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="363--374",
+abstract="Tagging schemes have been used in security protocols to ensure that the analysis of such protocols can work with messages of bounded length. When the set of nonces is bounded, this leads to decidability of secrecy. In this paper, we show that tagging schemes can be used to obtain decidability of secrecy even in the presence of unboundedly many nonces.",
+isbn="978-3-540-24597-1"
+}
+
+@incollection{rewrite_systems,
+title = {CHAPTER 6 - Rewrite Systems},
+editor = {JAN {VAN LEEUWEN}},
+booktitle = {Formal Models and Semantics},
+publisher = {Elsevier},
+address = {Amsterdam},
+pages = {243-320},
+year = {1990},
+series = {Handbook of Theoretical Computer Science},
+isbn = {978-0-444-88074-1},
+doi = {https://doi.org/10.1016/B978-0-444-88074-1.50011-1},
+url = {https://www.sciencedirect.com/science/article/pii/B9780444880741500111},
+author = {Nachum DERSHOWITZ and Jean-Pierre JOUANNAUD},
+abstract = {Publisher Summary
+This chapter focuses on rewrite systems, which are directed equations used to compute by repeatedly replacing sub-terms of a given formula with equal terms until the simplest form possible is obtained. As a formalism, rewrite systems have the full power of Turing machines and may be thought of as nondeterministic Markov algorithms over terms rather than strings. The theory of rewriting is in essence a theory of normal forms. To some extent, it is an outgrowth of the study of A. Church's Lambda Calculus and H. B. Curry's Combinatory Logic. The chapter discusses the syntax and semantics of equations from the algebraic, logical, and operational points of view. To use a rewrite system as a decision procedure, it must be convergent. The chapter describes this fundamental concept as an abstract property of binary relations. To use a rewrite system for computation or as a decision procedure for validity of identities, the termination property is crucial. The chapter presents the basic methods for proving termination. The chapter discusses the question of satisfiability of equations and the convergence property applied to rewriting.}
+}
+
+
+@article{context_explicit,
+author = {R. Ramanujam and S.P. Suresh},
+title ={Decidability of context-explicit security protocols},
+
+journal = {Journal of Computer Security},
+volume = {13},
+number = {1},
+pages = {135-165},
+year = {2005},
+doi = {10.3233/JCS-2005-13106},
+
+URL = { 
+    
+    
+        https://journals.sagepub.com/doi/abs/10.3233/JCS-2005-13106
+    
+
+},
+eprint = { 
+    
+    
+        https://journals.sagepub.com/doi/pdf/10.3233/JCS-2005-13106
+    
+
+}
+,
+    abstract = { An important problem in the analysis of security protocols is that of checking whether a protocol preserves secrecy, i.e., no secret owned by the honest agents is unintentionally revealed to the intruder. This problem has been proved to be undecidable in several settings. In particular, Durgin et al. prove the undecidability of the secrecy problem in the presence of an unbounded set of nonces, even when the message length is bounded. In this paper we prove that even in the presence of an unbounded set of nonces the secrecy problem is decidable for a reasonable subclass of protocols, which we call context-explicit protocols. }
+}
+
+@article{pingpong,
+title = {On the security of ping-pong protocols},
+journal = {Information and Control},
+volume = {55},
+number = {1},
+pages = {57-68},
+year = {1982},
+issn = {0019-9958},
+doi = {https://doi.org/10.1016/S0019-9958(82)90401-6},
+url = {https://www.sciencedirect.com/science/article/pii/S0019995882904016},
+author = {D. Dolev and S. Even and R.M. Karp},
+abstract = {Consider the class of protocols, for two participants, in which the initiator applies a sequence of operators to a message M and sends it to the other participant; in each step, one of the participants applies a sequence of operators to the message received last, and sends it back. This “ping-pong≓ action continues several times, using sequences of operators as specified by the protocol. The set of operators may include public-key encryptions and decryptions. An O(n3) algorithm which determines the security of a given protocol (of length n) is presented. This is an improvement of the algorithm of Dolev and Yao (IEEE Trans. Inform. Theory IT-30 (2) (1983), 198208).}
+}
+
+
+
+
+@article{tagging,
+author = {James Heather and Gavin Lowe and Steve Schneider},
+title ={How to prevent type flaw attacks on security protocols},
+
+journal = {Journal of Computer Security},
+volume = {11},
+number = {2},
+pages = {217-244},
+year = {2003},
+doi = {10.3233/JCS-2003-11204},
+
+URL = { 
+    
+    
+        https://journals.sagepub.com/doi/abs/10.3233/JCS-2003-11204
+    
+
+},
+eprint = { 
+    
+    
+        https://journals.sagepub.com/doi/pdf/10.3233/JCS-2003-11204
+    
+
+}
+,
+    abstract = { A type flaw attack on a security protocol is an attack where a field that was originally intended to have one type is subsequently interpreted as having another type. A number of type flaw attacks have appeared in the academic literature. In this paper we prove that type flaw attacks can be prevented using a simple technique of tagging each field with some information indicating its intended type. }
+}
+
+@INPROCEEDINGS{undecidable1,
+  author={Even, S. and Goldreich, O.},
+  booktitle={24th Annual Symposium on Foundations of Computer Science (sfcs 1983)}, 
+  title={On the security of multi-party ping-pong protocols}, 
+  year={1983},
+  volume={},
+  number={},
+  pages={34-39},
+  keywords={Tiles;Computer science;Cryptographic protocols;Cryptography;Communication system security;Protection;Testing;Public key;DH-HEMTs;Upper bound},
+  doi={10.1109/SFCS.1983.42}}
+
+
+
+
+@article{bounded_undecidable,
+author = {Nancy Durgin and Patrick Lincoln and John Mitchell and Andre Scedrov},
+title ={Multiset rewriting and the complexity of bounded security protocols},
+
+journal = {Journal of Computer Security},
+volume = {12},
+number = {2},
+pages = {247-311},
+year = {2004},
+doi = {10.3233/JCS-2004-12203},
+
+URL = { 
+    
+        https://doi.org/10.3233/JCS-2004-12203
+    
+    
+
+},
+eprint = { 
+    
+        https://doi.org/10.3233/JCS-2004-12203
+    
+    
+
+}
+,
+    abstract = { We formalize the Dolev–Yao model of security protocols, using a notation based on multiset rewriting with existentials. The goals are to provide a simple formal notation for describing security protocols, to formalize the assumptions of the Dolev–Yao model using this notation, and to analyze the complexity of the secrecy problem under various restrictions. We prove that, even for the case where we restrict the size of messages and the depth of message encryption, the secrecy problem is undecidable for the case of an unrestricted number of protocol roles and an unbounded number of new nonces. We also identify several decidable classes, including a DEXP-complete class when the number of nonces is restricted, and an NP-complete class when both the number of nonces and the number of roles is restricted. We point out a remaining open complexity problem, and discuss the implications these results have on the general topic of protocol analysis. }
+}
+
+
+
+
+@article{inductive_approach,
+author = {Lawrence C. Paulson},
+title ={The inductive approach to verifying cryptographic protocols},
+
+journal = {Journal of Computer Security},
+volume = {6},
+number = {1-2},
+pages = {85-128},
+year = {1998},
+doi = {10.3233/JCS-1998-61-205},
+
+URL = { 
+    
+    
+        https://journals.sagepub.com/doi/abs/10.3233/JCS-1998-61-205
+    
+
+},
+eprint = { 
+    
+    
+        https://journals.sagepub.com/doi/pdf/10.3233/JCS-1998-61-205
+    
+
+}
+,
+    abstract = { Informal arguments that cryptographic protocols are secure can be made rigorous using inductive definitions. The approach is based on ordinary predicate calculus and copes with infinite-state systems. Proofs are generated using Isabelle/HOL. The human effort required to analyze a protocol can be as little as a week or two, yielding a proof script that takes a few minutes to run.Protocols are inductively defined as sets of traces. A trace is a list of communication events, perhaps comprising many interleaved protocol runs. Protocol descriptions incorporate attacks and accidental losses. The model spy knows some private keys and can forge messages using components decrypted from previous traffic. Three protocols are analyzed below: Otway–Rees (which uses shared-key encryption), Needham–Schroeder (which uses public-key encryption), and a recursive protocol (Bull and Otway, 1997) (which is of variable length).One can prove that event ev always precedes event ev′ or that property P holds provided X remains secret. Properties can be proved from the viewpoint of the various principals: say, if A receives a final message from B then the session key it conveys is good. }
+}
+
+@INPROCEEDINGS{strand_spaces,
+  author={Fabrega, F.J.T. and Herzog, J.C. and Guttman, J.D.},
+  booktitle={Proceedings. 1998 IEEE Symposium on Security and Privacy (Cat. No.98CB36186)}, 
+  title={Strand spaces: why is a security protocol correct?}, 
+  year={1998},
+  volume={},
+  number={},
+  pages={160-171},
+  keywords={Cryptographic protocols;Cryptography;Authentication;National security;Protection;Read only memory;Contracts},
+  doi={10.1109/SECPRI.1998.674832}}
+
+
+@inproceedings{generic_methodology,
+author = {Arquint, Linard and Schwerhoff, Malte and Mehta, Vaibhav and M\"{u}ller, Peter},
+title = {A Generic Methodology for the Modular Verification of Security Protocol Implementations},
+year = {2023},
+isbn = {9798400700507},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3576915.3623105},
+doi = {10.1145/3576915.3623105},
+abstract = {Security protocols are essential building blocks of modern IT systems. Subtle flaws in their design or implementation may compromise the security of entire systems. It is, thus, important to prove the absence of such flaws through formal verification. Much existing work focuses on the verification of protocol models, which is not sufficient to show that their implementations are actually secure. Verification techniques for protocol implementations (e.g., via code generation or model extraction) typically impose severe restrictions on the used programming language and code design, which may lead to sub-optimal implementations. In this paper, we present a methodology for the modular verification of strong security properties directly on the level of the protocol implementations. Our methodology leverages state-of-the-art verification logics and tools to support a wide range of implementations and programming languages. We demonstrate its effectiveness by verifying memory safety and security of Go implementations of the Needham-Schroeder-Lowe, Diffie-Hellman key exchange, and WireGuard protocols, including forward secrecy and injective agreement for WireGuard. We also show that our methodology is agnostic to a particular language or program verifier with a prototype implementation for C.},
+booktitle = {Proceedings of the 2023 ACM SIGSAC Conference on Computer and Communications Security},
+pages = {1377–1391},
+numpages = {15},
+keywords = {automated verification, forward secrecy, injective agreement, protocol implementation verification, separation logic, symbolic security},
+location = {Copenhagen, Denmark},
+series = {CCS '23}
+}
+
+@inproceedings{tamarin_looping,
+author = {Linker, Felix and Sprenger, Christoph and Cremers, Cas and Basin, David},
+title = {Looping for Good: Cyclic Proofs for Security Protocols},
+year = {2025},
+isbn = {9798400715259},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3719027.3765131},
+doi = {10.1145/3719027.3765131},
+abstract = {Security protocols often involve loops, such as for ratcheting or for manipulating inductively-defined data structures. However, the automated analysis of security protocols has struggled to keep up with these features. The state-of-the-art often necessitates working with abstractions of such data structures or relies heavily on auxiliary, user-defined lemmas.In this work, we advance the state-of-the-art in symbolic protocol verification by adapting cyclic induction proof systems to the security protocol domain. We introduce reasoning rules for the Tamarin prover for cyclic proofs, enabling new, compact proofs, and we prove their soundness. Moreover, we implement new, simple, and effective proof search strategies that leverage these rules. With these additions, Tamarin can prove many lemmas that previously required, often complex, auxiliary lemmas. We showcase our approach on fourteen case studies, ranging from toy examples to a detailed model of the Signal protocol. Our work opens an exciting new research area where automatic induction helps scale security protocol verification, as we provide a fundamentally new and general induction mechanism.},
+booktitle = {Proceedings of the 2025 ACM SIGSAC Conference on Computer and Communications Security},
+pages = {2759–2773},
+numpages = {15},
+keywords = {cyclic induction, formal methods, security protocol verification, tamarin prover},
+location = {Taipei, Taiwan},
+series = {CCS '25}
+}
+
+@inproceedings{uptane,
+  title={Uptane: Securing software updates for automobiles},
+  author={Karthik, Trishank and Brown, Akan and Awwad, Sebastien and McCoy, Damon and Bielawski, Russ and Mott, Cameron and Lauzon, Sam and Weimerskirch, Andr{\'e} and Cappos, Justin},
+  booktitle={International conference on embedded security in car},
+  volume={11},
+  year={2016}
+}
+
+@ARTICLE{undecidable2,
+  author={Heintze, N. and Tygar, J.D.},
+  journal={IEEE Transactions on Software Engineering}, 
+  title={A model for secure protocols and their compositions}, 
+  year={1996},
+  volume={22},
+  number={1},
+  pages={16-30},
+  keywords={Cryptographic protocols;Sufficient conditions;Computer security;Logic;Authentication;Clocks;Cryptography;Concrete;Concatenated codes;Computer science},
+  doi={10.1109/32.481514}}
+
+
+@article{unification_modulo_ac,
+  title={A unification algorithm for associative-commutative functions},
+  author={Stickel, Mark E},
+  journal={Journal of the ACM (JACM)},
+  volume={28},
+  number={3},
+  pages={423--434},
+  year={1981},
+  publisher={ACM New York, NY, USA}
+}
+
+@article{statverif,
+author = {Myrto Arapinis and Joshua Phillips and Eike Ritter and Mark D. Ryan},
+title ={StatVerif: Verification of stateful processes},
+
+journal = {Journal of Computer Security},
+volume = {22},
+number = {5},
+pages = {743-821},
+year = {2014},
+doi = {10.3233/JCS-140501},
+
+URL = { 
+    
+    
+        https://journals.sagepub.com/doi/abs/10.3233/JCS-140501
+    
+
+},
+eprint = { 
+    
+    
+        https://journals.sagepub.com/doi/pdf/10.3233/JCS-140501
+    
+
+}
+,
+    abstract = { We present StatVerif, which is an extension of the ProVerif process calculus with constructs for explicit state, in order to be able to reason about protocols that manipulate global state. Global state is required by protocols used in hardware devices (such as smart cards and the trusted platform module), as well as by protocols involving databases that store persistent information. We provide the operational semantics of StatVerif. We extend the ProVerif compiler to a compiler for StatVerif, which takes processes written in the extended process language and produces Horn clauses. Our compilation is carefully engineered to avoid many false attacks. We prove the correctness of the StatVerif compiler. We illustrate our method on two examples: a small hardware security device and a contract signing protocol. We are able to prove their desired properties automatically. }
+}
+
+@InProceedings{satmc,
+author="Armando, Alessandro
+and Compagna, Luca",
+editor="Alferes, J{\'o}se J{\'u}lio
+and Leite, Jo{\~a}o",
+title="SATMC: A SAT-Based Model Checker for Security Protocols",
+booktitle="Logics in Artificial Intelligence",
+year="2004",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="730--733",
+abstract="We present SATMC (SAT-based Model Checker), an open and flexible platform for SAT-based bounded model checking [8] of security protocols. Under the standard assumptions of perfect cryptography and of strong typing, SATMC performs a bounded analysis of the problem by considering scenarios with a finite number of sessions whereby messages are exchanged on a channel controlled by the most general intruder based on the Dolev-Yao model [12].",
+isbn="978-3-540-30227-8"
+}
+
+
+
+@INPROCEEDINGS{gsverif,
+  author={Cheval, Vincent and Cortier, Véronique and Turuani, Mathieu},
+  booktitle={2018 IEEE 31st Computer Security Foundations Symposium (CSF)}, 
+  title={A Little More Conversation, a Little Less Action, a Lot More Satisfaction: Global States in ProVerif}, 
+  year={2018},
+  volume={},
+  number={},
+  pages={344-358},
+  keywords={Protocols;Tools;Servers;Cryptography;Encoding;Calculus;security-protocols;global-states;verification;symbolic-models},
+  doi={10.1109/CSF.2018.00032}}
+
+
+
+@phdthesis{tamarin,
+  title={Advancing automated security protocol verification},
+  author={Meier, Simon},
+  year={2013},
+  school={ETH}
+}
+
+
+
+
+@article{proverif_automation,
+author = {Véronique Cortier and Stéphanie Delaune and Jannik Dreier and Elise Klein},
+title ={Automatic generation of sources lemmas in Tamarin: Towards automatic proofs of security protocols1},
+
+journal = {Journal of Computer Security},
+volume = {30},
+number = {4},
+pages = {573-598},
+year = {2022},
+doi = {10.3233/JCS-210053},
+
+URL = { 
+    
+        https://doi.org/10.3233/JCS-210053
+    
+    
+
+},
+eprint = { 
+    
+        https://doi.org/10.3233/JCS-210053
+    
+    
+
+}
+,
+    abstract = { Tamarin is a popular tool dedicated to the formal analysis of security protocols. One major strength of the tool is that it offers an interactive mode, allowing to go beyond what push-button tools can typically handle. Tamarin is for example able to verify complex protocols such as TLS, 5G, or RFID protocols. However, one of its drawback is its lack of automation. For many simple protocols, the user often needs to help Tamarin by writing specific lemmas, called “sources lemmas”, which requires some knowledge of the internal behaviour of the tool.In this paper, we propose a technique to automatically generate sources lemmas in Tamarin. Following the intuition of manually written sources lemmas, our lemmas try to keep track of the origin of a term by looking into emitted messages or facts. We prove formally that our lemmas indeed hold, for arbitrary protocols that make use of cryptographic primitives that can be modelled with a subterm convergent equational theory (modulo associativity and commutativity). We have implemented our approach within Tamarin. Our experiments show that, in most examples of the literature, we are now able to generate suitable sources lemmas automatically, in replacement of the hand-written lemmas. As a direct application, many simple protocols can now be analysed fully automatically, while they previously required user interaction. }
+}
+
+@article{proverif_manual,
+  title={ProVerif 2.00: automatic cryptographic protocol verifier, user manual and tutorial},
+  author={Blanchet, Bruno and Smyth, Ben and Cheval, Vincent and Sylvestre, Marc},
+  journal={Version from},
+  volume={16},
+  pages={05--16},
+  year={2018}
+}
+
+@ARTICLE{dolev_yao,
+  author={Dolev, D. and Yao, A.},
+  journal={IEEE Transactions on Information Theory}, 
+  title={On the security of public key protocols}, 
+  year={1983},
+  volume={29},
+  number={2},
+  pages={198-208},
+  keywords={Protocols;Public key;Encryption;Symbols;Computer science;Receivers;Oral communication;Syntactics;Geometry;Computational modeling},
+  doi={10.1109/TIT.1983.1056650}}
+
+@article{msr_foundations,
+  title={Analysis of security protocols},
+  author={Durgin, Nancy A and Mitchell, DC},
+  journal={NATO ASI SERIES F COMPUTER AND SYSTEMS SCIENCES},
+  volume={173},
+  pages={369--394},
+  year={1999},
+  publisher={SPRINGER VERLAG}
+}
+
+@Inbook{proverif,
+author="Blanchet, Bruno",
+editor="Aldini, Alessandro
+and Lopez, Javier
+and Martinelli, Fabio",
+title="Automatic Verification of Security Protocols in the Symbolic Model: The Verifier ProVerif",
+bookTitle="Foundations of Security Analysis and Design VII: FOSAD 2012/2013 Tutorial Lectures",
+year="2014",
+publisher="Springer International Publishing",
+address="Cham",
+pages="54--87",
+abstract="After giving general context on the verification of security protocols, we focus on the automatic symbolic protocol verifier ProVerif. This verifier can prove secrecy, authentication, and observational equivalence properties of security protocols, for an unbounded number of sessions of the protocol. It supports a wide range of cryptographic primitives defined by rewrite rules or by equations. The tool takes as input a description of the protocol to verify in a process calculus, an extension of the pi calculus with cryptography. It automatically translates this protocol into an abstract representation of the protocol by Horn clauses, and determines whether the desired security properties hold by resolution on these clauses.",
+isbn="978-3-319-10082-1",
+doi="10.1007/978-3-319-10082-1_3",
+url="https://doi.org/10.1007/978-3-319-10082-1_3"
+}
+
+@InProceedings{ccsa,
+author="Bana, Gergei
+and Comon-Lundh, Hubert",
+editor="Degano, Pierpaolo
+and Guttman, Joshua D.",
+title="Towards Unconditional Soundness: Computationally Complete Symbolic Attacker",
+booktitle="Principles of Security and Trust",
+year="2012",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="189--208",
+abstract="We consider the question of the adequacy of symbolic models versus computational models for the verification of security protocols. We neither try to include properties in the symbolic model that reflect the properties of the computational primitives nor add computational requirements that enforce the soundness of the symbolic model. We propose in this paper a different approach: everything is possible in the symbolic model, unless it contradicts a computational assumption. In this way, we obtain unconditional soundness almost by construction. And we do not need to assume the absence of dynamic corruption or the absence of key-cycles, which are examples of hypotheses that are always used in related works. We set the basic framework, for arbitrary cryptographic primitives and arbitrary protocols, however for trace security properties only.",
+isbn="978-3-642-28641-4"
+}
+
+@InProceedings{lean,
+author="Moura, Leonardo de
+and Ullrich, Sebastian",
+editor="Platzer, Andr{\'e}
+and Sutcliffe, Geoff",
+title="The Lean 4 Theorem Prover and Programming Language",
+booktitle="Automated Deduction -- CADE 28",
+year="2021",
+publisher="Springer International Publishing",
+address="Cham",
+pages="625--635",
+abstract="Lean 4 is a reimplementation of the Lean interactive theorem prover (ITP) in Lean itself. It addresses many shortcomings of the previous versions and contains many new features. Lean 4 is fully extensible: users can modify and extend the parser, elaborator, tactics, decision procedures, pretty printer, and code generator. The new system has a hygienic macro system custom-built for ITPs. It contains a new typeclass resolution procedure based on tabled resolution, addressing significant performance problems reported by the growing user base. Lean 4 is also an efficient functional programming language based on a novel programming paradigm called functional but in-place. Efficient code generation is crucial for Lean users because many write custom proof automation procedures in Lean itself.",
+isbn="978-3-030-79876-5"
+}
+
+@book{isabelle,
+  title={Isabelle: A generic theorem prover},
+  author={Paulson, Lawrence C},
+  year={1994},
+  publisher={Springer}
+}
+
+@article{lteinspector,
+place = {Country unknown/Code not available}, title = {LTEInspector: A Systematic Approach for Adversarial Testing of 4G LTE}, url = {https://par.nsf.gov/biblio/10055689}, abstractNote = {In this paper, we investigate the security and privacy of the three critical procedures of the 4G LTE protocol (i.e., attach, detach, and paging), and in the process, uncover potential design flaws of the protocol and unsafe practices employed by the stakeholders. For exposing vulnerabilities, we propose a modelbased testing approach LTEInspector which lazily combines a symbolic model checker and a cryptographic protocol verifier in the symbolic attacker model. Using LTEInspector, we have uncovered 10 new attacks along with 9 prior attacks, categorized into three abstract classes (i.e., security, user privacy, and disruption of service), in the three procedures of 4G LTE. Notable among our findings is the authentication relay attack that enables an adversary to spoof the location of a legitimate user to the core network without possessing appropriate credentials. To ensure that the exposed attacks pose real threats and are indeed realizable in practice, we have validated 8 of the 10 new attacks and their accompanying adversarial assumptions through experimentation in a real testbed.}, journal = {Network and Distributed Systems Security (NDSS) Symposium 2018}, author = {Hussain, S. and Chowdhury, O. and Mehnaz, S. and Bertino, E.}, }
+
+@inproceedings{5greasoner,
+author = {Hussain, Syed Rafiul and Echeverria, Mitziu and Karim, Imtiaz and Chowdhury, Omar and Bertino, Elisa},
+title = {5GReasoner: A Property-Directed Security and Privacy Analysis Framework for 5G Cellular Network Protocol},
+year = {2019},
+isbn = {9781450367479},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3319535.3354263},
+doi = {10.1145/3319535.3354263},
+abstract = {The paper proposes 5GReasoner, a framework for property-guided formal verification of control-plane protocols spanning across multiple layers of the 5G protocol stack. The underlying analysis carried out by 5GReasoner can be viewed as an instance of the model checking problem with respect to an adversarial environment. Due to an effective use of behavior-specific abstraction in our manually extracted 5G protocol, 5GReasoner's analysis generalizes prior analyses of cellular protocols by reasoning about properties not only regarding packet payload but also multi-layer protocol interactions. We instantiated 5GReasoner with two model checkers and a cryptographic protocol verifier, lazily combining them through the use of abstraction-refinement principle. Our analysis of the extracted 5G protocol model covering 6 key control-layer protocols spanning across two layers of the 5G protocol stack with 5GReasoner has identified 11 design weaknesses resulting in attacks having both security and privacy implications. Our analysis also discovered 5 previous design weaknesses that 5G inherits from 4G, and can be exploited to violate its security and privacy guarantees.},
+booktitle = {Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communications Security},
+pages = {669–684},
+numpages = {16},
+keywords = {5G, attacks, cellular network, model checking, vulnerabilities},
+location = {London, United Kingdom},
+series = {CCS '19}
+}
+
+@techreport{bounded_sessions,
+  TITLE = {{Protocol Insecurity with Finite Number of Sessions is NP-complete}},
+  AUTHOR = {Rusinowitch, Micha{\"e}l and Turuani, Mathieu},
+  URL = {https://inria.hal.science/inria-00072492},
+  TYPE = {Research Report},
+  NUMBER = {RR-4134},
+  PAGES = {18},
+  INSTITUTION = {{INRIA}},
+  YEAR = {2001},
+  KEYWORDS = {security ; complexity ; attack ; protocol ; NP-complete},
+  PDF = {https://inria.hal.science/inria-00072492v1/file/RR-4134.pdf},
+  HAL_ID = {inria-00072492},
+  HAL_VERSION = {v1},
+}
+
+@inproceedings{uptane_analysis,
+author = {Lorch, Robert and Larraz, Daniel and Tinelli, Cesare and Chowdhury, Omar},
+title = {A Comprehensive, Automated Security Analysis of the Uptane Automotive Over-the-Air Update Framework},
+year = {2024},
+isbn = {9798400709593},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3678890.3678927},
+doi = {10.1145/3678890.3678927},
+abstract = {We present our experience of formally verifying the desired security properties of the Uptane over-the-air (OTA) software update framework against a set of applicable threat models. Uptane is gaining traction in the automobile industry and is widely considered the next de-facto standard for OTA automobile software updates. The security of Uptane is of utmost importance because modern automobiles rely on software for their safety-critical functionalities and, especially, require OTA software updates to add new safety features or patch bugs in existing ones. Design flaws in Uptane can either violate the integrity of the updates to be installed or prevent vehicles from installing new updates, both of which can cause severe safety issues. Previous approaches to protocol verification either fail to capture the necessary features of Uptane or suffer from termination issues due to Uptane’s complexity. A key component of our approach lies in the eager combination of an infinite-state model checker and a cryptographic protocol verifier, where (in contrast to prior lazy approaches) we are able to eliminate a key manual step in the workflow while enabling reasoning over more fine-grained message structures. In addition, our approach utilizes two proven soundness- and completeness-preserving state-space-reduction optimizations for computational tractability, as well as a meta-level analysis technique that makes it feasible to reason over Uptane’s set of optional protocol features. Our approach is able to discover six new vulnerabilities while rediscovering all five known ones. While there have been previous analyses of Uptane’s security properties, they either missed design flaws identified by our approach or suffered from coverage and termination issues. The Uptane standards body has positively acknowledged our findings and has suggested updates to the protocol specification documents to address them.},
+booktitle = {Proceedings of the 27th International Symposium on Research in Attacks, Intrusions and Defenses},
+pages = {594–612},
+numpages = {19},
+keywords = {attacks, automotive security, model checking, protocol analysis, vulnerabilities},
+location = {Padua, Italy},
+series = {RAID '24}
+}
+
+@article{proverif_equations,
+title = {Automated verification of selected equivalences for security protocols},
+journal = {The Journal of Logic and Algebraic Programming},
+volume = {75},
+number = {1},
+pages = {3-51},
+year = {2008},
+note = {Algebraic Process Calculi. The First Twenty Five Years and Beyond. III},
+issn = {1567-8326},
+doi = {https://doi.org/10.1016/j.jlap.2007.06.002},
+url = {https://www.sciencedirect.com/science/article/pii/S1567832607000549},
+author = {Bruno Blanchet and Martín Abadi and Cédric Fournet},
+abstract = {In the analysis of security protocols, methods and tools for reasoning about protocol behaviors have been quite effective. We aim to expand the scope of those methods and tools. We focus on proving equivalences P≈Q in which P and Q are two processes that differ only in the choice of some terms. These equivalences arise often in applications. We show how to treat them as predicates on the behaviors of a process that represents P and Q at the same time. We develop our techniques in the context of the applied pi calculus and implement them in the tool ProVerif.}
+}
+
+@inproceedings {sapic,
+author = {Vincent Cheval and Charlie Jacomme and Steve Kremer and Robert K{\"u}nnemann},
+title = {{SAPIC+}: protocol verifiers of the world, unite!},
+booktitle = {31st USENIX Security Symposium (USENIX Security 22)},
+year = {2022},
+isbn = {978-1-939133-31-1},
+address = {Boston, MA},
+pages = {3935--3952},
+url = {https://www.usenix.org/conference/usenixsecurity22/presentation/cheval},
+publisher = {USENIX Association},
+month = aug
+}
+
+@article{linear_logic_2,
+title = {Linear logic},
+journal = {Theoretical Computer Science},
+volume = {50},
+number = {1},
+pages = {1-101},
+year = {1987},
+issn = {0304-3975},
+doi = {https://doi.org/10.1016/0304-3975(87)90045-4},
+url = {https://www.sciencedirect.com/science/article/pii/0304397587900454},
+author = {Jean-Yves Girard},
+abstract = {The familiar connective of negation is broken into two operations: linear negation which is the purely negative part of negation and the modality “of course” which has the meaning of a reaffirmation. Following this basic discovery, a completely new approach to the whole area between constructive logics and programmation is initiated.}
+}
+
+@inproceedings{proverif_xor,
+author = {K\"{u}sters, Ralf and Truderung, Tomasz},
+title = {Reducing protocol analysis with XOR to the XOR-free case in the horn theory based approach},
+year = {2008},
+isbn = {9781595938107},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1455770.1455788},
+doi = {10.1145/1455770.1455788},
+abstract = {In the Horn theory based approach for cryptographic protocol analysis, cryptographic protocols and (Dolev-Yao) intruders are modeled by Horn theories and security analysis boils down to solving the derivation problem for Horn theories. This approach and the tools based on this approach, including ProVerif, have been very successful in the automatic analysis of cryptographic protocols w.r.t. an unbounded number of sessions. However, dealing with the algebraic properties of operators such as the exclusive OR (XOR) has been problematic. In particular, ProVerif cannot deal with XOR.In this paper, we show how to reduce the derivation problem for Horn theories with XOR to the XOR-free case. Our reduction works for an expressive class of Horn theories. A large class of intruder capabilities and protocols that employ the XOR operator can be modeled by these theories. Our reduction allows us to carry out protocol analysis by tools, such as ProVerif, that cannot deal with XOR, but are very efficient in the XOR-free case. We implemented our reduction and, in combination with ProVerif, applied it in the automatic analysis of several protocols that use the XOR operator. In one case, we found a new attack.},
+booktitle = {Proceedings of the 15th ACM Conference on Computer and Communications Security},
+pages = {129–138},
+numpages = {10},
+keywords = {algebraic properties, security protocols},
+location = {Alexandria, Virginia, USA},
+series = {CCS '08}
+}
+
+@Inbook{maude_npa,
+author="Escobar, Santiago
+and Meadows, Catherine
+and Meseguer, Jos{\'e}",
+editor="Aldini, Alessandro
+and Barthe, Gilles
+and Gorrieri, Roberto",
+title="Maude-NPA: Cryptographic Protocol Analysis Modulo Equational Properties",
+bookTitle="Foundations of Security Analysis and Design V: FOSAD 2007/2008/2009 Tutorial Lectures",
+year="2009",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="1--50",
+abstract="In this tutorial, we give an overview of the Maude-NRL Protocol Analyzer (Maude-NPA), a tool for the analysis of cryptographic protocols using functions that obey different equational theories. We show the reader how to use Maude-NPA, and how it works, and also give some of the theoretical background behind the tool.",
+isbn="978-3-642-03829-7",
+doi="10.1007/978-3-642-03829-7_1",
+url="https://doi.org/10.1007/978-3-642-03829-7_1"
+}
+
+@article{10.1145/1707801.1706350,
+author = {Bhargavan, Karthikeyan and Fournet, C\'{e}dric and Gordon, Andrew D.},
+title = {Modular verification of security protocol code by typing},
+year = {2010},
+issue_date = {January 2010},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {45},
+number = {1},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/1707801.1706350},
+doi = {10.1145/1707801.1706350},
+abstract = {We propose a method for verifying the security of protocol implementations. Our method is based on declaring and enforcing invariants on the usage of cryptography. We develop cryptographic libraries that embed a logic model of their cryptographic structures and that specify preconditions and postconditions on their functions so as to maintain their invariants. We present a theory to justify the soundness of modular code verification via our method.We implement the method for protocols coded in F# and verified using F7, our SMT-based typechecker for refinement types, that is, types carrying formulas to record invariants. As illustrated by a series of programming examples, our method can flexibly deal with a range of different cryptographic constructions and protocols.We evaluate the method on a series of larger case studies of protocol code, previously checked using whole-program analyses based on ProVerif, a leading verifier for cryptographic protocols. Our results indicate that compositional verification by typechecking with refinement types is more scalable than the best domain-specific analysis currently available for cryptographic code.},
+journal = {SIGPLAN Not.},
+month = jan,
+pages = {445–456},
+numpages = {12},
+keywords = {f7, refinement type}
+}
+
+@inproceedings{f7,
+author = {Bhargavan, Karthikeyan and Fournet, C\'{e}dric and Gordon, Andrew D.},
+title = {Modular verification of security protocol code by typing},
+year = {2010},
+isbn = {9781605584799},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1706299.1706350},
+doi = {10.1145/1706299.1706350},
+abstract = {We propose a method for verifying the security of protocol implementations. Our method is based on declaring and enforcing invariants on the usage of cryptography. We develop cryptographic libraries that embed a logic model of their cryptographic structures and that specify preconditions and postconditions on their functions so as to maintain their invariants. We present a theory to justify the soundness of modular code verification via our method.We implement the method for protocols coded in F# and verified using F7, our SMT-based typechecker for refinement types, that is, types carrying formulas to record invariants. As illustrated by a series of programming examples, our method can flexibly deal with a range of different cryptographic constructions and protocols.We evaluate the method on a series of larger case studies of protocol code, previously checked using whole-program analyses based on ProVerif, a leading verifier for cryptographic protocols. Our results indicate that compositional verification by typechecking with refinement types is more scalable than the best domain-specific analysis currently available for cryptographic code.},
+booktitle = {Proceedings of the 37th Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+pages = {445–456},
+numpages = {12},
+keywords = {f7, refinement type},
+location = {Madrid, Spain},
+series = {POPL '10}
+}
+
+@InProceedings{cl_atse,
+author="Turuani, Mathieu",
+editor="Pfenning, Frank",
+title="The CL-Atse Protocol Analyser",
+booktitle="Term Rewriting and Applications",
+year="2006",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="277--286",
+abstract="This paper presents an overview of the CL-Atse tool, an efficient and versatile automatic analyser for the security of cryptographic protocols. CL-Atse takes as input a protocol specified as a set of rewriting rules (IF format, produced by the AVISPA compiler), and uses rewriting and constraint solving techniques to model all reachable states of the participants and decide if an attack exists w.r.t. the Dolev-Yao intruder. Any state-based security property can be modelled (like secrecy, authentication, fairness, etc...), and the algebraic properties of operators like xor or exponentiation are taken into account with much less limitations than other tools, thanks to a complete modular unification algorithm. Also, useful constraints like typing, inequalities, or shared sets of knowledge (with set operations like removes, negative tests, etc...) can also be analysed.",
+isbn="978-3-540-36835-9"
+}
+
+@book{computational_model,
+  title={Foundations of cryptography, volume 2},
+  author={Goldreich, Oded},
+  year={2004},
+  publisher={Cambridge university press Cambridge}
+}
+
+@INPROCEEDINGS{sok,
+  author={Barbosa, Manuel and Barthe, Gilles and Bhargavan, Karthik and Blanchet, Bruno and Cremers, Cas and Liao, Kevin and Parno, Bryan},
+  booktitle={2021 IEEE Symposium on Security and Privacy (SP)}, 
+  title={SoK: Computer-Aided Cryptography}, 
+  year={2021},
+  volume={},
+  number={},
+  pages={777-795},
+  keywords={Resistance;Privacy;Taxonomy;Focusing;Standardization;Tools;Computational efficiency},
+  doi={10.1109/SP40001.2021.00008}}
+
+
+@InProceedings{folding_variant_narrowing,
+author="Turuani, Mathieu",
+editor="Pfenning, Frank",
+title="The CL-Atse Protocol Analyser",
+booktitle="Term Rewriting and Applications",
+year="2006",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="277--286",
+abstract="This paper presents an overview of the CL-Atse tool, an efficient and versatile automatic analyser for the security of cryptographic protocols. CL-Atse takes as input a protocol specified as a set of rewriting rules (IF format, produced by the AVISPA compiler), and uses rewriting and constraint solving techniques to model all reachable states of the participants and decide if an attack exists w.r.t. the Dolev-Yao intruder. Any state-based security property can be modelled (like secrecy, authentication, fairness, etc...), and the algebraic properties of operators like xor or exponentiation are taken into account with much less limitations than other tools, thanks to a complete modular unification algorithm. Also, useful constraints like typing, inequalities, or shared sets of knowledge (with set operations like removes, negative tests, etc...) can also be analysed.",
+isbn="978-3-540-36835-9"
+}
+
+
+
+@article{ns_attack,
+  title={An attack on the Needham- Schroeder public- key authentication protocol},
+  author={Lowe, Gavin},
+  journal={Information processing letters},
+  volume={56},
+  number={3},
+  year={1995},
+  publisher={Information Processing Letters}
+}
+
