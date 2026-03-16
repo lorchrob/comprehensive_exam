@@ -42,8 +42,6 @@ relationships, and so on)}
 
 \note{Cut to 30 pages}
 
-\note{Make sure all figs that are supposed to be in main text are in the main text}
-
 Security protocols are hard to get right. Examples abound of the discovery of inherent, design-level issues in security protocols only \textit{after} said protocols were designed, implemented, and in use \cite{lteinspector,5greasoner,ns_attack}. 
 In this document, we argue that approaches based on \emph{formal methods} can help address these issues by aiding in the detection of security flaws at the project design level.
 An often-cited example is the infamous Needham-Schroeder mutual authentication protocol \cite{needham_schroeder}, which we discuss in Section \ref{sec:sym-attacks}; its flaw was only discovered 17 years after the protocol was proposed with the help of formal tools \cite{ns_attack}.
@@ -69,8 +67,9 @@ The field of cryptography was somewhat ad hoc until recently (i.e., the 20th cen
 In the ad hoc world, the only protection from malicious actors is the faith that they cannot crack your cipher. However, one would like to know that a cipher is \textit{provably} secure; that is, that it is accompanied with a proof that it is impossible to ``crack." To achieve this goal, more rigorous definitions of security are required. We give an overview of mathematical definitions in the setting of \textit{symmetric-key cryptography} where a single shared key is used for both encrypting and decrypting messages; these concepts can naturally be extended to more complicated settings.
 
 \textbf{Symmetric key encryption scheme.} 
-Consider a set of messages $\mathcal{M}$, a set of ciphertexts $\mathcal{C}$, and a set of keys $\mathcal{K}$. Typically $\mathcal{M} = \mathcal{C} = \{0, 1\}^*$ and $\mathcal{K} = \{0,1\}^\lambda$ for a fixed security parameter $\lambda \in \mathbb{Z}^+$. Each \textit{plaintext} $p \in \mathcal{M}$ intuitively represents a message to be shared, each \emph{ciphertext} $c \in \mathcal{C}$ represents an obscured plaintext, and each \emph{key} $k \in \mathcal{K}$ can be used to help generate ciphertexts from plaintexts. A \emph{symmetric-key encryption scheme} is a triple $(\mathsf{Gen}, \mathsf{Enc}, \mathsf{Dec})$ comprised of three functions $\textsf{Gen} :: \{1\}^+ \rightarrow K$, $\textsf{Enc} :: \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$, and $\textsf{Dec} :: \mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$, where $\textsf{Gen}(1^\lambda)$ probabilistically samples a key of length $\lambda$ from $\mathcal{K}$, and \textsf{Enc} and \textsf{Dec} denote encryption and decryption as expected. We require that for all
-$m \in \mathcal{M}$ and $k \in \mathcal{K}$, $\mathsf{Dec}(\mathsf{Enc}(m, k), k) = m$.
+Consider a set of messages $\mathcal{M}$, a set of ciphertexts $\mathcal{C}$, and a set of keys $\mathcal{K}$. Typically $\mathcal{M} = \mathcal{C} = \{0, 1\}^*$ and $\mathcal{K} = \{0,1\}^\lambda$ for a fixed security parameter $\lambda \in \mathbb{Z}^+$. Each \textit{plaintext} $p \in \mathcal{M}$ intuitively represents a message to be shared, each \emph{ciphertext} $c \in \mathcal{C}$ represents an obscured plaintext, and each \emph{key} $k \in \mathcal{K}$ can be used to help generate ciphertexts from plaintexts. A \emph{symmetric-key encryption scheme} is a triple $(\mathsf{Gen}, \mathsf{Enc}, \mathsf{Dec})$ comprised of three functions $\textsf{Gen} : \{1\}^+ \rightarrow K$, $\textsf{Enc} : \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$, and $\textsf{Dec} : \mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$, where $\textsf{Gen}(1^\lambda)$ probabilistically samples a key of length $\lambda$ from $\mathcal{K}$, and \textsf{Enc} and \textsf{Dec} denote encryption and decryption as expected. We require that for all
+$m \in \mathcal{M}$ and $k \in \mathcal{K}$, $\mathsf{Dec}(\mathsf{Enc}(m, k), k) = m$ 
+(intuitively, decrypting a ciphertext using the same key used to encrypt it yields the underlying plaintext).
 
 \textbf{Kerckhoff's principle.} \textit{Kerckhoff's principle} states that the security of a scheme should only rely on the secrecy of keys and not of  algorithms (in this case, \textsf{Gen}, \textsf{Enc}, and \textsf{Dec}). There are four major arguments in favor of this principle: (1) it is easier to keep a key secret than an entire encryption scheme, especially for
 large organizations; (2) it is easier to replace a key than an encryption scheme if information is leaked; (3) keeping one (or a small
@@ -216,10 +215,12 @@ Intuitively, \emph{msg} is the sort for protocol messages,
 More precisely, \emph{fr} and \emph{pub} are incomparable and both subsorts of \emph{msg}. Also, we consider a set of function symbols (along with their signatures) $\Sigma = \Sigma_c \cup \Sigma_d$ comprised of \textit{constructors} ($\Sigma_c$) and \textit{destructors} ($\Sigma_d$), as well as a set of data $D = \mathcal{N} \cup V$ consisting of atomic names $\mathcal{N}$ (representing nonces, messages, IDs, and so on) and variables $V$. 
 Variables syntactically denote their sort ($e.g., v^{\textsc{Fr}}$ has sort \textit{fr}), and $V$ is defined as the disjoint union of every $V_s$ for each sort $s$ (and respectively for $\mathcal{N}$).
 We denote the set of well-sorted terms (i.e., terms where function arguments have the correct sort) built from function symbols in $\Sigma$ and data in $D$ by $\mathcal{T}(\Sigma, D)$.
-For example, we could have $(\mathsf{s\_enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}) \in \Sigma_c$ and $\mathsf{s\_enc}(v_1^{\textsc{Msg}}, v_2^\textsc{Fr}) \in \mathcal{T}(\Sigma, D)$. For brevity, we may omit the $\textsc{Msg}$ superscript for variables with sort \emph{msg}. We define the \emph{positions} of a term as usual and use $t|_p$ to denote the subterm of $t$ at position $p$ and $t_1[t_2]_p$ to denote substituting $t_2$ for the subterm at position $p$ in $t_1$.
+For example, we could have $(\mathsf{s\_enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}) \in \Sigma_c$ and $\mathsf{s\_enc}(v_1^{\textsc{Msg}}, v_2^\textsc{Fr}) \in \mathcal{T}(\Sigma, D)$. 
+For clarity, we may use a double colon syntax $\mathsf{identifier} :: \mathsf{type}$ to denote the $\mathsf{identifier}, \mathsf{type}$ pair. 
+For brevity, we may omit the $\textsc{Msg}$ superscript for variables with sort \emph{msg}. We define the \emph{positions} of a term as usual and use $t|_p$ to denote the subterm of $t$ at position $p$ and $t_1[t_2]_p$ to denote substituting $t_2$ for the subterm at position $p$ in $t_1$.
 
 
-\textbf{Algebraic properties of cryptographic primitives.} We model cryptographic properties through a set of equations $E$, where each equation is comprised of two terms in $\mathcal{T}(\Sigma, V)$. In the most basic setting, we have $E = \{ \mathsf{s\_dec}(\mathsf{s\_enc}(m, k), k) = m \}$ with $\Sigma = \{ (\mathsf{s\_enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}), (\mathsf{s\_dec}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}) \}$. Intuitively, the equation $\mathsf{s\_dec}(\mathsf{s\_enc}(m, k), k) = m$ states that decrypting a ciphertext using the same key that it was encrypted with yields the underlying plaintext. We use $=_E$ to denote \textit{equality modulo E}, where $t_1 =_E t_2$ denotes that $t_1$ and $t_2$ are related in the smallest congruence relation containing $E$ that is closed under substitutions. For example, with this $E$, we get $\mathsf{enc}(\mathsf{dec}(\mathsf{enc}(d_1, k_1), k_1), k_2) =_E \mathsf{enc}(d_1, k_2)$.
+\textbf{Algebraic properties of cryptographic primitives.} We model cryptographic properties through a set of equations $E$, where each equation is comprised of two terms in $\mathcal{T}(\Sigma, V)$. In the most basic setting, we have $E = \{ \mathsf{s\_dec}(\mathsf{s\_enc}(m, k), k) = m \}$ with $\Sigma = \{ \mathsf{s\_enc} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}, \mathsf{s\_dec} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg} \}$. Intuitively, the equation $\mathsf{s\_dec}(\mathsf{s\_enc}(m, k), k) = m$ states that decrypting a ciphertext using the same key that it was encrypted with yields the underlying plaintext. We use $=_E$ to denote \textit{equality modulo E}, where $t_1 =_E t_2$ denotes that $t_1$ and $t_2$ are related in the smallest congruence relation containing $E$ that is closed under substitutions. For example, with this $E$, we get $\mathsf{enc}(\mathsf{dec}(\mathsf{enc}(d_1, k_1), k_1), k_2) =_E \mathsf{enc}(d_1, k_2)$.
 
 
 
@@ -295,7 +296,7 @@ More generally, stating a precise connection between the symbolic and computatio
 
 Symmetric random encryption and decryption is modeled by 
 \begin{gather*}
-\Sigma = \{ (\textsf{sr\_enc}, \mathit{msg} \times \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}), (\textsf{sr\_dec}, \mathit{msg} \times \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}) \} \text{ and} \\ 
+\Sigma = \{ \textsf{sr\_enc} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, \textsf{sr\_dec} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg} \} \text{ and} \\ 
 E = \{ \textsf{sr\_dec}(\textsf{sr\_enc}(m, k, \textit{IV}), k) = m \}. 
 \end{gather*}
 The protocol is computationally insecure, as an initialization vector should never be reused; in this protocol, however, $\textit{IV}$ is used in both the second and third message. 
@@ -356,9 +357,9 @@ However, in the symbolic model, there is no attack, as the attacker needs knowle
 
 \subsection{Symbolic model attacks}\label{sec:sym-attacks} Despite its limitations, the symbolic model can still find interesting attacks in practice. A famous example is the attack found on the Needham-Schroeder public key authentication protocol \cite{ns_attack}, which was discovered using cryptographic verification tools 17 years after the protocol was originally published \cite{ns_attack}. It uses asymmetric key cryptography, pairing, and projection, modeled by 
 \begin{gather*}
-\Sigma = \{ (\textsf{a\_enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}), (\textsf{a\_dec}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}), (\textsf{pk}, \mathit{msg} \rightarrow \mathit{msg}),
-\\ (\langle ., . \rangle, \mathit{msg} \rightarrow \mathit{msg}), 
-(\pi_1, \mathit{msg} \rightarrow \mathit{msg}), (\pi_2,  \mathit{msg} \rightarrow \mathit{msg}) \} \text{ and} \\
+\Sigma = \{ \textsf{a\_enc} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, \textsf{a\_dec} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, \textsf{pk} :: \mathit{msg} \rightarrow \mathit{msg},\,
+\\ \langle ., . \rangle :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\,
+\pi_1 :: \mathit{msg} \rightarrow \mathit{msg},\, \pi_2 :: \mathit{msg} \rightarrow \mathit{msg} \} \text{ and} \\
 E = \{ \textsf{a\_dec}(\textsf{a\_enc}(m, \textsf{pk}(sk)), sk) = m, \pi_1(\langle t_1, t_2 \rangle) = t_1, \pi_2(\langle t_1, t_2 \rangle) = t_2 \}.
 \end{gather*}
 The protocol is presented in Figure \ref{fig:ns-original}. 
@@ -492,10 +493,10 @@ Finally, a \textit{trace} of a protocol $R$ is a sequence of states $S_0, \dots,
 
 \textbf{Example protocol formalization.} We will formalize the (insecure) Needham Schroeder protocol from Figure \ref{fig:ns-original}, as well as the attack trace. Consider 
 \begin{gather*}
-\Sigma = \{ (\mathsf{a\_enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}), (\mathsf{a\_dec}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}), (\mathsf{pk}, \mathit{msg} \rightarrow \mathit{msg}), \\ (\langle ., . \rangle, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}), 
-(\pi_1, \mathit{msg} \rightarrow \mathit{msg}), (\pi_2, \mathit{msg} \rightarrow \mathit{msg})  \}, \\
-E = \{ \mathsf{a\_dec}(\mathsf{a\_enc}(m, \mathsf{pk}(k)), k) = k, \pi_1(\langle t_1, t_2 \rangle) = t_1, \pi_2(\langle t_1, t_2 \rangle) = t_2 \}, \text{ and } \\ \Sigma_{\textsc{Fact}} = \{ (\mathsf{In}, \mathit{msg}), (\mathsf{Out}, \mathit{msg}), (\mathsf{Fr}, \mathit{fr}), (\mathsf{K}, \mathit{msg}), (\mathsf{Pk}, \mathit{msg} \times \mathit{msg}), (\mathsf{Ltk}, \mathit{msg} \times \mathit{msg}), \\
-(\mathsf{StA1}, \mathit{msg} \times \mathit{msg} \times \mathit{msg}), (\mathsf{StB1}, \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg}), (\mathsf{StA2}, \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg}) \}.
+\Sigma = \{ \mathsf{a\_enc} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, \mathsf{a\_dec} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, \mathsf{pk} :: \mathit{msg} \rightarrow \mathit{msg},\, \\ \langle ., . \rangle :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, 
+\pi_1 :: \mathit{msg} \rightarrow \mathit{msg},\, \pi_2 :: \mathit{msg} \rightarrow \mathit{msg}  \}, \\
+E = \{ \mathsf{a\_dec}(\mathsf{a\_enc}(m, \mathsf{pk}(k)), k) = k, \pi_1(\langle t_1, t_2 \rangle) = t_1, \pi_2(\langle t_1, t_2 \rangle) = t_2 \}, \text{ and } \\ \Sigma_{\textsc{Fact}} = \{ \mathsf{In} :: \mathit{msg},\, \mathsf{Out} :: \mathit{msg},\, \mathsf{Fr} :: \mathit{fr},\, \mathsf{K} :: \mathit{msg},\, \mathsf{Pk} :: \mathit{msg} \times \mathit{msg},\, \mathsf{Ltk} :: \mathit{msg} \times \mathit{msg},\, \\
+\mathsf{StA1} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg},\, \mathsf{StB1} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg},\, \mathsf{StA2} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg} \}.
 \end{gather*}
 The protocol is encoded as a set of rewrite rules $R = \{ \mathsf{Register}, A_1, B_1, A_2, B_2 \}$, where the rewrite rules are defined as in Figure \ref{fig:ns-rules}.
 \begin{figure}[t]
@@ -949,7 +950,7 @@ We run the algorithm as follows.
 
 \textbf{Tamarin's property specification language.}
 Tamarin's property specification logic is a variant of first-order logic, where sorts have fixed domains and formulas are interpreted over valuations and multiset rewriting traces. 
-We introduce a new sort $\mathit{tmp}$ for temporal variables, and we fix a domain for each sort: for \textit{msg} it is $\mathcal{T}(\Sigma, \mathcal{N})$; for \textit{fr} and \textit{pub} it is $\mathcal{N}$; for \textit{tmp} it is $\mathbb{N}$. A function $\theta :: V \rightarrow \mathbb{N} \cup \mathcal{T}(\Sigma, \mathcal{N})$ is a \emph{valuation} if it respects sorts, and we overload notation and allow $\theta(t)$ to represent the application of the homomorphic extension of $\theta$ to term $t$ (and resp., fact $f$). The syntax is captured in the following grammar; each $v$ refers to a variable, each $t$ a term, and each $f$ an action fact.
+We introduce a new sort $\mathit{tmp}$ for temporal variables, and we fix a domain for each sort: for \textit{msg} it is $\mathcal{T}(\Sigma, \mathcal{N})$; for \textit{fr} and \textit{pub} it is $\mathcal{N}$; for \textit{tmp} it is $\mathbb{N}$. A function $\theta : V \rightarrow \mathbb{N} \cup \mathcal{T}(\Sigma, \mathcal{N})$ is a \emph{valuation} if it respects sorts, and we overload notation and allow $\theta(t)$ to represent the application of the homomorphic extension of $\theta$ to term $t$ (and resp., fact $f$). The syntax is captured in the following grammar; each $v$ refers to a variable, each $t$ a term, and each $f$ an action fact.
 
 $
 \begin{array}{cl}
@@ -1371,11 +1372,11 @@ In general, the strong typing assumption is not proof sound---a proof relying on
 \textbf{Typing systems.} A \textit{typing system} is a pair $(T, \delta)$ such that $T$ is a set of types and $\delta$ is a mapping from $\mathcal{T}(\Sigma_c, D)$ to $T$. A \textit{well-typed substitution} $\sigma$ preserves types---that is, $\delta(v) = \delta(v\sigma)$ for all $v \in V$. We call a typing system \emph{well-formed} if $(1)$ well-typed substitutions preserve types for every term $t$, i.e., $\delta(t) = \delta(t\sigma)$, and $(2)$ if $\delta(t) = \delta(t')$, then $mgu(t, t')$ is well-typed (for all terms $t$, $t'$). A protocol trace is called \emph{well-typed} if all the active substitutions constitute a well-typed substitution.
 
 \textbf{Example typing system.} 
-Consider an example typing system that captures term structure with a given set of atomic types $T_{\mathsf{atomic}} \subseteq T$. For example, we want the type of $\mathsf{f}(a, \mathsf{g}(b, c))$ to be $\mathsf{f}(\tau_a, \mathsf{g}(\tau_b, \tau_c))$, where the $\tau_i$s are not necessarily distinct and each $\tau_i$ represents the atomic type of data item $i$. We define $\delta$ as follows: 
+Consider an example typing system that captures term structure with a given set of atomic types $T_{\mathsf{atomic}} \subseteq T$. For example, we want the type of $\mathsf{f}(a, \mathsf{g}(b, c))$ to be $\mathsf{f}_\tau(\tau_a, \mathsf{g}_\tau(\tau_b, \tau_c))$, where the $\tau_i$s are not necessarily distinct and each $\tau_i$ represents the atomic type of data item $i$. Further, we use $\mathsf{f}_\tau$ to denote the type constructor associated with constructor \textsf{f}. We define $\delta$ as follows: 
 \[
 \delta(t) =
 \begin{cases}
-\mathsf{f}(\delta(t_1), \dots, \delta(t_n))
+\mathsf{f}_\tau(\delta(t_1), \dots, \delta(t_n))
   & \textsf{if } t = \mathsf{f}(t_1, \dots, t_n), \\[4pt]
 \text{some }\tau \in T_{\mathsf{atomic}} 
   & \textsf{if } t \text{ is some } v \in V.
