@@ -38,6 +38,10 @@ In an ideal situation, one would like to define a security protocol, propose a s
 \note{Should discuss results of various semantics more (soundness, completeness, 
 relationships, and so on)}
 
+\note{Introduce double colon syntax, and don't use bare tuples/pairs}
+
+\note{Cut to 30 pages}
+
 Security protocols are hard to get right. Examples abound of the discovery of inherent, design-level issues in security protocols only \textit{after} said protocols were designed, implemented, and in use \cite{lteinspector,5greasoner,ns_attack}. 
 In this document, we argue that approaches based on \emph{formal methods} can help address these issues by aiding in the detection of security flaws at the project design level.
 An often-cited example is the infamous Needham-Schroeder mutual authentication protocol \cite{needham_schroeder}, which we discuss in Section \ref{sec:sym-attacks}; its flaw was only discovered 17 years after the protocol was proposed with the help of formal tools \cite{ns_attack}.
@@ -278,13 +282,11 @@ More generally, stating a precise connection between the symbolic and computatio
 
 \begin{figure}[t]
   \centering
-  \[
-  \begin{array}{cc}
-    A \rightarrow B : & m \\[2pt]
-    A \rightarrow B : & \textsf{sr\_enc}(m, k, \textit{IV}) \\  
-    A \rightarrow B : & \textsf{sr\_enc}(s, k, \textit{IV})
-  \end{array}
-  \]
+  \includegraphics{figs/protocol_iv.pdf}
+  \begin{flushleft}\footnotesize
+  $\mathsf{sr\_enc}$ denotes symmetric, randomized encryption. 
+    \emph{IV} denotes an \emph{initialization vector}, providing a source of randomness for the encryption.
+  \end{flushleft}
   \caption{Protocol with IV reuse.}
   \label{fig:sr-enc-reuse}
 \end{figure}
@@ -361,13 +363,7 @@ The protocol is presented in Figure \ref{fig:ns-original}.
 
 \begin{figure}[t]
   \centering
-  \[
-  \begin{array}{cccl}
-    (a) & A \rightarrow B :  & \textsf{a\_enc}(\langle A, N_A \rangle, \textsf{Pk}(sk_B)) & A\text{ initiates and issues a challenge}\\
-    (b) & B \rightarrow A :  & \textsf{a\_enc}(\langle N_A, N_B \rangle, \textsf{Pk}(sk_A))  & B\text{ responds and issues their own challenge}\\ 
-    (c) & A \rightarrow B :  & \textsf{a\_enc}(N_B, \textsf{Pk}(sk_B))  & A\text{ responds to }B's\text{ challenge}
-  \end{array}
-  \]
+  \includegraphics{figs/trace_2.pdf}
   \begin{flushleft}
 {\footnotesize
 $A$ and $B$ denote protocol roles. $\mathsf{a\_enc}(m, k)$ denotes asymmetric encryption with message $m$ and key $k$, and $\mathsf{Pk}(\mathit{sk})$ denotes the public key derived from secret key \emph{sk}.
@@ -381,29 +377,13 @@ The protocol attempts to mutually authenticate $A$ and $B$. Intuitively, from $A
 
 \begin{figure}[t]
   \centering
-  \[
-  \begin{aligned}
-    (1)\;& A \rightarrow I :\;& \textsf{a\_enc}(\langle A, N_A \rangle, \textsf{Pk}(sk_I))
-      &\quad& A \text{ starts a session with } I \\
-    (2)\;& I \rightarrow B :\;& \textsf{a\_enc}(\langle A, N_A \rangle, \textsf{Pk}(sk_B))
-      && I \text{ starts a session with } B,\ \text{impersonating } A \\
-    (3)\;& B \rightarrow I :\;& \textsf{a\_enc}(\langle N_A, N_B \rangle, \textsf{Pk}(sk_A))
-      && B \text{ authenticates to } I\ (\text{impersonating } A) \\
-    (4)\;& I \rightarrow A :\;& \textsf{a\_enc}(\langle N_A, N_B \rangle, \textsf{Pk}(sk_A))
-      && I \text{ authenticates to } A \\
-    (5)\;& A \rightarrow I :\;& \textsf{a\_enc}(N_B, \textsf{Pk}(sk_I))
-      && A \text{ authenticates to } I \\
-    (6)\;& I \rightarrow B :\;& \textsf{a\_enc}(N_B, \textsf{Pk}(sk_B))
-      && I \text{ authenticates to } B,\ \text{impersonating } A
-  \end{aligned}
-  \]
+  \includegraphics{figs/trace_1.pdf}
     \begin{flushleft}
 {\footnotesize
-$I$ denotes the intruder. $A$ and $B$ denote protocol roles. $\mathsf{a\_enc}(m, k)$ denotes asymmetric encryption with message $m$ and key $k$, and $\mathsf{Pk}(\mathit{sk})$ denotes the public key derived from secret key \emph{sk}.
+$I$ denotes the intruder. $A$ and $B$ denote principals. $\mathsf{a\_enc}(m, k)$ denotes asymmetric encryption with message $m$ and key $k$, and $\mathsf{Pk}(\mathit{sk})$ denotes the public key derived from secret key \emph{sk}.
 }
 \end{flushleft}
-  \caption{Attack on the original Needham--Schroeder public-key protocol (in Figure \ref{fig:ns-original}). 
-  \note{Sequence diagram draw.io, both benign and attack}}
+  \caption{Attack on the original Needham--Schroeder public-key protocol (in Figure \ref{fig:ns-original})}. 
   \label{fig:ns-lowe-attack}
 \end{figure}
 
@@ -420,6 +400,9 @@ Notice that describing protocols as sequences of rules $A \rightarrow B : M$ (as
     A \rightarrow B : \mathsf{enc}(\langle n_1, n_2\rangle, k) \\ 
     B \rightarrow A : n_1
 \end{gather*}
+
+\note{draw.io}
+
  It is left implicit that in the second step, $B$ should decrypt the incoming message, retrieve the first element of the pair $(n_1)$, and send it back to $A$. But what happens if decryption or projection fails? It is not specified.
 
 There are four desirable properties when choosing a formalism to encode protocols and protocol traces in the symbolic model. 
@@ -519,6 +502,12 @@ The protocol is encoded as a set of rewrite rules $R = \{ \mathsf{Register}, A_1
       \mathsf{Pk}(A^{\textsc{Pub}}, \mathsf{pk}(sk^{\textsc{Fr}})),
       \mathsf{Out}(\langle A^{\textsc{Pub}}, \mathsf{pk}(sk^{\textsc{Fr}}) \rangle) \},
 \\[0.5em]
+\mathsf{Reveal}
+  &\triangleq \{ \mathsf{!Ltk}(A^{\textsc{Pub}}, sk^{\textsc{Fr}}) \}
+   \xrightarrow{\{\}} \\ 
+&\hspace{14pt}
+   \{ \mathsf{Out}(sk^{\textsc{Fr}}) \rangle) \},
+\\[0.5em]
 A_1
 &\triangleq \{ \mathsf{Fr}(n_A^{\textsc{Fr}}),
       !\mathsf{Pk}(A^{\textsc{Pub}}, pk_A^{\textsc{Pub}}),
@@ -591,6 +580,13 @@ Each triple $l \xrightarrow{a} r$ denotes a multiset rewriting rule from $l$ to 
 \end{figure}
 
 The first rule, \textsf{Register}, represents the registration of an asymmetric key pair to identity $A^\textsc{Pub}$. Note that $A^\textsc{pub}$, along with the other identifiers in the rule descriptions, are \textit{variables} and can be instantiated with different values in different rule instances. Hence, the protocol description can capture an unbounded number of sessions and principals. The \textsf{Ltk} (short for ``long-term key") stores $A^\textsc{Pub}$'s (fresh) secret key $sk^\textsc{Fr}$, while $\textsf{Pk}$ stores the public key derived from $sk^\textsc{Fr}$. Finally, the identity/public key mapping are broadcast along the network channel, as they are public information that should be known by the adversary for realistic modeling.
+
+The second rule, \textsf{Reveal}, leaks a secret key on the network channel. This models \emph{principal compromise}, 
+a situation where one or more of participants is corrupted and controlled by the adversary. 
+A rule for revealing keys tests the \emph{compromise resilience} of a protocol---one can test the security 
+of a protocol with limitations imposed on the \textsf{Reveal} rule (unrestricted use trivially compromises security).
+In the attack on the Needham-Schroeder protocol, \textsf{Reveal} is needed to give intruder $I$ knowledge of his own secret
+key; however, the attack does not rely on revealing the secret key of honest role $A$ or $B$.
 
 Rules $A_1$, $B_1$, and $A_2$ closely mirror the rules in Figure \ref{fig:ns-original}; however, they explicitly reference state to retrieve the corresponding keys. Additionally, state fact symbols \textsf{StA1}, \textsf{StB1}, and \textsf{StA2} are used to ensure that protocol traces follow \textit{ordering constraints} (i.e., that protocol rule $i$ is executed before protocol rule $i+1$ in a given session), as well as to store information about the current session.
 
@@ -867,7 +863,7 @@ $$\mathsf{traces}(\mathcal{K}) = \{\mathsf{tr} \mid \mathcal{K} \xrightarrow{\pi
 
 We employ this more concrete notion of applied $\pi$-calculus traces later in Section \ref{sec:challenges}.
 
-\textbf{Relationship between the semantics.} Abadi and Fournet \cite{apc} extend the labeled small-step semantics to the entire applied $\pi$-calculus, define a notion of equivalence for the labeled small-step semantics called \emph{labeled bisimilarity} denoted $\equiv_l$, and they prove that observational equivalence is equal to labeled bisimilarity (i.e., $\equiv \; = \; \equiv_l$).
+\textbf{Relationship between the semantics.} Abadi and Fournet \cite{apc} extend the labeled small-step semantics to the entire applied $\pi$-calculus, define a notion of equivalence for the labeled small-step semantics called \emph{labeled bisimilarity} denoted $\equiv_l$, and prove that observational equivalence is equal to labeled bisimilarity (i.e., $\equiv \; = \; \equiv_l$).
 
 
 % The notion of a protocol execution in the process calculus is not as straightforward as in the multiset-rewriting world. In \cite{apc}, Abadi and Fournet define an alternative, \textit{labeled} operational semantics for a process computing in an arbitrary context. Then, they define a separate notion of equivalence (called \textit{labeled bisimilarity}) for this semantics, and in a seminal result they prove that labeled bisimilarity is equal to observational equivalence (i.e., the relations have exactly the same elements) \cite{apc}. From the labeled semantics, one can extract a trace by collecting the labels of the execution steps, similarly to in the multiset rewriting setting. 
@@ -1334,6 +1330,7 @@ A \rightarrow B : \mathsf{a\_enc}(\langle A, N_a\rangle, \mathsf{pk}(B)) & (1) &
 B \rightarrow A : \mathsf{a\_enc}(\langle N_a, \langle N_b, B \rangle \rangle, \mathsf{pk}(A)) & (2) & B\text{ responds and issues their own challenge}\\[4pt]
 A \rightarrow B : \mathsf{a\_enc}(N_b, \mathsf{pk}(B)) & (3)& A\text{ responds to }B\text{'s challenge}
 \end{array}$
+\note{draw.io}
 
 The only difference between this protocol and Figure \ref{fig:ns-original} is that in message $(2)$, we substituted $\langle N_a, \langle N_b, B \rangle \rangle$ for $\langle N_a, N_b \rangle$. Further, recall that we argued that using $\langle N_a, N_b, B \rangle$ (a triple, without nesting pairs) would make the protocol secure. While it is hard to believe at first glance, using the nested pairs $\langle N_a, \langle N_b, B \rangle \rangle$ rather than the triple is actually \textit{still insecure} in the symbolic model due to a type flaw attack.
 
@@ -1354,6 +1351,8 @@ P_2 \rightarrow I : \mathsf{a\_enc}(\langle \langle N_{P_1}, P_1 \rangle, \langl
 I \rightarrow P_1 : \mathsf{a\_enc}(N_{P_1}, \mathsf{pk}(P_1)) & 
 (7) \;I\textnormal{ has successfully impersonated }P_2
 \end{array}$
+
+\note{Use draw.io}
 
 The ``type confusion aspect" of the attack is exhibited in step $(6)$ of the execution---$P_2$ was expecting a message of format $(1)$ (from above), but instead got one of format $(2)$. The attack works because $P_1$ does not destruct the pair in the protocol---if so, the incoming message would not unify with $P_1$'s expected message format. This also explains why using the triple $\langle N_a, N_b, B \rangle$ is not vulnerable to the same attack.
 
@@ -1415,7 +1414,7 @@ In light of previous work on symbolic model verification, we now discuss some op
     There is prior work that investigates compositional reasoning in the context of separation logic \cite{generic_methodology}; however, it suffers from the similar downsides to F7 and DY$^*$.
     While automatically inferring decompositions is difficult in general, 
     one might intuit that it could be feasible in the context of security protocols---lots of protocols have ``similar" shapes with honest steps and an adversaries with similar sets of capabilities. 
-    \item[\textsf{RQ4.}] \emph{How to reason about the composition of cryptographic protocols?} Consider two protocols $P_1$ and $P_2$, and assume you have proofs that $P_1$ and $P_2$ both (independently) satisfy security property $\varphi$ (i.e., $P_1 \models \varphi$ and $P_2 \models \varphi$). Then what can you say about the parallel composition of $P_1$ and $P_2$? One cannot lift the results of the separate analyses to the composed case in any straightforward way due to adversarial influence---the adversary may use information learned from some run of $P_1$ to adversely influence a run of $P_2$.
+    \item[\textsf{RQ4.}] \emph{How to reason about the composition of cryptographic protocols?} Consider two protocols $P_1$ and $P_2$, and assume you have proofs that $P_1$ and $P_2$ both (independently) satisfy security property $\varphi$ (i.e., $P_1 \models \varphi$ and $P_2 \models \varphi$). Then what can you say about the asynchronous parallel composition of $P_1$ and $P_2$? One cannot lift the results of the separate analyses to the composed case in any straightforward way due to adversarial influence---the adversary may use information learned from some run of $P_1$ to adversely influence a run of $P_2$.
     \item[\textsf{RQ5.}] \emph{How to recover useful interactivity when automated techniques fail to terminate or produce spurious violations?} 
     A weakness of all tools in Table \ref{tab:tools} is that when verification fails (through nontermination or spurious violations), 
     there is no effective means of isolating the problem. 
