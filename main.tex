@@ -42,6 +42,8 @@ relationships, and so on)}
 
 \note{Cut to 30 pages}
 
+\note{Make sure all figs that are supposed to be in main text are in the main text}
+
 Security protocols are hard to get right. Examples abound of the discovery of inherent, design-level issues in security protocols only \textit{after} said protocols were designed, implemented, and in use \cite{lteinspector,5greasoner,ns_attack}. 
 In this document, we argue that approaches based on \emph{formal methods} can help address these issues by aiding in the detection of security flaws at the project design level.
 An often-cited example is the infamous Needham-Schroeder mutual authentication protocol \cite{needham_schroeder}, which we discuss in Section \ref{sec:sym-attacks}; its flaw was only discovered 17 years after the protocol was proposed with the help of formal tools \cite{ns_attack}.
@@ -257,7 +259,7 @@ Expressions above each bar are premises, and statements below are conclusions. $
 }
 \end{flushleft}
   
-  \caption{Inference rules defining symbolic adversary knowledge $\mathcal{K}$.}
+  \caption{Inference rules defining symbolic adversary knowledge $\mathcal{K}$}
   
   \label{fig:adv-knowledge}
 \end{figure}
@@ -287,7 +289,7 @@ More generally, stating a precise connection between the symbolic and computatio
   $\mathsf{sr\_enc}$ denotes symmetric, randomized encryption. 
     \emph{IV} denotes an \emph{initialization vector}, providing a source of randomness for the encryption.
   \end{flushleft}
-  \caption{Protocol with IV reuse.}
+  \caption{Protocol with IV reuse}
   \label{fig:sr-enc-reuse}
 \end{figure}
 
@@ -369,7 +371,7 @@ The protocol is presented in Figure \ref{fig:ns-original}.
 $A$ and $B$ denote protocol roles. $\mathsf{a\_enc}(m, k)$ denotes asymmetric encryption with message $m$ and key $k$, and $\mathsf{Pk}(\mathit{sk})$ denotes the public key derived from secret key \emph{sk}.
 }
 \end{flushleft}
-  \caption{The original Needham--Schroeder public-key protocol.}
+  \caption{The original Needham--Schroeder public-key protocol}
   \label{fig:ns-original}
 \end{figure}
 
@@ -383,7 +385,7 @@ The protocol attempts to mutually authenticate $A$ and $B$. Intuitively, from $A
 $I$ denotes the intruder. $A$ and $B$ denote principals. $\mathsf{a\_enc}(m, k)$ denotes asymmetric encryption with message $m$ and key $k$, and $\mathsf{Pk}(\mathit{sk})$ denotes the public key derived from secret key \emph{sk}.
 }
 \end{flushleft}
-  \caption{Attack on the original Needham--Schroeder public-key protocol (in Figure \ref{fig:ns-original})}. 
+  \caption{Attack on the original Needham--Schroeder public-key protocol (in Figure \ref{fig:ns-original})}
   \label{fig:ns-lowe-attack}
 \end{figure}
 
@@ -395,13 +397,18 @@ The Needham-Schroeder protocol is a three-step protocol, and yet it requires car
 
 \section{Formalizing Protocols in the Symbolic Model}\label{sec:formalizing-protocols}
 We aim to mechanize reasoning about cryptographic protocols. To do this, we need to rigorously formalize properties, protocols, and adversarial influence.
-Notice that describing protocols as sequences of rules $A \rightarrow B : M$ (as we have done so far) is insufficient for precise reasoning. For example, the encoding leaves the notion of \textit{public knowledge} implicit (e.g., identities and public keys are initially public). Further, it does not describe the \textit{inputs} and \textit{internal steps} of honest participants. Consider a small protocol
-\begin{gather*}
-    A \rightarrow B : \mathsf{enc}(\langle n_1, n_2\rangle, k) \\ 
-    B \rightarrow A : n_1
-\end{gather*}
+Notice that describing protocols as sequences of rules $A \rightarrow B : M$ (as we have done so far) is insufficient for precise reasoning. For example, the encoding leaves the notion of \textit{public knowledge} implicit (e.g., identities and public keys are initially public). Further, it does not describe the \textit{inputs} and \textit{internal steps} of honest participants. Consider a small protocol as in Figure \ref{fig:protocol-small}.
 
-\note{draw.io}
+\begin{figure}[h!]
+  \centering
+  \includegraphics{figs/protocol_small.pdf}
+    \begin{flushleft}
+      {\footnotesize Standard security protocol notation leaves some paths unspecified---what happens if 
+      B cannot retrieve $n_1$?}
+\end{flushleft}
+  \caption{Ambiguous toy protocol}
+  \label{fig:protocol-small}
+\end{figure}
 
  It is left implicit that in the second step, $B$ should decrypt the incoming message, retrieve the first element of the pair $(n_1)$, and send it back to $A$. But what happens if decryption or projection fails? It is not specified.
 
@@ -465,7 +472,7 @@ Each triple $l \xrightarrow{a} r$ denotes a multiset rewriting rule from $l$ to 
 }
   \end{flushleft}
   
-  \caption{Adversary rules for multiset rewriting formalization.}
+  \caption{Adversary rules for multiset rewriting formalization}
   \label{fig:adv-rules}
 \end{figure}
 
@@ -648,7 +655,7 @@ $\mathsf{Ltk}(I,sk_I),
    The left column outlines a sequence of ground instantiations of multiset rewriting rules denoting a trace prefix, and the right column outlines the corresponding updates to the state. Each rewrite rule consumes facts from the state (on the left-hand of the rule) and introduces new facts to the state (on the right-hand side of the rule).
     }
 \end{flushleft}
-  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace prefix.}
+  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace prefix}
   \label{fig:ns-lowe-attack-ms-prefix}
 \end{figure}
 
@@ -1323,14 +1330,18 @@ In this section, we outline efforts to ease reasoning about security protocol ve
 
 One class of attacks, called \emph{type flaw} or \emph{type confusion attacks}, intuitively refers to attacks involving an honest participant (mis)parsing an incoming protocol message $m_1$ as a different protocol message $m_2$. While not standard terminology, one might find it more intuitive to call them \emph{shape confusion}, \emph{constructor confusion}, or simply \emph{misparsing} attacks.
 
-First, we consider an example. Consider the following mutual authentication protocol, which is a variant of the Needham-Schroeder protocol in Figure \ref{fig:ns-original}:
+First, we consider an example. Consider the following mutual authentication protocol (Figure \ref{fig:ns-type-confusion}), which is a variant of the Needham-Schroeder protocol in Figure \ref{fig:ns-original}:
 
-$\begin{array}{lll}
-A \rightarrow B : \mathsf{a\_enc}(\langle A, N_a\rangle, \mathsf{pk}(B)) & (1) & A\text{ initiates and issues a challenge} \\[4pt]
-B \rightarrow A : \mathsf{a\_enc}(\langle N_a, \langle N_b, B \rangle \rangle, \mathsf{pk}(A)) & (2) & B\text{ responds and issues their own challenge}\\[4pt]
-A \rightarrow B : \mathsf{a\_enc}(N_b, \mathsf{pk}(B)) & (3)& A\text{ responds to }B\text{'s challenge}
-\end{array}$
-\note{draw.io}
+\begin{figure}[h!]
+  \centering
+  \includegraphics{figs/ns_type_confusion.pdf}
+    \begin{flushleft}\footnotesize 
+      Update to the original (flawed) Needham--Schroeder public-key protocol (Figure \ref{fig:ns-original}) 
+      by replacing $\langle N_a, N_b \rangle$ with $\langle N_a, N_b, B \rangle$.
+\end{flushleft}
+  \caption{Update to Needham--Schroeder public-key protocol (in Figure \ref{fig:ns-original})} 
+  \label{fig:ns-type-confusion}
+\end{figure}
 
 The only difference between this protocol and Figure \ref{fig:ns-original} is that in message $(2)$, we substituted $\langle N_a, \langle N_b, B \rangle \rangle$ for $\langle N_a, N_b \rangle$. Further, recall that we argued that using $\langle N_a, N_b, B \rangle$ (a triple, without nesting pairs) would make the protocol secure. While it is hard to believe at first glance, using the nested pairs $\langle N_a, \langle N_b, B \rangle \rangle$ rather than the triple is actually \textit{still insecure} in the symbolic model due to a type flaw attack.
 
@@ -1542,7 +1553,7 @@ Symbolic model cryptographic protocol verification has developed into a ``killer
     }
 \end{flushleft}
 
-  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace.}
+  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace}
   \label{fig:ns-lowe-attack-ms-3}
 \end{figure}
 
@@ -1699,7 +1710,7 @@ Symbolic model cryptographic protocol verification has developed into a ``killer
     $P_i$ (resp., $L_i$) denotes the persistent (resp., linear) state at step $i$
     }
 \end{flushleft}
-  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace, part 2.}
+  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace, part 2}
   \label{fig:ns-lowe-attack-ms-4}
 \end{figure}
 
