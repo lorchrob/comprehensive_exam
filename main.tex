@@ -35,8 +35,6 @@ Even worse, security concerns are often eschewed in favor of financial considera
 In an ideal situation, one would like to define a security protocol, propose a security property, and have some automated tool either prove the property correct or return a concrete attack trace, all with minimal human interaction. In this document, we describe various attempts to achieve this goal, while addressing a myriad of related questions along the way.
 
 \section{Introduction}
-\note{Should discuss results of various semantics more (soundness, completeness, 
-relationships, and so on)}
 
 \note{Cut to 30 pages? Ask about this}
 
@@ -816,7 +814,7 @@ While we did not explicitly encode attacker rules as in Figure \ref{fig:adv-rule
 \textbf{Protocol trace.} 
 From the above semantics, one could define a protocol trace in terms of a sequence of small steps according to $\rightarrow$. However, this would only capture \textit{honest traces}, that is, without adversarial influence. Adversarial influence is only present if we consider an arbitrary context, as in the definition of observational equivalence (see point $(iii)$ above). However, universally quantifying over all possible contexts (as in $(iii)$) complicates reasoning, and hence a small-step semantics that inherently captures the interaction of a process with an arbitrary environment (along with its own notion of equivalence) is desirable. In fact, this is why observational equivalence is not mentioned among the equivalence properties in Section \ref{sec:security-properties}. To capture protocol traces that ``bake in" adversarial influence, we need to consider an alternative small-step semantics. 
 
-\subsubsection{Alternative small-step semantics}
+\subsubsection{Alternative small-step semantics}\label{sec:alternative}
 In the \emph{labeled operational semantics}, we define a relation over \emph{configurations} that inherently captures an arbitrary context (i.e., adversarial influence).
 
 A \emph{configuration} is a three-tuple $(\mathcal{P}, \phi, \sigma)$ where $\mathcal{P}$ is a multiset of processes and $\phi$ and $\sigma$ are substitutions. Intuitively, $\phi$ represents the adversary's knowledge, and $\sigma$ stores the terms referenced by the variables in honest processes. We define the relation $\xrightarrow{\alpha}$ with the following rules; we rely on a set of \emph{attacker variables} $\mathcal{W} \subset V$ used to store terms learned by the attacker and a set of \emph{attacker names} $\mathcal{N}_{\mathcal{W}} \subset \mathcal{N}$ to represent public names and fresh nonces sampled by the adversary. Here, \emph{messages} denote terms in $\mathcal{T}(\Sigma_c, \mathcal{N})$ (ground terms), and \emph{recipes} denote terms in $\mathcal{T}(\Sigma_c, \mathcal{W} \cup \mathcal{N}_{\mathcal{W}})$ (adversary terms).
@@ -885,7 +883,12 @@ Another notable approach is to achieve security through typing---that is, design
 
 
 \section{Mechanized reasoning in the Symbolic Model}\label{sec:mechanized-reasoning}
-We discuss a naive approach to the mechanization of reasoning, and why it fails. Then, we give a general overview of Tamarin and ProVerif's approach to mechanized reasoning. While we outline general strategies, gory details are outside the scope of this document.
+We discuss a naive approach to the mechanization of reasoning, and why it fails. Then, we give a general overview of Tamarin and ProVerif's approach to mechanized reasoning. 
+Near the end of the section, we discuss formal properties such as soundness and completeness 
+of Tamarin and ProVerif, as well as the relationship between Tamarin's formal foundations,
+ProVerif's formal foundations, and the original Dolev-Yao threat model.
+While we outline general strategies, gory details 
+of the search algorithms are outside the scope of this document.
 
 \subsection{Naive approach} A general-purpose model checker takes a system model $M$ and a property $\varphi$ and attempts to prove that $\varphi$ is valid in $M$, i.e., $M \models \varphi$. Many modern model checkers can reason about infinite-state systems \cite{nuxmv,kind2}, and hence one would not need to impose a bound on term side, $D$, sessions, or principals as in \cite{satmc}. However, there is no straightforward way to use general-purpose model checkers for security protocol proofs: If cryptographic constructs (like encryption and decryption) are ignored (e.g., replacing encrypted messages with plaintexts), then spurious counterexamples are raised; if one attempts to incorporate cryptographic constructs, then one must incorporate adversarial knowledge and capabilities into the system model and/or security property. The former approach is still possible, but it relies on abstraction-refinement techniques that diminish automation potential or miss attacks \cite{lteinspector,5greasoner,uptane_analysis}. The latter approach is difficult, error-prone, and often computationally infeasible without dedicated algorithms. Because of this, dedicated approaches have been developed for cryptographic protocol verification. Today, the most popular approaches are based on developing algorithms for mechanizing the reasoning in the multiset rewriting and applied $\pi$-calculus formalisms, as discussed in Sections \ref{sec:msr-approaches} and \ref{sec:apc-approaches}.
 
@@ -1081,13 +1084,6 @@ $
 \end{array}
 $
 
-% {Below, commented out, is naive approach for checking correspondences that I might want to understand better. Not sure if the last step works (I think it does in the Herbrand world)}
-% A naive approach for checking the whether the correspondence $F_1 \land \dots \land F_n \Rightarrow \varphi$ holds in the input model proceeds as follows:
-% \begin{enumerate}
-%     \item Perform saturation by resolution on the input clause set (with clauses for the protocol and adversary) along with $F_1 \land \dots \land F_n$ to produce clause set $C^\textsc{Sat}$.
-%     \item Convert $\varphi$ to a DNF representation, and call it $\varphi'$.
-%     \item Check if any of the cases of $\varphi'$ are derivable from $C^\textsc{Sat}$.
-% \end{enumerate}
 
 First, note that the translation from applied $\pi$-calculus to Horn clauses is not exact, so the derivability in ProVerif is over-approximate---for example, 
 if ProVerif derives 
@@ -1134,7 +1130,18 @@ ProVerif's semantics}
 Tamarin's constraint solving rules are \textit{attack sound} and \textit{proof sound} in the sense that every attack generated from Tamarin's constraint solving rules is a real protocol trace in Tamarin's semantics (i.e., in the symbolic model), and every property proven by Tamarin's constraint solving rules actually holds in Tamarin's semantics. 
 However, Tamarin is not \textit{attack complete} or \textit{proof complete} in the sense that Tamarin is not guaranteed to find attacks or proofs if they exist \cite{tamarin}.  Another way of phrasing Tamarin's soundness is that there are no spurious attacks (or false proofs), and hence the analysis is \textit{exact}.
 
-ProVerif is \textit{not} attack sound (in other words, it sometimes reports spurious attacks). However, it is proof sound. Like Tamarin, it is neither attack complete nor proof complete \cite{proverif}. 
+ProVerif's algorithm based on saturation by resolution is \textit{not} attack sound 
+(in other words, it sometimes reports spurious attacks). 
+Here, attack and proof soundness of the algorithm are with respect to a labeled small-step 
+semantics to capture the notion of protocol executions, 
+akin to the one presented in Section \ref{sec:alternative}.
+Additionally, \cite{} describes the formal semantics 
+of the derivability and correspondence properties 
+described above. While we do not discuss the property specification logic in detail, 
+the semantics align with one's intuitive understanding of typical secrecy and 
+authentication properties.
+On the other hand, ProVerif is proof sound. 
+Like Tamarin, it is neither attack complete nor proof complete \cite{proverif}. 
 
 ProVerif's unsoundness is not a bug. In fact, ProVerif can always detect (and report) unsoundness \textit{a posteriori} \cite{proverif_manual}, but it may not provide support to alleviate the problem. The following small (but contrived) protocol exhibits ProVerif's unsoundness:
 
@@ -1248,6 +1255,16 @@ To the best of my knowledge, there is no formal, theoretical result connecting T
 Dolev-Yao formalism \cite{dolev_yao}.
 However, one may argue that the Tamarin (resp., ProVerif) adversary intuitively exhibits ``the same" capabilities 
 as a Dolev-Yao adversary.
+Here, when I refer to ``ProVerif's adversary", I am referring to the adversarial capabilities 
+reflected in ProVerif's semantics, \emph{not} in the adversarial capabilities 
+reflected in ProVerif's search algorithm, which is not attack sound 
+(as discussed in Section \ref{sec:soundness-completeness}).
+
+In computational soundness proofs (e.g., \cite{}) and metatheoretic results in the literature 
+(e.g., the ones in Table \ref{tab:metatheorems}), 
+the authors typically use a $\pi$-calculus or multiset rewriting-based formalism
+and refer to it directly as the "Dolev-Yao model" without 
+explicitly tying back to the original encoding presented in \cite{dolev_yao}.
 
 \subsection{Overview of Implemented Tools}
 We present an overview of implemented symbolic model cryptographic protocol verifiers (CPVs) in Table \ref{tab:tools}. We can partition these CPVs into four main groups.
@@ -1302,9 +1319,9 @@ E_{AC} = \{ (x \oplus y) \oplus z = z \oplus (y \oplus z), x \oplus y = y \oplus
 Now, $E_{\oplus \setminus AC}$ is convergent and has the finite variant property \cite{tamarin_xor}. 
 Then, the procedure for unification modulo $E$ can proceed similarly to Algorithm \ref{}, with two updates.
 First, instead of computing variants under a purely convergent
-theory, we compute a complete set of $E_{\oplus\setminus AC},AC$-variants
+theory, we compute a complete set of $E_{\oplus\setminus AC}$-variants (modulo \emph{AC})
 of the equation $t_1 = t_2$ using a technique called folding variant narrowing
-modulo $AC$ \cite{folding_variant_narrowing} (details are outside the scope 
+modulo \emph{AC} \cite{folding_variant_narrowing} (details are outside the scope 
 of this report).
 Second, for each variant $(t' = s', \tau)$,
 we perform unification modulo $AC$ (rather than syntactic
