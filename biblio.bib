@@ -1,3 +1,77 @@
+@INPROCEEDINGS{comp_soundness2,
+author="Micciancio, Daniele and Warinschi, Bogdan",
+editor="Naor, Moni",
+title="Soundness of Formal Encryption in the Presence of Active Adversaries",
+booktitle="Theory of Cryptography",
+year="2004",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="133--151",
+isbn="978-3-540-24638-1"
+}
+
+@InProceedings{cobleigh1,
+author="Cobleigh, Jamieson M.
+and Giannakopoulou, Dimitra
+and P{\u{A}}s{\u{A}}reanu, Corina S.",
+editor="Garavel, Hubert
+and Hatcliff, John",
+title="Learning Assumptions for Compositional Verification",
+booktitle="Tools and Algorithms for the Construction and Analysis of Systems",
+year="2003",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="331--346",
+abstract="Compositional verification is a promising approach to addressing the state explosion problem associated with model checking. One compositional technique advocates proving properties of a system by checking properties of its components in an assume-guarantee style. However, the application of this technique is dificult because it involves non-trivial human input. This paper presents a novel framework for performing assume-guarantee reasoning in an incremental and fully automated fashion. To check a component against a property, our approach generates assumptions that the environment needs to satisfy for the property to hold. These assumptions are then discharged on the rest of the system. Assumptions are computed by a learning algorithm. They are initially approximate, but become gradually more precise by means of counterexamples obtained by model checking the component and its environment, alternately. This iterative process may at any stage conclude that the property is either true or false in the system. We have implemented our approach in the LTSA tool and applied it to a NASA system.",
+isbn="978-3-540-36577-8"
+}
+
+
+
+@inproceedings{cobleigh2,
+author = {Cobleigh, Jamieson M. and Avrunin, George S. and Clarke, Lori A.},
+title = {Breaking up is hard to do: an investigation of decomposition for assume-guarantee reasoning},
+year = {2006},
+isbn = {1595932631},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1146238.1146250},
+doi = {10.1145/1146238.1146250},
+abstract = {Finite-state verification techniques are often hampered by the stateexplosion problem. One proposed approach for addressing this problem is assume-guarantee reasoning. Using recent advances in assume-guarantee reasoning that automatically generate assumptions, we undertook a study to determine if assume-guarantee reasoning provides an advantage over monolithic verification. In this study, we considered all two-way decompositions for a set of systems and properties, using two different verifiers, FLAVERS and LTSA. By increasing the number of repeated tasks, we evaluated the decompositions as the systems were scaled. In only a few cases could assume-guarantee reasoning verify properties on larger systems than monolithic verification and, in these cases, assumeguarantee reasoning could only verify these properties on systems a few sizes larger than monolithic verification. This discouraging result, although preliminary, raises doubts about the usefulness of assume-guarantee reasoning.},
+booktitle = {Proceedings of the 2006 International Symposium on Software Testing and Analysis},
+pages = {97–108},
+numpages = {12},
+keywords = {assume-guarantee reasoning},
+location = {Portland, Maine, USA},
+series = {ISSTA '06}
+}
+
+@article{fvp_unification,
+title = {Variant Narrowing and Equational Unification},
+journal = {Electronic Notes in Theoretical Computer Science},
+volume = {238},
+number = {3},
+pages = {103-119},
+year = {2009},
+note = {Proceedings of the Seventh International Workshop on Rewriting Logic and its Applications (WRLA 2008)},
+issn = {1571-0661},
+doi = {https://doi.org/10.1016/j.entcs.2009.05.015},
+url = {https://www.sciencedirect.com/science/article/pii/S1571066109001376},
+author = {Santiago Escobar and José Meseguer and Ralf Sasse},
+keywords = {Equational unification, narrowing, finite variant property, symbolic reachability analysis, cryptographic protocol analysis},
+abstract = {Narrowing is a well-known complete procedure for equational E-unification when E can be decomposed as a union E=Δ⊎B with B a set of axioms for which a finitary unification algorithm exists, and Δ a set of confluent, terminating, and B-coherent rewrite rules. However, when B≠∅, effective narrowing strategies such as basic narrowing easily fail to be complete and cannot be used. This poses two challenges to narrowing-based equational unification: (i) finding effective narrowing strategies that are complete modulo B under mild assumptions on B, and (ii) finding sufficient conditions under which such narrowing strategies yield finitary E-unification algorithms. Inspired by Comon and Delaune's notion of E-variant for a term, we propose a new narrowing strategy called variant narrowing that has a search space potentially much smaller than full narrowing, is complete, and yields a finitary E-unification algorithm when E has the finite variant property. We also discuss applications to symbolic reachability analysis of concurrent systems specified as rewrite theories, and in particular to the formal analysis of cryptographic protocols modulo the algebraic properties of the underlying cryptographic functions.}
+}
+
+@article{proverif_2016,
+  author  = {Bruno Blanchet},
+  title  = {Modeling and Verifying Security Protocols with the Applied Pi Calculus and ProVerif},
+  journal = {Foundations and Trends in Privacy and Security},
+  volume  = {1},
+  number  = {1--2},
+  pages   = {1--135},
+  year    = {2016}
+}
+
 @techreport{linear_logic,
   title={The logical meeting point of multiset rewriting and process algebra: Progress report},
   author={Cervesato, Iliano},
@@ -213,9 +287,6 @@ and Gr{\'e}goire, Benjamin
 and Kunz, C{\'e}sar
 and Schmidt, Benedikt
 and Strub, Pierre-Yves",
-editor="Aldini, Alessandro
-and Lopez, Javier
-and Martinelli, Fabio",
 title="EasyCrypt: A Tutorial",
 bookTitle="Foundations of Security Analysis and Design VII: FOSAD 2012/2013 Tutorial Lectures",
 year="2014",
@@ -248,13 +319,12 @@ number = {1},
 issn = {1529-3785},
 url = {https://doi.org/10.1145/3343507},
 doi = {10.1145/3343507},
-abstract = {Security properties of cryptographic protocols are typically expressed as reachability or equivalence properties. Secrecy and authentication are examples of reachability properties, while privacy properties such as untraceability, vote secrecy, or anonymity are generally expressed as behavioral equivalence in a process algebra that models security protocols.Our main contribution is to reduce the search space for attacks for reachability as well as equivalence properties. Specifically, we show that if there is an attack then there is one that is well-typed. Our result holds for a large class of typing systems, a family of equational theories that encompasses all standard primitives, and protocols without else branches. For many standard protocols, we deduce that it is sufficient to look for attacks that follow the format of the messages expected in an honest execution, therefore considerably reducing the search space.},
 journal = {ACM Trans. Comput. Logic},
-month = sep,
 articleno = {1},
 numpages = {52},
 keywords = {Security protocols, symbolic model, trace equivalence, verification}
 }
+
 
 
 @InProceedings{tagging_enforces_termination,
@@ -313,6 +383,7 @@ isbn="978-3-540-36576-1"
   year={2002},
   publisher={Springer}
 }
+
 
 @article{horn_semantics,
 author = {Van Emden, M. H. and Kowalski, R. A.},
@@ -964,9 +1035,6 @@ eprint = {
 
 @Inbook{proverif,
 author="Blanchet, Bruno",
-editor="Aldini, Alessandro
-and Lopez, Javier
-and Martinelli, Fabio",
 title="Automatic Verification of Security Protocols in the Symbolic Model: The Verifier ProVerif",
 bookTitle="Foundations of Security Analysis and Design VII: FOSAD 2012/2013 Tutorial Lectures",
 year="2014",
@@ -1017,7 +1085,7 @@ isbn="978-3-030-79876-5"
 }
 
 @article{lteinspector,
-place = {Country unknown/Code not available}, title = {LTEInspector: A Systematic Approach for Adversarial Testing of 4G LTE}, url = {https://par.nsf.gov/biblio/10055689}, abstractNote = {In this paper, we investigate the security and privacy of the three critical procedures of the 4G LTE protocol (i.e., attach, detach, and paging), and in the process, uncover potential design flaws of the protocol and unsafe practices employed by the stakeholders. For exposing vulnerabilities, we propose a modelbased testing approach LTEInspector which lazily combines a symbolic model checker and a cryptographic protocol verifier in the symbolic attacker model. Using LTEInspector, we have uncovered 10 new attacks along with 9 prior attacks, categorized into three abstract classes (i.e., security, user privacy, and disruption of service), in the three procedures of 4G LTE. Notable among our findings is the authentication relay attack that enables an adversary to spoof the location of a legitimate user to the core network without possessing appropriate credentials. To ensure that the exposed attacks pose real threats and are indeed realizable in practice, we have validated 8 of the 10 new attacks and their accompanying adversarial assumptions through experimentation in a real testbed.}, journal = {Network and Distributed Systems Security (NDSS) Symposium 2018}, author = {Hussain, S. and Chowdhury, O. and Mehnaz, S. and Bertino, E.}, }
+place = {Country unknown/Code not available}, year = { 2018}, title = {LTEInspector: A Systematic Approach for Adversarial Testing of 4G LTE}, url = {https://par.nsf.gov/biblio/10055689}, abstractNote = {In this paper, we investigate the security and privacy of the three critical procedures of the 4G LTE protocol (i.e., attach, detach, and paging), and in the process, uncover potential design flaws of the protocol and unsafe practices employed by the stakeholders. For exposing vulnerabilities, we propose a modelbased testing approach LTEInspector which lazily combines a symbolic model checker and a cryptographic protocol verifier in the symbolic attacker model. Using LTEInspector, we have uncovered 10 new attacks along with 9 prior attacks, categorized into three abstract classes (i.e., security, user privacy, and disruption of service), in the three procedures of 4G LTE. Notable among our findings is the authentication relay attack that enables an adversary to spoof the location of a legitimate user to the core network without possessing appropriate credentials. To ensure that the exposed attacks pose real threats and are indeed realizable in practice, we have validated 8 of the 10 new attacks and their accompanying adversarial assumptions through experimentation in a real testbed.}, journal = {Network and Distributed Systems Security (NDSS) Symposium 2018}, author = {Hussain, S. and Chowdhury, O. and Mehnaz, S. and Bertino, E.}, }
 
 @inproceedings{5greasoner,
 author = {Hussain, Syed Rafiul and Echeverria, Mitziu and Karim, Imtiaz and Chowdhury, Omar and Bertino, Elisa},
@@ -1134,9 +1202,6 @@ series = {CCS '08}
 author="Escobar, Santiago
 and Meadows, Catherine
 and Meseguer, Jos{\'e}",
-editor="Aldini, Alessandro
-and Barthe, Gilles
-and Gorrieri, Roberto",
 title="Maude-NPA: Cryptographic Protocol Analysis Modulo Equational Properties",
 bookTitle="Foundations of Security Analysis and Design V: FOSAD 2007/2008/2009 Tutorial Lectures",
 year="2009",
@@ -1219,17 +1284,52 @@ isbn="978-3-540-36835-9"
   doi={10.1109/SP40001.2021.00008}}
 
 
-@InProceedings{folding_variant_narrowing,
-author="Turuani, Mathieu",
-editor="Pfenning, Frank",
-title="The CL-Atse Protocol Analyser",
-booktitle="Term Rewriting and Applications",
-year="2006",
-publisher="Springer Berlin Heidelberg",
-address="Berlin, Heidelberg",
-pages="277--286",
-abstract="This paper presents an overview of the CL-Atse tool, an efficient and versatile automatic analyser for the security of cryptographic protocols. CL-Atse takes as input a protocol specified as a set of rewriting rules (IF format, produced by the AVISPA compiler), and uses rewriting and constraint solving techniques to model all reachable states of the participants and decide if an attack exists w.r.t. the Dolev-Yao intruder. Any state-based security property can be modelled (like secrecy, authentication, fairness, etc...), and the algebraic properties of operators like xor or exponentiation are taken into account with much less limitations than other tools, thanks to a complete modular unification algorithm. Also, useful constraints like typing, inequalities, or shared sets of knowledge (with set operations like removes, negative tests, etc...) can also be analysed.",
-isbn="978-3-540-36835-9"
+
+
+
+@article{sapic_translation,
+author = {Steve Kremer and Robert Künnemann},
+title ={Automated analysis of security protocols with global state},
+
+journal = {Journal of Computer Security},
+volume = {24},
+number = {5},
+pages = {583-616},
+year = {2016},
+doi = {10.3233/JCS-160556},
+
+URL = { 
+    
+        https://doi.org/10.3233/JCS-160556
+    
+    
+
+},
+eprint = { 
+    
+        https://doi.org/10.3233/JCS-160556
+    
+    
+
+}
+,
+    abstract = { Security APIs, key servers and protocols that need to keep the status of transactions, require to maintain a global, non-monotonic state, e.g., in the form of a database or register. However, most existing automated verification tools do not support the analysis of such stateful security protocols – sometimes because of fundamental reasons, such as the encoding of the protocol as Horn clauses, which are inherently monotonic. A notable exception is the recent tamarin prover which allows specifying protocols as multiset rewrite (msr) rules, a formalism expressive enough to encode state. As multiset rewriting is a “low-level” specification language with no direct support for concurrent message passing, encoding protocols correctly is a difficult and error-prone process.We propose a process calculus which is a variant of the applied pi calculus with constructs for manipulation of a global state by processes running in parallel. We show that this language can be translated to msr rules whilst preserving all security properties expressible in a dedicated first-order logic for security properties. The translation has been implemented in a prototype tool which uses the tamarin prover as a backend. We apply the tool to several case studies among which a simplified fragment of PKCS\#11, the Yubikey security token, and an optimistic contract signing protocol. }
+}
+
+@article{folding_variant_narrowing,
+title = {Folding variant narrowing and optimal variant termination},
+journal = {The Journal of Logic and Algebraic Programming},
+volume = {81},
+number = {7},
+pages = {898-928},
+year = {2012},
+note = {Rewriting Logic and its Applications},
+issn = {1567-8326},
+doi = {https://doi.org/10.1016/j.jlap.2012.01.002},
+url = {https://www.sciencedirect.com/science/article/pii/S1567832612000033},
+author = {Santiago Escobar and Ralf Sasse and José Meseguer},
+keywords = {Narrowing modulo, Terminating narrowing strategy, Variants, Equational unification},
+abstract = {Automated reasoning modulo an equational theory E is a fundamental technique in many applications. If E can be split as a disjoint union E∪Ax in such a way that E is confluent, terminating, sort-decreasing, and coherent modulo a set of equational axioms Ax, narrowing with E modulo Ax provides a complete E-unification algorithm. However, except for the hopelessly inefficient case of full narrowing, little seems to be known about effective narrowing strategies in the general modulo case beyond the quite depressing observation that basic narrowing is incomplete modulo AC. Narrowing with equations E modulo axioms Ax can be turned into a practical automated reasoning technique by systematically exploiting the notion of E,Ax-variants of a term. After reviewing such a notion, originally proposed by Comon-Lundh and Delaune, and giving various necessary and/or sufficient conditions for it, we explain how narrowing strategies can be used to obtain narrowing algorithms modulo axioms that are: (i) variant-complete (generate a complete set of variants for any input term), (ii) minimal (such a set does not have redundant variants), and (iii) are optimally variant-terminating (the strategy will terminate for an input term t iff t has a finite complete set of variants). We define a strategy called folding variant narrowing that satisfies above properties (i)–(iii); in particular, when E∪Ax has the finite variant property, that is, when any term t has a finite complete set of variants, this strategy terminates on any input term and provides a finitary E∪Ax-unification algorithm. We also explain how folding variant narrowing has a number of interesting applications in areas such as unification theory, cryptographic protocol verification, and proofs of termination, confluence and coherence of a set of rewrite rules R modulo an equational theory E.}
 }
 
 

@@ -10,7 +10,7 @@
 \begin{table}[h!]
 \small
 \centering
-\begin{tabular}{|p{2cm}|p{1.6cm}p{2.6cm}p{2.6cm}p{1.7cm}p{2.6cm}|}
+\begin{tabular}{|p{2cm}|p{1.8cm}p{2.6cm}p{2.8cm}p{1.72cm}p{2.6cm}|}
 \hline
 \textbf{Paper} &
 \textbf{Formalism} &
@@ -41,7 +41,7 @@ Ramanujam \& Suresh \cite{context_explicit} & DY & context-explicit \cite{contex
 D'Osualdo et al. \cite{depth_bounded} & applied $\pi$-calculus & depth-bounded protocols \cite{depth_bounded} & decidability & yes & AS, PS, AC, PC \\
 
 \rowcolor{grouptwoLight}
-Lowe \cite{small_model} & DY & context-explicit, inferrable identities, no temporary secrets, secrecy properties & small model theorem (one session with one principal per role) & yes & AS, PS, AC, PC \\
+Lowe \cite{small_model} & DY & context-explicit, inferrable identities, no temporary secrets, secrecy & small model theorem (one session with one principal per role) & yes & AS, PS, AC, PC \\
 
 \hhline{|======|}
 
@@ -61,13 +61,13 @@ Lowe \cite{small_model} & DY & context-explicit, inferrable identities, no tempo
 \hhline{|======|}
 
 \rowcolor{groupfourDark}
-Nielson et al. \cite{cubic_time} & DY & secrecy properties & termination (through approximation)  & yes & PS, AC \\
+Nielson et al. \cite{cubic_time} & DY & secrecy properties & termination \newline (w/ approximation)  & yes & PS, AC \\
 
 \rowcolor{groupfourLight}
-Goubault-Larrecq \cite{ai_1} & DY & secrecy properties & termination (through approximation) & yes & PS, AC \\
+Goubault-Larrecq \cite{ai_1} & DY & secrecy properties & termination \newline (w/ approximation) & yes & PS, AC \\
 
 \rowcolor{groupfourDark}
-Heather \& Schneider \cite{ai_2} & CSP & auth properties  & termination (through approximation) & yes & PS, AC \\
+Heather \& Schneider \cite{ai_2} & CSP & auth properties  & termination \newline (w/ approximation) & yes & PS, AC \\
 
  \hline
 
@@ -77,7 +77,11 @@ Heather \& Schneider \cite{ai_2} & CSP & auth properties  & termination (through
 \vspace{0.3em}
 DY is shorthand for any formalism that closely follows the original Dolev-Yao encoding 
 \cite{dolev_yao}. It is very similar in spirit to strand spaces \cite{strand_spaces}, 
-and can only encode simple (stateless, purely cryptographic) protocols.
+and can only encode simple (stateless, purely cryptographic) protocols. \newline
+AS $\mapsto$ attack soundness, AC $\mapsto$ attack completeness, PS $\mapsto$ proof soundness, PC $\mapsto$ proof completeness
+\newline\newline
+Formal guarantees describe algorithms proposed by papers with respect to the \emph{unbounded} security protocol verification problem. 
+``Fragment decidable'' refers to the decidability of the corresponding \emph{bounded} fragment.
 \newline\newline
 Blue (first group) denotes approaches \emph{sacrificing completeness for decidability}. Green (second group) denotes approaches \emph{syntactically restricting protocols for decidability}. Orange (third group) denotes approaches to \emph{heuristically cut the search space} (without a termination guarantee). Purple (fourth group) denotes approaches \emph{sacrificing soundness for termination}.
 \newline\newline
