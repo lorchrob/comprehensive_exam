@@ -31,8 +31,8 @@
 \section{Abstract}
 
 Security protocols are hard to prove correct. In fact, nailing down what correctness  
-even means in the context of security protocols is itself a nontrivial question, even before attempting a proof. 
-The general difficulty of this problem has resulted in flawed ``proofs" of correctness, leading to real-world security impacts. 
+even means in the context of a security protocol is itself a nontrivial question, even before attempting a proof. 
+The general difficulty of the problem has resulted in flawed ``proofs" of correctness, sometimes leading to real-world security impacts. 
 Even worse, security concerns are often eschewed in favor of financial considerations, 
 and so proofs are often not attempted in the first place.
 In an ideal situation, one would like to define a security protocol, propose a security property, 
@@ -1168,9 +1168,26 @@ $(\approx)$ as the largest symmetric relation between closed extended processes 
     \item[$(iii)$] $C[P] \approx C[Q]$ for all contexts $C$.
 \end{enumerate}
 
-Now consider an abstraction $P(s)$ for some process $P$ that is supposed to keep $s$ secret. We say that $P$ satisfies the (strong) secrecy of $s$ if for all $s$ and  $s'$, $P(s) \approx P(s')$.
+Now consider an abstraction $P(s)$ for some process $P$ that is supposed to keep $s$ secret. 
+We say that $P$ satisfies the (strong) secrecy of $s$ if for all $s$ and  $s'$, $P(s) \approx P(s')$.
 
-While we did not explicitly encode attacker rules as in Figure \ref{fig:adv-rules}, the attacker is played by the arbitrary context $C$ in point $(iii)$ above. Consider the strong secrecy of $s$ in this small process: $P(s) \triangleq \textsf{if }s = \textsf{N}\textsf{ then } \bar c \langle \mathsf{ok} \rangle \textsf{ else } \bar c \langle \mathsf{ko} \rangle $ (assume \textsf{ok},  \textsf{ko}, and \textsf{N} are concrete constants). Here, $P(s)$ branches on $s$, but it never reveals it on the channel. Here, context $C$ can distinguish $c$ from any other value for $s$, where $C[\square] \triangleq (\square \mid c(M). \textsf{if }M=\textsf{ok} \textsf{ then } \bar d(\textsf{ok}) \textsf{ else } 0.)$ In general, the adversary can perform always perform \emph{tests} in the guard of if expressions and emit a barb in one case and not in the other. Here, $C[P(\mathsf{N})]$ gives a barb on $d$, while $C[P(x)]$ (with $x \neq \mathsf{N}$) does not give a barb on $d$, hence breaking the observational equivalence. Note that an evaluation context $C$ intuitively has the same capabilities as a symbolic adversary shown in Figure \ref{fig:adv-knowledge}---the active substitutions give the context access to public terms; the adversary can apply function symbols to terms in scope; the adversary can sample fresh terms with \textbf{\textsf{new}}; the adversary can use the guard to \textsf{if} expressions to reason equationally;  and the adversary \emph{cannot} directly reference terms that are out of scope (e.g., secrets).
+While we did not explicitly encode attacker rules as in Figure \ref{fig:adv-rules}, 
+the attacker is played by the arbitrary context $C$ in point $(iii)$ above. 
+Consider the strong secrecy of $s$ in this small process: 
+$P(s) \triangleq \textsf{if }s = \textsf{N}\textsf{ then } \bar c \langle \mathsf{ok} \rangle 
+\textsf{ else } \bar c \langle \mathsf{ko} \rangle $ (assume \textsf{ok},  \textsf{ko}, and \textsf{N} are concrete constants). 
+Here, $P(s)$ branches on $s$, but it never reveals it on the channel. Here, context $C$ can distinguish $c$ 
+from any other value for $s$, where 
+$C[\square] \triangleq (\square \mid c(M). \textsf{if }M=\textsf{ok} \textsf{ then } \bar d(\textsf{ok}) \textsf{ else } 0.)$ 
+In general, the adversary can perform always perform \emph{tests} in the guard of if expressions 
+and emit a barb in one case and not in the other. Here, $C[P(\mathsf{N})]$ gives a barb on $d$, 
+while $C[P(x)]$ (with $x \neq \mathsf{N}$) does not give a barb on $d$, hence breaking the observational equivalence. 
+Note that an evaluation context $C$ intuitively has the same capabilities as a symbolic adversary shown 
+in Figure \ref{fig:adv-knowledge}---the active substitutions give the context access to public terms; 
+the adversary can apply function symbols to terms in scope; 
+the adversary can sample fresh terms with \textbf{\textsf{new}}; 
+the adversary can use the guard to \textsf{if} expressions to reason equationally;  
+and the adversary \emph{cannot} directly reference terms that are out of scope (e.g., secrets).
 
 \textbf{Protocol trace.} 
 From the above semantics, one could define a protocol trace in terms of a sequence of small steps according to $\rightarrow$. However, this would only capture \textit{honest traces}, that is, without adversarial influence. Adversarial influence is only present if we consider an arbitrary context, as in the definition of observational equivalence (see point $(iii)$ above). However, universally quantifying over all possible contexts (as in $(iii)$) complicates reasoning, and hence a small-step semantics that inherently captures the interaction of a process with an arbitrary environment (along with its own notion of equivalence) is desirable. In fact, this is why observational equivalence is not mentioned among the equivalence properties in Section \ref{sec:security-properties}. To capture protocol traces that ``bake in" adversarial influence, we need to consider an alternative small-step semantics. 
@@ -1220,7 +1237,9 @@ and \emph{recipes} denote terms in $\mathcal{T}(\Sigma_c, \mathcal{W} \cup \math
 \end{array}
 \]
 \begin{flushleft}
-   {\footnotesize Labeled small-step rules for message output, message input, null processes, and parallel composition. Each configuration is comprised of a multiset of processes, a substitution denoting adversary knowledge, and a substitution defining variables for honest processes.
+   {\footnotesize Labeled small-step rules for message output, message input, null processes, and parallel composition. 
+   Each configuration is comprised of a multiset of processes, a substitution denoting adversary knowledge, 
+   and a substitution defining variables for honest processes.
    } 
 \end{flushleft}
     \caption{Simplified alternative small-step semantics}\label{fig:alternative-small-step}
@@ -1228,7 +1247,12 @@ and \emph{recipes} denote terms in $\mathcal{T}(\Sigma_c, \mathcal{W} \cup \math
 
 
 Intuitively, \textsc{Out} adds to the adversary's knowledge by extending $\phi$, 
-and $\textsc{In}$ extends the environment such that the incoming message referenced by $u$ maps to some term $R$ chosen by the adversary from terms in the adversary's knowledge. For simplicity of presentation, note that the above semantics considers a slightly different (simplified) version of the applied $\pi$-calculus without replication or equality tests. In this setup, freshness is handled semantically (through $\mathcal{N}$, $\mathcal{N}_{\mathcal{W}}$, and the rules above), and equality tests are performed via pattern matching (in this setting, we exchange terms, not just variables).
+and $\textsc{In}$ extends the environment such that the incoming message referenced by $u$ maps to some term $R$ 
+chosen by the adversary from terms in the adversary's knowledge. For simplicity of presentation, 
+note that the above semantics considers a slightly different (simplified) version of the applied 
+$\pi$-calculus without replication or equality tests. In this setup, freshness is handled semantically 
+(through $\mathcal{N}$, $\mathcal{N}_{\mathcal{W}}$, and the rules above), 
+and equality tests are performed via pattern matching (in this setting, we exchange terms, not just variables).
 
 We denote the transitive closure of $\xrightarrow{\alpha}$ as $\xrightarrow{\alpha_1,\dots,\alpha_n}$. Given $\mathcal{K}\xrightarrow{\alpha_1,\dots,\alpha_n}\mathcal{K}'$, we can extract 
 a \emph{trace} $\mathsf{tr}$ from $\alpha_1, \dots, \alpha_n$ by removing each $\tau$ label; we use $\mathcal{K}\xrightarrow{\pi:\; \mathsf{tr}} \mathcal{K}'$ to denote that $\mathcal{K}$ computes to $\mathcal{K}'$ with trace $\mathsf{tr}$.
@@ -1338,7 +1362,7 @@ We proceed as follows.
 \end{itemize}
 \end{algorithm}
 Algorithm \ref{alg:unification-mod-e} is sound and complete \cite{fvp_unification}, and
-it returns a \emph{complete set of unifiers} \cite{fvp_unification}.
+it returns a complete set of unifiers \cite{fvp_unification}.
 Tamarin can then use these $\sigma_{i,j}$s to exhaustively 
 case split in its search algorithm.
 
@@ -1643,12 +1667,36 @@ compute $\llbracket F(\mathcal{M}) \rrbracket^{\textsc{TM}}$
 to soundly obtain a Tamarin model with the corresponding simplification.
 Translation details are presented in \cite{sapic_translation} (see page 13).
 
-\subsubsection{MSR to Applied $\pi$} We will outline the three major obstacles to straightforward translation from multiset rewriting models to applied $\pi$-calculus models. In particular, we are interested in practical (often-terminating) verification algorithms.
+\subsubsection{MSR to Applied $\pi$} We will outline the three major obstacles to straightforward translation 
+from multiset rewriting models to applied $\pi$-calculus models. 
+In particular, we are interested in practical (often-terminating) verification algorithms.
 
-\textbf{Equational theories.} We already discussed the differing support for equational theories in Sections \ref{sec:tamarin} and \ref{sec:proverif}. In short, the termination of ProVerif's saturation algorithm relies on ``compiling away" equational theories, which is only supported for convergent or linear theories \cite{proverif_equations}. In contrast, Tamarin's backwards search exploits the finite variant property to achieve decidable unification and with respect to a broader class of equational theories. Tamarin intentionally forgoes some automation because it has stronger support for interactivity. In principal, one could take a similar approach with ProVerif, but meaningful interactivity in their saturation-based algorithm currently seems out of reach.
+\textbf{Equational theories.} We already discussed the differing support for equational theories in 
+Sections \ref{sec:tamarin} and \ref{sec:proverif}. In short, the termination of ProVerif's saturation algorithm relies on 
+``compiling away" equational theories, which is only supported for convergent or linear theories \cite{proverif_equations}. 
+In contrast, Tamarin's backwards search exploits the finite variant property 
+to achieve decidable unification and with respect to a broader class of equational theories. 
+Tamarin intentionally forgoes some automation because it has stronger support for interactivity. 
+In principal, one could take a similar approach with ProVerif, 
+but meaningful interactivity in their saturation-based algorithm currently seems out of reach.
 
-\textbf{State.} Multiset rewriting naturally supports (linear) protocol state---a rewrite rule can reference a state fact, consume it from the global state, and produce resulting state facts. In Section \ref{sec:soundness-completeness}, we saw that ProVerif's lack of precision regarding state leads to spurious attacks. 
-In principle, one \emph{can} encode state precisely in the applied $\pi$-calculus using \emph{private channels} (i.e., channels without adversarial influence). In particular, one could simulate references with processes of the form $\textbf{\textsf{new }}r. (\bar{r}\langle M \rangle \mid P)$, where $r$ (a new private channel) serves as a reference to term $M$ in $P$. In $P$, one could dereference with $r(x). \bar{r}\langle x\rangle. P'$, where $x$ is equal to the term stored at reference $r$ in $P'$ (we ``re-populate" the channel after reading the reference to allow multiple dereferences). Finally, in $P$, one could update $M$ with $N$ (i.e., $M := N$) with a process of the form $r(x).\bar{r}\langle N\rangle.P'$ (reading the value from the channel and updating it with a new value). However, straightforward encodings along these lines either lead to nontermination or still lead to spurious attacks with ProVerif's Horn clause encoding \cite{statverif}. Some extensions to ProVerif handle state with additional heuristics to combat these problems \cite{gsverif,statverif}, but they are often incompatible with other extensions to ProVerif (e.g., to handle exclusive or \cite{proverif_xor}).
+\textbf{State.} Multiset rewriting naturally supports (linear) protocol state---a rewrite rule can reference a state fact, 
+consume it from the global state, and produce resulting state facts. 
+In Section \ref{sec:soundness-completeness}, we saw that ProVerif's lack of precision regarding state 
+leads to spurious attacks. 
+In principle, one \emph{can} encode state precisely in the applied $\pi$-calculus using \emph{private channels} 
+(i.e., channels without adversarial influence). 
+In particular, one could simulate references with processes of the form $\textbf{\textsf{new }}r. 
+(\bar{r}\langle M \rangle \mid P)$, where $r$ (a new private channel) serves as a reference to term $M$ in $P$. 
+In $P$, one could dereference with $r(x). \bar{r}\langle x\rangle. P'$, 
+where $x$ is equal to the term stored at reference $r$ in $P'$ 
+(we ``re-populate" the channel after reading the reference to allow multiple dereferences). 
+Finally, in $P$, one could update $M$ with $N$ (i.e., $M := N$) with a process of the form 
+$r(x).\bar{r}\langle N\rangle.P'$ (reading the value from the channel and updating it with a new value). 
+However, straightforward encodings along these lines either lead to nontermination 
+or still lead to spurious attacks with ProVerif's Horn clause encoding \cite{statverif}. 
+Some extensions to ProVerif handle state with additional heuristics to combat these problems \cite{gsverif,statverif}, 
+but they are often incompatible with other extensions to ProVerif (e.g., to handle exclusive or \cite{proverif_xor}).
 
 \textbf{Trace property specification.} 
 As discussed in Sections \ref{sec:tamarin} and \ref{sec:proverif}, Tamarin's property specification language is closer to standard first-order logic, while ProVerif's specification language is restricted to either derivability or correspondence queries. Since ProVerif's algorithm employing saturation by resolution of Horn clauses focuses on derivability of universally quantified clauses, 
@@ -1688,16 +1736,41 @@ and refer to it directly as the ``Dolev-Yao model" without
 explicitly tying back to the original encoding presented in \cite{dolev_yao}.
 
 \subsection{Overview of Implemented Tools}
-We present an overview of implemented symbolic model cryptographic protocol verifiers (CPVs) in Table \ref{tab:tools}. We can partition these CPVs into four main groups.
+We present an overview of implemented symbolic model cryptographic protocol verifiers (CPVs) in Table \ref{tab:tools}. 
+We can partition these CPVs into four main groups.
 
-The first group (in blue) denote \emph{modern CPVs with unbounded analyses}. In particular, Tamarin and ProVerif dominate the rest in terms of modern usage \cite{sok}. Compared to the rest of the CPVs, Tamarin is surprisingly well-rounded---it imposes no bounds on analysis, has both attack soundness and proof soundness, supports a very general property specification language (while still supporting diff equivalence), supports a wide range of equational theories and global mutable protocol state, and partially supports reasoning about protocols with loops and linear integer arithmetic. No other tool comes close, save for ProVerif. While ProVerif admits spurious attacks, and has a somewhat brittle support for protocol state and equational theories, it makes up for it with its automation potential. On the other hand, while Maude-NPA's formal foundations are incredibly well-motivated, it simply has fewer features than Tamarin and ProVerif.
+The first group (in blue) denote \emph{modern CPVs with unbounded analyses}. 
+In particular, Tamarin and ProVerif dominate the rest in terms of modern usage \cite{sok}. 
+Compared to the rest of the CPVs, Tamarin is surprisingly well-rounded---it imposes no bounds on analysis, 
+has both attack soundness and proof soundness, supports a very general property specification language 
+(while still supporting diff equivalence), supports a wide range of equational theories and 
+global mutable protocol state, and partially supports reasoning about protocols with loops and linear integer arithmetic. 
+No other tool comes close, save for ProVerif. While ProVerif admits spurious attacks, 
+and has a somewhat brittle support for protocol state and equational theories, 
+it makes up for it with its automation potential. 
+On the other hand, while Maude-NPA's formal foundations are incredibly well-motivated, 
+it simply has fewer features than Tamarin and ProVerif.
 
 The second group (in green) denote \emph{CPVs based on bounded model checking}. 
-These CPVs can be efficient for reasoning with respect to bounded sessions, but they cannot prove security in the unbounded case. One may think these tools are complementary to tools from the first category (with unbounded analysis); however, in practice, the unbounded tools are often just as effective for reasoning about bounded sessions \cite{sok} while supporting more features. 
+These CPVs can be efficient for reasoning with respect to bounded sessions, 
+but they cannot prove security in the unbounded case. One may think these tools are complementary 
+to tools from the first category (with unbounded analysis); 
+however, in practice, the unbounded tools are often just as effective for reasoning about bounded sessions 
+\cite{sok} while supporting more features. 
 
-The third group (in orange) denote \emph{CPVs based on security by typing}. These tools work at the level of protocol \emph{implementations} rather than protocol \emph{designs}, and they exhibit impressive scalability. However, for efficient type checking, the type-based reasoning is overly strict and may reject secure programs. Additionally, the type checking depends on manually-annotated \emph{security labels}, which ascribe certain levels of sensitivity to terms or commands; the type checking algorithm rejects programs based on (potential) information flow violations according to these labels (e.g., a high-sensitivity value should not flow into a low-sensitivity variable).
+The third group (in orange) denote \emph{CPVs based on security by typing}. 
+These tools work at the level of protocol \emph{implementations} rather than protocol \emph{designs}, 
+and they exhibit impressive scalability. However, for efficient type checking, the type-based reasoning 
+is overly strict and may reject secure programs. Additionally, 
+the type checking depends on manually-annotated \emph{security labels}, which ascribe certain levels 
+of sensitivity to terms or commands; the type checking algorithm rejects programs based on (potential) 
+information flow violations according to these labels 
+(e.g., a high-sensitivity value should not flow into a low-sensitivity variable).
 
-The fourth group (in purple) denote \emph{CPVs focused on equivalence properties}. It is much more difficult to automate reasoning with respect to equivalence properties, so these tools use bounded analyses and do not support very complicated protocols (e.g., no stateful protocols, looping protocols, or protocols requiring dedicated theory reasoning). 
+The fourth group (in purple) denote \emph{CPVs focused on equivalence properties}. 
+It is much more difficult to automate reasoning with respect to equivalence properties, 
+so these tools use bounded analyses and do not support very complicated protocols 
+(e.g., no stateful protocols, looping protocols, or protocols requiring dedicated theory reasoning). 
 
 \input{tool_table}
 
@@ -1803,8 +1876,15 @@ assuming confluence, coherence, and the finite property modulo \emph{AC}.
 % }
 
 \subsection{Other challenges}
-Existing approaches have been successful applied to analyze protocols with a variety of cryptographic primitives (e.g. exclusive or, Diffie-Hellman exponentiation, and bilinear pairings), using techniques analogous to those described in the previous subsection.
-However, there are many challenges where surprisingly little progress has been made. At a high level, current approaches struggle with protocols that include non-cryptographic components, non-trivial control flow (like loops), or non-trivial data structures (like recursive algebraic data types). Further, there are few techniques for compositional reasoning in the context of a single protocol, or for composing results of sub-protocols to a combined protocol. These questions are elaborated in Section \ref{sec:open-questions}.
+Existing approaches have been successful applied to analyze protocols with a variety of cryptographic primitives 
+(e.g. exclusive or, Diffie-Hellman exponentiation, and bilinear pairings), 
+using techniques analogous to those described in the previous subsection.
+However, there are many challenges where surprisingly little progress has been made. 
+At a high level, current approaches struggle with protocols that include non-cryptographic components, 
+non-trivial control flow (like loops), or non-trivial data structures (like recursive algebraic data types). 
+Further, there are few techniques for compositional reasoning in the context of a single protocol, 
+or for composing results of sub-protocols to a combined protocol. 
+These questions are elaborated in Section \ref{sec:open-questions}.
 
 
 \section{Tractable Reasoning in the Symbolic Model}\label{sec:tractable-reasoning}
@@ -1812,9 +1892,14 @@ In this section, we outline efforts to ease reasoning about security protocol ve
 
 \subsection{Type confusion attacks and the strong typing assumption}
 
-One class of attacks, called \emph{type flaw} or \emph{type confusion attacks}, intuitively refers to attacks involving an honest participant (mis)parsing an incoming protocol message $m_1$ as a different protocol message $m_2$. While not standard terminology, one might find it more intuitive to call them \emph{shape confusion}, \emph{constructor confusion}, or simply \emph{misparsing} attacks.
+One class of attacks, called \emph{type flaw} or \emph{type confusion attacks}, 
+intuitively refers to attacks involving an honest participant (mis)parsing an incoming protocol message 
+$m_1$ as a different protocol message $m_2$. While not standard terminology, 
+one might find it more intuitive to call them \emph{shape confusion}, \emph{constructor confusion}, 
+or simply \emph{misparsing} attacks.
 
-First, we consider an example. Consider the following mutual authentication protocol (Figure \ref{fig:ns-type-confusion}), which is a variant of the Needham-Schroeder protocol in Figure \ref{fig:ns-original}:
+First, we consider an example. Consider the following mutual authentication protocol 
+(Figure \ref{fig:ns-type-confusion}), which is a variant of the Needham-Schroeder protocol in Figure \ref{fig:ns-original}:
 
 \begin{figure}[h!]
   \centering
@@ -1829,7 +1914,8 @@ First, we consider an example. Consider the following mutual authentication prot
 
 The only difference between this protocol and Figure \ref{fig:ns-original} is that in message $(2)$, we substituted $\langle N_a, \langle N_b, B \rangle \rangle$ for $\langle N_a, N_b \rangle$. Further, recall that we argued that using $\langle N_a, N_b, B \rangle$ (a triple, without nesting pairs) would make the protocol secure. While it is hard to believe at first glance, using the nested pairs $\langle N_a, \langle N_b, B \rangle \rangle$ rather than the triple is actually \textit{still insecure} in the symbolic model due to a type flaw attack.
 
-Consider the following attack trace with intruder $I$, presented in Figure \ref{fig:type-confusion-attack}. In this trace, the capital letters 
+Consider the following attack trace with intruder $I$, presented in Figure \ref{fig:type-confusion-attack}. 
+In this trace, the capital letters 
 $P_1$, $P_2$, and $I$ denote principals
 (earlier, $A$ and $B$ denoted roles).
 
@@ -1882,7 +1968,13 @@ It is not a trivial result, as the attacker may modify tags if they are not cryp
 \textbf{Typing systems.} A \textit{typing system} is a pair $(T, \delta)$ such that $T$ is a set of types and $\delta$ is a mapping from $\mathcal{T}(\Sigma_c, D)$ to $T$. A \textit{well-typed substitution} $\sigma$ preserves types---that is, $\delta(v) = \delta(v\sigma)$ for all $v \in V$. We call a typing system \emph{well-formed} if $(1)$ well-typed substitutions preserve types for every term $t$, i.e., $\delta(t) = \delta(t\sigma)$, and $(2)$ if $\delta(t) = \delta(t')$, then $mgu(t, t')$ is well-typed (for all terms $t$, $t'$). A protocol trace is called \emph{well-typed} if all the active substitutions constitute a well-typed substitution.
 
 \textbf{Example typing system.} 
-Consider an example typing system that captures term structure with a given set of atomic types $T_{\mathsf{atomic}} \subseteq T$. For example, we want the type of $\mathsf{f}(a, \mathsf{g}(b, c))$ to be $\mathsf{f}_\tau(\tau_a, \mathsf{g}_\tau(\tau_b, \tau_c))$, where the $\tau_i$s are not necessarily distinct and each $\tau_i$ represents the atomic type of data item $i$. Further, we use $\mathsf{f}_\tau$ to denote the type constructor associated with constructor \textsf{f}. We define $\delta$ as follows: 
+Consider an example typing system that captures term structure with a given set of atomic types 
+$T_{\mathsf{atomic}} \subseteq T$. 
+For example, we want the type of $\mathsf{f}(a, \mathsf{g}(b, c))$ to be 
+$\mathsf{f}_\tau(\tau_a, \mathsf{g}_\tau(\tau_b, \tau_c))$, where the $\tau_i$s are not necessarily 
+distinct and each $\tau_i$ represents the atomic type of data item $i$. 
+Further, we use $\mathsf{f}_\tau$ to denote the type constructor associated with constructor \textsf{f}. 
+We define $\delta$ as follows: 
 \[
 \delta(t) =
 \begin{cases}
@@ -1984,9 +2076,9 @@ In light of previous work on symbolic model verification, we now discuss some op
     one might intuit that it could be feasible in the context of security protocols---lots of protocols 
     have ``similar" shapes with honest steps and an adversaries with similar sets of capabilities. 
     \item[\textsf{RQ4.}] \emph{How to reason about the composition of cryptographic protocols?} 
-    Consider two protocols $P_1$ and $P_2$, and assume you prove that $P_1$ both satisfies security property 
+    Consider two protocols $P_1$ and $P_2$, and assume that $P_1$ satisfies security property 
     $\varphi$ (i.e., $P_1 \models \varphi$). 
-    What can you say about the asynchronous parallel composition of $P_1$ and $P_2$? 
+    What can one say about the asynchronous parallel composition of $P_1$ and $P_2$? 
     One cannot lift the results of the separate analyses to the composed case in any straightforward way 
     due to adversarial influence---the adversary may use information learned from some run of $P_2$ 
     to influence a run of $P_1$, possibly violating $\varphi$.
@@ -2000,7 +2092,17 @@ In light of previous work on symbolic model verification, we now discuss some op
 
 \section{Conclusion}
 
-Symbolic model cryptographic protocol verification has developed into a ``killer application" for formal methods and automated reasoning, as it focuses on problems that are hard to get right but still tractable for (semi-)automated techniques. Multiset rewriting and applied $\pi$-calculus have been intensely studied to that end for many years, both in terms of theory and practical algorithms. However, there are fundamental obstacles to advancing symbolic model verification in these settings. One major obstacle is that these formalisms are inherently monolithic, which is in conflict with usable interactivity---for humans, it is easier to conceptualize decomposed problems. Further, while the existing algorithms work well for cryptographic operations, they do not generalize well for protocols heavy on non-cryptographic reasoning. In these aspects, the cryptographic protocol verification community may be able to draw inspiration from existing approaches in the verification community to address these issues.
+Symbolic model cryptographic protocol verification has developed into a ``killer application" 
+for formal methods and automated reasoning, as it focuses on problems that are hard to get right but still tractable for 
+(semi-)automated techniques. Multiset rewriting and applied $\pi$-calculus have been intensely studied to that end for many years, 
+both in terms of theory and practical algorithms. 
+However, there are fundamental obstacles to advancing symbolic model verification in these settings. 
+One major obstacle is that these formalisms are inherently monolithic, which is in conflict with usable 
+interactivity---for humans, it is easier to conceptualize decomposed problems. 
+Further, while the existing algorithms work well for cryptographic operations, 
+they do not generalize well for protocols heavy on non-cryptographic reasoning. 
+To address these issues, the cryptographic protocol verification community may be able to draw inspiration 
+from existing approaches in the verification community.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
