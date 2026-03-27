@@ -1332,6 +1332,20 @@ keywords = {Narrowing modulo, Terminating narrowing strategy, Variants, Equation
 abstract = {Automated reasoning modulo an equational theory E is a fundamental technique in many applications. If E can be split as a disjoint union E∪Ax in such a way that E is confluent, terminating, sort-decreasing, and coherent modulo a set of equational axioms Ax, narrowing with E modulo Ax provides a complete E-unification algorithm. However, except for the hopelessly inefficient case of full narrowing, little seems to be known about effective narrowing strategies in the general modulo case beyond the quite depressing observation that basic narrowing is incomplete modulo AC. Narrowing with equations E modulo axioms Ax can be turned into a practical automated reasoning technique by systematically exploiting the notion of E,Ax-variants of a term. After reviewing such a notion, originally proposed by Comon-Lundh and Delaune, and giving various necessary and/or sufficient conditions for it, we explain how narrowing strategies can be used to obtain narrowing algorithms modulo axioms that are: (i) variant-complete (generate a complete set of variants for any input term), (ii) minimal (such a set does not have redundant variants), and (iii) are optimally variant-terminating (the strategy will terminate for an input term t iff t has a finite complete set of variants). We define a strategy called folding variant narrowing that satisfies above properties (i)–(iii); in particular, when E∪Ax has the finite variant property, that is, when any term t has a finite complete set of variants, this strategy terminates on any input term and provides a finitary E∪Ax-unification algorithm. We also explain how folding variant narrowing has a number of interesting applications in areas such as unification theory, cryptographic protocol verification, and proofs of termination, confluence and coherence of a set of rewrite rules R modulo an equational theory E.}
 }
 
+@InProceedings{fvp,
+author="Comon-Lundh, Hubert
+and Delaune, St{\'e}phanie",
+editor="Giesl, J{\"u}rgen",
+title="The Finite Variant Property: How to Get Rid of Some Algebraic Properties",
+booktitle="Term Rewriting and Applications",
+year="2005",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="294--307",
+abstract="We consider the following problem: Given a term t, a rewrite system {\$}{\backslash}cal R{\$}, a finite set of equations E{\textasciiacutex} such that {\$}{\backslash}cal R{\$}is E{\textasciiacutex}-convergent, compute finitely many instances of t: t1,...,tnsuch that, for every substitution $\sigma$, there is an index i and a substitution $\theta$ such that {\$}t{\backslash}sigma{\backslash}mathord{\backslash}downarrow ={\_}{\{}E'{\}} t{\_}i{\backslash}theta{\$}(where {\$}t{\backslash}sigma{\backslash}mathord{\backslash}downarrow{\$}is the normal form of t$\sigma$ w.r.t. {\$}{\backslash}to{\_}{\{}E'{\backslash}mathord{\{}{\backslash}setminus{\}}{\backslash}mathcal R{\}}{\$}).",
+isbn="978-3-540-32033-3"
+}
+
 
 
 @article{ns_attack,

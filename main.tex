@@ -1323,14 +1323,14 @@ Rather than syntactic unification (described in the previous paragraph),
 Tamarin actually performs \emph{unification modulo $E$}. 
 Two terms $t_1$ and $t_2$ are \emph{unifiable modulo $E$} if there exists some substitution $\sigma$ 
 such that $ t_1 \sigma =_E  t_2\sigma$; 
-this $\sigma$ is called a \emph{unifier}. 
+this $\sigma$ is called an $E$-\emph{unifier}. 
 Rather than a most general unifier, we are interested in a \emph{complete set of unifiers} (CSU).
 A set of unifiers $S$ is a CSU of $t_1$ and $t_2$ if, for all unifiers $\sigma'$ of $t_1$ and $t_2$, 
 there exists a substitution $\theta$ and a unifier $\sigma \in S$ such that 
 $\sigma' = \sigma \circ \theta$.
 Unification modulo $E$ is a difficult problem, but it can be decidable depending on the properties of $E$. 
 If $E=\emptyset$ (and all terms are first-order terms), then the problem is called \emph{syntactic unification} 
-or simply \emph{unification}. 
+or simply \emph{unification} (described in the previous paragraph). 
 Syntactic unification of first-order terms (yielding an MGU, unique up to renaming) is efficiently decidable \cite{unification_algo},
 and hence we would like to reduce unification modulo $E$ to syntactic unification.
 To do so, we need to borrow some insights from the \emph{term rewriting} literature.
@@ -1340,10 +1340,14 @@ We take advantage of theoretical results in term rewriting by orienting equation
 Due to this, we call an equational theory  \emph{convergent} if it can be posed as a convergent rewrite system.
 
 \textbf{Finite variant property.}
-A convergent equational theory $E$ has the \emph{finite variant property} if for any term $t$, one can compute a finite set of pairs $(t_1,\theta_1),\dots,(t_n,\theta_n)$, called \emph{variants} of $t$, such that for each $i$ we have
+A convergent equational theory $E$ has the \emph{finite variant property} \cite{fvp} 
+if for any term $t$, one can compute a finite set of pairs $(t_1,\theta_1),\dots,(t_n,\theta_n)$, called \emph{variants} of $t$, such that for each $i$ we have
 $t_i = t\theta_i\!\downarrow_E$, and such that for every substitution $\sigma$, there exists an index $i$ and a substitution $\sigma'$ with
 $\sigma = \theta_i \circ \sigma'$ and $t\sigma\!\downarrow_E\; = t_i\sigma'$.
-Intuitively, one can view $(t_1, \theta_1), \dots, (t_n, \theta_n)$ as a finite set of variants of term $t$ that characterize the different ``shapes" it can take (where each $\theta_i$ records how we bridge from $t$ to $t_i$). The finite variant property is useful because it can help us reduce unification modulo $E$ to syntactic unification, as in the following algorithm.
+Intuitively, one can view $(t_1, \theta_1), \dots, (t_n, \theta_n)$ as a finite set of variants of term $t$ 
+that characterize the different ``shapes" it can take (where each $\theta_i$ records how we bridge from $t$ to $t_i$). 
+The finite variant property is useful because it can help us reduce unification modulo $E$ to syntactic unification, 
+as in the following algorithm.
 
 \begin{algorithm}[Unification modulo $E$] \label{alg:unification-mod-e}
 Suppose we are given $t_1$ and $t_2$, and we want to find $\sigma$ such that $t_1 \sigma =_E t_2 \sigma$.
@@ -1675,7 +1679,7 @@ In particular, we are interested in practical (often-terminating) verification a
 Sections \ref{sec:tamarin} and \ref{sec:proverif}. In short, the termination of ProVerif's saturation algorithm relies on 
 ``compiling away" equational theories, which is only supported for convergent or linear theories \cite{proverif_equations}. 
 In contrast, Tamarin's backwards search exploits the finite variant property 
-to achieve decidable unification and with respect to a broader class of equational theories. 
+to achieve decidable unification with respect to a broader class of equational theories. 
 Tamarin intentionally forgoes some automation because it has stronger support for interactivity. 
 In principal, one could take a similar approach with ProVerif, 
 but meaningful interactivity in their saturation-based algorithm currently seems out of reach.
@@ -1843,26 +1847,24 @@ is the same as $\mathcal{R}$-rewriting, but the matching on the left-hand side i
 The notion of $E$-convergence generalizes convergence in the expected way, and
 we use $\downarrow_{\mathcal{R},E}$ to denote the normal form of a term with respect to $\mathcal{R},E$-rewriting.
 From this, the finite variant property also lifts to $\mathcal{R}, E$-rewriting, 
-by lifting every normalized term $t\!\downarrow_{\mathcal{R}}$ to terms normalized modulo $E$
+roughly by lifting every normalized term $t\!\downarrow_{\mathcal{R}}$ to terms normalized modulo $E$
 $t\!\downarrow_{\mathcal{R}, E}$, and by lifting every 
 equality to equality modulo $E$ ($=_E$).
 
 Thankfully, $E_{\oplus \setminus AC}$ is AC-convergent and has the finite variant property modulo \emph{AC} \cite{tamarin_xor}. 
-Then, the procedure for unification modulo $E$ can proceed similarly to Algorithm \ref{alg:unification-mod-e}, with two updates.
+Then, the procedure for unification modulo $E$ can proceed similarly to Algorithm \ref{alg:unification-mod-e}, 
+with operations lifted to be modulo \emph{AC}.
 First, instead of computing variants under a purely convergent
-theory, we compute a complete set of \emph{AC}-variants 
-of $t_1$ and $t_2$ from the equation $t_1 = t_2$ using a technique called folding variant narrowing
-modulo \emph{AC} \cite{folding_variant_narrowing} (details are outside the scope 
-of this report).
-Second, for each variant $(t' = s', \tau)$,
+theory, we compute a complete set of \emph{AC}-variants (exploiting finite variant property modulo \emph{AC}) 
+using folding variant narrowing modulo \emph{AC} \cite{folding_variant_narrowing} 
+(details are outside the scope of this report).
+Then, for each pair of $AC$-variants,
 we perform unification modulo $AC$ (rather than syntactic
-unification) to obtain a finite set of $AC$-unifiers $\mu$.
-For each such $\mu$, we return 
-$\tau \circ \mu$.
+unification) to obtain a complete set of $AC$-unifiers.
 Crucially, Algorithm \ref{alg:unification-mod-e} still terminates, 
 as unification modulo associativity and commutativity axioms is decidable 
 with existing algorithms from the literature \cite{unification_modulo_ac}.
-Again, the lifted (modulo \emph{AC}) version of this algorithm is sound and complete \cite{tamarin}, 
+Again, the lifted (modulo \emph{AC}) version of this algorithm is sound and complete \cite{tamarin,folding_variant_narrowing}, 
 assuming confluence, coherence, and the finite property modulo \emph{AC}.
 
 % {
