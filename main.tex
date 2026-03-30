@@ -140,9 +140,9 @@ each \emph{ciphertext} $c \in \mathcal{C}$ represents an obscured plaintext,
 and each \emph{key} $k \in \mathcal{K}$ can be used to help generate ciphertexts from plaintexts. 
 A \emph{symmetric-key encryption scheme} is a triple $(\mathsf{Gen}, \mathsf{Enc}, \mathsf{Dec})$ 
 comprised of three functions 
-$\textsf{Gen} : \{1\}^+ \rightarrow \mathcal{K}$, $\textsf{Enc} : \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$, 
+$\textsf{Gen} : \mathbb{N} \rightarrow \mathcal{K}$, $\textsf{Enc} : \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$, 
 and $\textsf{Dec} : \mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$, 
-where $\textsf{Gen}(1^\lambda)$ probabilistically samples a key of length $\lambda$ from 
+where $\textsf{Gen}(\lambda)$ probabilistically samples a key of length $\lambda$ from 
 $\mathcal{K}$, and \textsf{Enc} and \textsf{Dec} denote encryption and decryption as expected. 
 We require that for all
 $m \in \mathcal{M}$ and $k \in \mathcal{K}$, $\mathsf{Dec}(\mathsf{Enc}(m, k), k) = m$ 
@@ -233,7 +233,7 @@ that will pass verification with $A$'s public key without knowledge of $A$'s pri
 \begin{enumerate}
 \itemsep-.5em
 \item It is computationally infeasible to invert (called \textit{one-wayness}). 
-\item It is computationally infeasible to find distinct $x$ and $x'$ such that $\textsf{h}(x) = \textsf{h}(x')$ (called \textit{collision resistance}).
+\item It is computationally infeasible to find distinct $x$ and $x'$ such that $\textsf{h}(x) = \textsf{h}(x')$ (called \textit{(strong) collision resistance}).
 \end{enumerate}
 
 \textbf{XOR and DH exponentiation.} 
@@ -1844,7 +1844,7 @@ where $t_1 \rightarrow_{\mathcal{R},E} t_2$ if there is a position $p$ in $t_1$,
 rewrite rule $l \rightarrow r \in \mathcal{R}$, and substitution $\sigma$ such that 
 $t_1|_p =_E l\sigma$ and $t_1[r\sigma]p = t_2$. In other words, $\mathcal{R},E$-rewriting
 is the same as $\mathcal{R}$-rewriting, but the matching on the left-hand side is modulo equational theory $E$.
-The notion of $E$-convergence generalizes convergence in the expected way, and
+The notion of $E$-convergence (alternatively, convergence modulo $E$) generalizes convergence in the expected way, and
 we use $\downarrow_{\mathcal{R},E}$ to denote the normal form of a term with respect to $\mathcal{R},E$-rewriting.
 From this, the finite variant property also lifts to $\mathcal{R}, E$-rewriting, 
 roughly by lifting every normalized term $t\!\downarrow_{\mathcal{R}}$ to terms normalized modulo $E$
@@ -1854,14 +1854,14 @@ equality to equality modulo $E$ ($=_E$).
 Thankfully, $E_{\oplus \setminus AC}$ is AC-convergent and has the finite variant property modulo \emph{AC} \cite{tamarin_xor}. 
 Then, the procedure for unification modulo $E$ can proceed similarly to Algorithm \ref{alg:unification-mod-e}, 
 with operations lifted to be modulo \emph{AC}.
-First, instead of computing variants under a purely convergent
+For example, instead of computing variants under a purely convergent
 theory, we compute a complete set of \emph{AC}-variants (exploiting finite variant property modulo \emph{AC}) 
 using folding variant narrowing modulo \emph{AC} \cite{folding_variant_narrowing} 
 (details are outside the scope of this report).
 Then, for each pair of $AC$-variants,
 we perform unification modulo $AC$ (rather than syntactic
 unification) to obtain a complete set of $AC$-unifiers.
-Crucially, Algorithm \ref{alg:unification-mod-e} still terminates, 
+Crucially, Algorithm \ref{alg:unification-mod-e} modulo \emph{AC} still terminates, 
 as unification modulo associativity and commutativity axioms is decidable 
 with existing algorithms from the literature \cite{unification_modulo_ac}.
 Again, the lifted (modulo \emph{AC}) version of this algorithm is sound and complete \cite{tamarin,folding_variant_narrowing}, 
