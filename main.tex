@@ -384,13 +384,13 @@ For trace properties, we consider \emph{secrecy}-related and \emph{authenticatio
     whenever principal $A$ accepts data item $d$, apparently from $B$, then at some point in the past, 
     $B$ has sent data item $d$, apparently to $A$. 
     \item[$A_2.$] A protocol satisfies \emph{injective agreement of $B$ to $A$} \cite{lowe_auth} if, 
-    whenever principal $A$ accepts data item $d$, apparently from $B$, 
-    then there exists a \emph{unique} event in which $B$ sent data item $d$, apparently to $A$. 
+    There is an injective mapping from data items accepted by principal $A$ apparently from principal $B$, 
+    to data items sent from principal $B$ apparently to principal $A$. 
 \end{itemize}
 
 Above, $S_1$ and $S_2$ are secrecy properties, while $A_1$ and $A_2$ are authentication properties. 
 More intuitively, property $A_2$ implies the absence of replay attacks---every 
-subsequent time that $A$ thinks that $A$ has received a message $m$ from $B$, $B$ must have sent it again, 
+subsequent time that $A$ thinks that $A$ has accepted a message $m$ from $B$, $B$ must have sent it again, 
 and later acceptance of $m$ cannot be due to replay. 
 Note that in $S_1$ and $S_2$, secrecy is defined in terms of attacker knowledge of some term $t$. 
 This is a separate notion from IND-CPA security and perfect secrecy, 
@@ -573,7 +573,11 @@ in which symbolic model security soundly implies computational model security \c
 
 % {graphically show relationship, Venn diagram of capabilities, secure by design primitives, superset. But it is not that simple?}
 
-\subsection{Weaknesses of the symbolic model} Note that the only way for a Dolev-Yao adversary 
+\subsection{Weaknesses of the symbolic model} 
+We give an intuition for the weaknesses of the symbolic model through an example protocol that 
+is secure in the symbolic model despite having an attack in the computational model.
+
+First, note that the only way for a Dolev-Yao adversary 
 to destruct terms is through \textsc{Eq}, which (for example) lets the attacker derive 
 $m$ from $\textsf{dec}(\textsf{enc}(m, k), k)$. This exhibits the perfect cryptography assumption---the 
 \textit{only way} to recover the plaintext from a ciphertext is to have knowledge of the key. 
@@ -669,7 +673,8 @@ Black terms denote intermediate terms illustrating the derivation.
 % s
 
 However, in the symbolic model, there is no attack, 
-as the attacker needs knowledge of $k$ to destruct $\textsf{sr\_enc}(s, k, \textit{IV})$ 
+as the implementation details of $\textsf{src\_enc}(.,.,.)$ are not specified, and
+the attacker \emph{requires} knowledge of $k$ to destruct $\textsf{sr\_enc}(s, k, \textit{IV})$ 
 and retrieve $s$. However, $k$ is not derivable by the adversary from the rules in Figure \ref{fig:adv-knowledge}.
 
 \subsection{Symbolic model attacks}\label{sec:sym-attacks} Despite its limitations, 
@@ -724,8 +729,10 @@ In message $2$, $I$ can simply copy $A$'s challenge because message $1$ was encr
 Then $I$ can respond to $B$'s challenge in step $3$ by forwarding it to $A$ in step $4$.
 
 Conceptually, the protocol is insecure because $B$'s challenge is not tied to $B$'s identity---the fix 
-is to substitute $\langle N_A, N_B, B \rangle$ for $\langle N_A, N_B \rangle$ in step $2$ 
-(in Figure \ref{fig:ns-original}). 
+is to substitute $\langle N_A, N_B, B \rangle^3$ for $\langle N_A, N_B \rangle$ in step $2$ 
+(in Figure \ref{fig:ns-original}).
+Here, the superscript $3$ clarifies that the triple constructor is a different constructor 
+from the pair constructor (rather than interpreting a triple as nested pairs). 
 Then if $I$ forwards in step $4$ (Figure \ref{fig:ns-lowe-attack}), 
 it will become clear to $A$ that there is an identity mismatch between $I$ and $B$. 
 
@@ -1908,13 +1915,13 @@ First, we consider an example. Consider the following mutual authentication prot
   \includegraphics{figs/ns_type_confusion.pdf}
     \begin{flushleft}\footnotesize 
       Update to the original (flawed) Needham--Schroeder public-key protocol (Figure \ref{fig:ns-original}) 
-      by replacing $\langle N_a, N_b \rangle$ with $\langle N_a, N_b, B \rangle$.
+      by replacing $\langle N_a, N_b \rangle$ with $\langle N_a, N_b, B \rangle^3$.
 \end{flushleft}
   \caption{Update to Needham--Schroeder public-key protocol (in Figure \ref{fig:ns-original})} 
   \label{fig:ns-type-confusion}
 \end{figure}
 
-The only difference between this protocol and Figure \ref{fig:ns-original} is that in message $(2)$, we substituted $\langle N_a, \langle N_b, B \rangle \rangle$ for $\langle N_a, N_b \rangle$. Further, recall that we argued that using $\langle N_a, N_b, B \rangle$ (a triple, without nesting pairs) would make the protocol secure. While it is hard to believe at first glance, using the nested pairs $\langle N_a, \langle N_b, B \rangle \rangle$ rather than the triple is actually \textit{still insecure} in the symbolic model due to a type flaw attack.
+The only difference between this protocol and Figure \ref{fig:ns-original} is that in message $(2)$, we substituted $\langle N_a, \langle N_b, B \rangle \rangle$ for $\langle N_a, N_b \rangle$. Further, recall that we argued that using $\langle N_a, N_b, B \rangle^3$ (a triple, without nesting pairs) would make the protocol secure. While it is hard to believe at first glance, using the nested pairs $\langle N_a, \langle N_b, B \rangle \rangle$ rather than the triple is actually \textit{still insecure} in the symbolic model due to a type flaw attack.
 
 Consider the following attack trace with intruder $I$, presented in Figure \ref{fig:type-confusion-attack}. 
 In this trace, the capital letters 
@@ -1934,7 +1941,7 @@ was expecting a message with format matching step $1$ (from Figure \ref{fig:ns-t
 but instead got one of format matching step $2$ (Figure \ref{fig:ns-type-confusion}). 
 The attack works because $P_1$ does not destruct the pair in the protocol---if so, 
 the incoming message would not unify with $P_1$'s expected message format. 
-This also explains why using the triple $\langle N_a, N_b, B \rangle$ is not vulnerable to the same attack.
+This also explains why using the triple $\langle N_a, N_b, B \rangle^3$ is not vulnerable to the same attack.
 
 Type confusion attacks are somewhat controversial, and for good reason. One common argument in favor of design-level verification is that if there is a design-level vulnerability, then \emph{all} implementations will be affected. However, with type confusion attacks, this is not the case. One can imagine an implementation of the above protocol where role $B$ will not parse an input that substitutes a pair for a nonce, and hence the attack will not succeed. Hence, one may simply state \emph{a priori} that only well-typed attacks will be considered---this is called the \emph{strong typing assumption}.
 
