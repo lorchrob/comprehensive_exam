@@ -26,7 +26,45 @@
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+    \centering
+
+    {\Large \textbf{Comprehensive Exam Report} \par}
+    \vspace{0.5in}
+
+    {\LARGE \textbf{Automated Reasoning for Cryptographic Protocols} \par}
+    \vspace{.75in}
+
+    {\large
+    Submitted by\par
+    \vspace{0.2in}
+    \textbf{Robert Lorch}\par
+    }
+    \vspace{0.55in}
+
+    {\large
+    In partial fulfillment of the requirements for the Doctor of Philosophy\par
+    Department of Computer Science\par
+    The University of Iowa\par
+    }
+    \vspace{0.75in}
+
+    {\large
+    Examining Committee:\par
+    \vspace{0.2in}
+    Dr. Katherine Kosaian\par
+    Dr. Garrett Morris\par
+    Dr. Sourya Roy\par
+    Dr. Cesare Tinelli\par
+    }
+    \vspace{1in}
+
+    {\large
+    April 23, 2026\par
+    }
+
+    \vfill
+\end{titlepage}
 
 \section{Abstract}
 
@@ -253,14 +291,16 @@ over an insecure network channel in order to accomplish some goal,
 composing cryptographic primitives in an attempt to maintain a specified set of security properties. 
 Each participant in the protocol description is called a \emph{role}, 
 and each concrete participant of a particular protocol instance is called a \emph{principal} 
-(each role can be instantiated by various principals).
+(each role can be instantiated by various principals). 
 An \emph{honest participant} follows the protocol description, 
 while the \emph{adversary} (also called the \emph{intruder} or \emph{attacker}) 
 attempts to undermine the security guarantees of the protocol and can perform any action 
 that is allowed according to a given \emph{threat model} 
-(i.e., description of attacker capabilities). 
+(i.e., description of attacker capabilities).  
 A \emph{session} is a single logical instance of a protocol, and a protocol \emph{trace} 
 is a log of events associated with the execution of a protocol, possibly containing multiple sessions.
+Each \emph{event} records a protocol action that took place, along with the relevant data items involved 
+(e.g., the event \textsf{Secret}$(A, n_a)$ denotes that nonce $n_a$ was marked as secret by principal $A$).
 
 
 \section{Cryptographic Primitive and Protocol Verification Background}
@@ -370,6 +410,15 @@ Further, trace properties can be partitioned into \emph{safety} and \emph{livene
 where \emph{safety} properties intuitively state that ``something bad never happens," 
 whereas \emph{liveness} properties state that ``something good eventually happens." 
 The trace properties we consider in this document are all safety properties.
+Liveness properties are not considered simply because all standard security properties that are amenable 
+to symbolic model verification are safety properties.
+
+A common security-relevant liveness property is \emph{denial of service protection};
+i.e., every client request eventually yields a server response. 
+However, this property (like other liveness properties) is not amenable to symbolic model verification, 
+as a Dolev-Yao adversary can always trivially violate it by dropping every message on the network.
+For such properties, the difficulty lies in determining if the attack is feasible \emph{in practice},
+which cannot be determined by symbolic model verification.
 
 \subsection{Standard security properties}
 For trace properties, we consider \emph{secrecy}-related and \emph{authentication}-related properties.
@@ -379,7 +428,7 @@ For trace properties, we consider \emph{secrecy}-related and \emph{authenticatio
     \item[$S_2.$]  A protocol satisfies \emph{forward secrecy} \cite{pfs} 
     if the compromise of a long-term key in the current session does not violate weak secrecy of messages 
     shared in previous sessions. (While forward secrecy has been included for completeness, 
-    we do not discuss it further in this document.)
+    we do not discuss it further in this document for lack of space.)
     \item[$A_1.$] A protocol satisfies \emph{non-injective agreement of $B$ to $A$} \cite{lowe_auth} if, 
     whenever principal $A$ accepts data item $d$, apparently from $B$, then at some point in the past, 
     $B$ has sent data item $d$, apparently to $A$. 
@@ -1515,7 +1564,7 @@ Above, cases $(1)$ and $(2)$ correspond to the adversary's ability to construct 
 Additionally, Horn clauses containing $\textsf{Message}(.,.)$ predicates are generated 
 to also capture the protocol rules---this translation is more complicated, 
 and the internal workings of ProVerif are not the focus of this document. 
-However, the translation rules can be found in Figure \ref{fig:horn-translation} in the appendix. 
+However, the translation rules can be found in \cite{proverif_2016}. 
 
 For secrecy properties, ProVerif checks if $\mathsf{Attacker}(s)$ is derivable (from the protocol and adversary rules) for some secret $s$, using an algorithm based on saturation by resolution \cite{proverif}. A general takeaway is that with ProVerif's Horn clause semantics, secrecy and authentication  properties can also be framed naturally in terms of \textit{reachability} rather than observational equivalence, increasing the automation potential.
 
@@ -1817,7 +1866,7 @@ $
 
 Equation $(3)$ appears to be redundant, but it is included for technical 
 reasons outside the scope of this document (\emph{AC-coherence}, which is similar to confluence 
-modulo an equational theory \cite{folding_variant_narrowing}).
+modulo \emph{AC} \cite{folding_variant_narrowing}).
 First, notice that we cannot soundly phrase these equations as destructors. One can attempt: just use Horn clauses $\mathsf{Attacker}(x \oplus x) \Rightarrow \mathsf{Attacker}(0), \mathsf{Attacker}(x \oplus 0) \Rightarrow \mathsf{Attacker}(x), \mathsf{Attacker}((x \oplus x) \oplus y) \Rightarrow \mathsf{Attacker}(y)$, and so on. But, we will miss attacks. Suppose we can derive $\textsf{Attacker}(a \oplus (b \oplus (c \oplus 0)))$. Applying the identity law $(x \oplus 0 = 0)$ on $c \oplus 0$, we should be able to derive $\textsf{Attacker}(a \oplus (b \oplus c))$. However, this derivation relies on the equational theory being closed under congruence. But, with destructors, we can only shuffle back and forth with associativity and commutativity, as the left-hand side of the identity law's destructor does not match $\textsf{Attacker}(a \oplus (b \oplus (c \oplus 0)))$ (or any term derivable from associativity and commutativity) ``at the top level."
 
 Why did this limitation not apply to encryption and decryption? 
@@ -1872,7 +1921,7 @@ Crucially, Algorithm \ref{alg:unification-mod-e} modulo \emph{AC} still terminat
 as unification modulo associativity and commutativity axioms is decidable 
 with existing algorithms from the literature \cite{unification_modulo_ac}.
 Again, the lifted (modulo \emph{AC}) version of this algorithm is sound and complete \cite{tamarin,folding_variant_narrowing}, 
-assuming confluence, coherence, and the finite property modulo \emph{AC}.
+assuming confluence, coherence, and the finite variant property (all modulo \emph{AC}).
 
 % {
 % (1) attacker has to add before subtracting  \\
@@ -1956,7 +2005,7 @@ to $\mathsf{f}(\langle \texttt{tag}_i, t_1 \rangle, \dots, t_n)$,
 each with a distinct  $\texttt{tag}_i$ (a concrete constant), 
 and we update parsing to accommodate for the pair and require that honest participants check the tags 
 to see that they match the expected values. 
-The result is formally proven in \cite{tagging}. 
+The result (that tagging prevents type confusion) is formally proven in \cite{tagging}. 
 It is not a trivial result, as the attacker may modify tags if they are not cryptographically protected.
 %!! Indeed, modifying tags that are not cryptographically protected is 
 % \emph{never necessary} to mount an attack under this tagging scheme.
@@ -2110,34 +2159,13 @@ One major obstacle is that these formalisms are inherently monolithic, which is 
 interactivity---for humans, it is easier to conceptualize decomposed problems. 
 Further, while the existing algorithms work well for cryptographic operations, 
 they do not generalize well for protocols heavy on non-cryptographic reasoning. 
-To address these issues, the cryptographic protocol verification community may be able to draw inspiration 
-from existing approaches in the verification community.
+To address these issues, the security community may be able to draw inspiration 
+from existing approaches in the (general-purpose) verification community.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
 
 \section{Appendix}
-
-\begin{figure}
-  \centering
-  \begin{align*}
-    \llbracket 0 \rrbracket \rho H &= \emptyset \\
-    \llbracket P \; | \; Q \rrbracket \rho H &= \llbracket P \rrbracket \rho H \cup \llbracket Q \rrbracket \rho H\\
-    \llbracket !P \rrbracket \rho H &= \llbracket P \rrbracket \rho H \\
-    \llbracket \textbf{new }n; P \rrbracket \rho H &= \llbracket P \rrbracket \rho[n \mapsto n[p'_1, \dots, p'_m]] H \\
-    \llbracket x(M); P \rrbracket \rho H &= \llbracket P \rrbracket \rho[x \mapsto x] (H \land message(\rho(M), x)) \\
-    \llbracket \bar{N}\langle M\rangle; P \rrbracket \rho H &= \llbracket P \rrbracket \rho H \cup \{  H \Rightarrow message(\rho(M), \rho(N)) \}\\
-    \llbracket \text{let }x = M\text{ in }P \rrbracket \rho H &= \llbracket P \rrbracket \rho[x \mapsto \rho(M)] H \\
-    \llbracket \text{if }M=N\text{ then }P\text{ else }Q \rrbracket \rho H &= \llbracket P \rrbracket (\sigma \rho) (\sigma H) \cup \llbracket Q \rrbracket \rho H\\
-     \llbracket \text{if }M=N\text{ then }P\text{ else }Q \rrbracket \rho H &= \llbracket Q \rrbracket \rho H \\
-     \llbracket \text{let }x = g(M_1, \dots, M_n)\text{ in }P\text{ else }Q \rrbracket \rho H &= 
-    \cup \{ \llbracket P \rrbracket ((\sigma \rho)[x \mapsto \sigma'p']) (\sigma H) \mid \\
-    & \qquad g(p'_1, \dots, p'_n) \rightarrow p'\text{ and }(\sigma, \sigma')\text{ is the most general} \\
-    & \qquad \text{pair of substitutions such that }\\
-    & \qquad \sigma \rho(M_1) = \sigma'p'_1, \dots, \sigma \rho(M_N) = \sigma'p'_n \} \cup \llbracket Q \rrbracket \rho H
-\end{align*} 
-\caption{ProVerif's translation from ProVerif's variant of the applied $\pi$-calculus to Horn clauses}\label{fig:horn-translation}
-\end{figure}
 
 \begin{figure}[t]
   \centering
