@@ -477,6 +477,18 @@ eprint = {
     abstract = { Trace properties, which have long been used for reasoning about systems, are sets of execution traces. Hyperproperties, introduced here, are sets of trace properties. Hyperproperties can express security policies, such as secure information flow and service level agreements, that trace properties cannot. Safety and liveness are generalized to hyperproperties, and every hyperproperty is shown to be the intersection of a safety hyperproperty and a liveness hyperproperty. A verification technique for safety hyperproperties is given and is shown to generalize prior techniques for verifying secure information flow. Refinement is shown to be applicable with safety hyperproperties. A topological characterization of hyperproperties is given. }
 }
 
+@ARTICLE{shannon,
+  author={Shannon, C. E.},
+  journal={The Bell System Technical Journal}, 
+  title={Communication theory of secrecy systems}, 
+  year={1949},
+  volume={28},
+  number={4},
+  pages={656-715},
+  keywords={},
+  doi={10.1002/j.1538-7305.1949.tb00928.x}}
+
+
 @article{bilinear,
   title={An introduction to pairing-based cryptography},
   author={Menezes, Alfred},
@@ -564,6 +576,40 @@ eprint = {
   pages={107--125},
   year={1992},
   publisher={Springer}
+}
+
+@inbook{diffiehellman,
+author = {Diffie, Whitfield and Hellman, Martin E.},
+title = {New Directions in Cryptography},
+year = {2022},
+isbn = {9781450398275},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+edition = {1},
+url = {https://doi.org/10.1145/3549993.3550007},
+booktitle = {Democratizing Cryptography: The Work of Whitfield Diffie and Martin Hellman},
+pages = {365–390},
+numpages = {26}
+}
+
+@article{rsa,
+author = {Rivest, R. L. and Shamir, A. and Adleman, L.},
+title = {A method for obtaining digital signatures and public-key cryptosystems},
+year = {1978},
+issue_date = {Feb. 1978},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {21},
+number = {2},
+issn = {0001-0782},
+url = {https://doi.org/10.1145/359340.359342},
+doi = {10.1145/359340.359342},
+abstract = {An encryption method is presented with the novel property that publicly revealing an encryption key does not thereby reveal the corresponding decryption key. This has two important consequences: (1) Couriers or other secure means are not needed to transmit keys, since a message can be enciphered using an encryption key publicly revealed by the intented recipient. Only he can decipher the message, since only he knows the corresponding decryption key. (2) A message can be “signed” using a privately held decryption key. Anyone can verify this signature using the corresponding publicly revealed encryption key. Signatures cannot be forged, and a signer cannot later deny the validity of his signature. This has obvious applications in “electronic mail” and “electronic funds transfer” systems. A message is encrypted by representing it as a number M, raising M to a publicly specified power e, and then taking the remainder when the result is divided by the publicly specified product, n, of two large secret primer numbers p and q. Decryption is similar; only a different, secret, power d is used, where e * d ≡ 1(mod (p - 1) * (q - 1)). The security of the system rests in part on the difficulty of factoring the published divisor, n.},
+journal = {Commun. ACM},
+month = feb,
+pages = {120–126},
+numpages = {7},
+keywords = {security, public-key cryptosystems, privacy, prime number, message-passing, factorization, electronic mail, electronic funds transfer, digital signatures, cryptography, authentication}
 }
 
 @techreport{5g,
