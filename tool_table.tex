@@ -27,10 +27,10 @@
 Tamarin \cite{tamarin} & multiset rewriting & none & AS, PS & guarded FOL & diff & convergent/ FVP, XOR, DH, BP & yes/ partial & LIA \\
 
 \rowcolor{grouponeLight}
-ProVerif \cite{proverif} & applied \newline $\pi$-calculus, Horn clauses & none & PS & derivability, correspondence & diff & convergent/ FVP or \newline linear, XOR$^*$, DH$^*$, BP$^*$ & yes$^*$/no & variable/ constant integer \newline addition \\
+ProVerif \cite{proverif} & applied \newline $\pi$-calculus, Horn clauses & none & PS & derivability, correspondence & diff & convergent or \newline linear, XOR$^*$, DH$^*$, BP$^*$ & yes$^*$/no & variable/ constant integer \newline addition \\
 
 \rowcolor{grouponeDark}
-Maude-NPA \cite{maude_npa} & term \newline rewriting, strand spaces & none & AS, PS & attack \newline patterns & diff & AC labels and confluent, \newline terminating, coherent, SRI & no & no \\
+Maude-NPA \cite{maude_npa} & term \newline rewriting, strand spaces & none & AS, PS & attack \newline patterns & diff & AC operators and confluent, \newline terminating, coherent, SRI & no & no \\
 \hhline{|=========|}
 
 \rowcolor{grouptwoDark}
@@ -51,16 +51,16 @@ DY$^*$ \cite{dystar} & refinement types, SMT & none & PS & secrecy, non-injectiv
 \hhline{|=========|}
 
 \rowcolor{groupfourDark}
-DEEPSEC \cite{deepsec} & applied \newline$\pi$-calculus & sessions & AS, PS & none & trace & subterm- \newline convergent & no/no & no \\
+DEEPSEC \cite{deepsec} & applied \newline$\pi$-calculus & sessions & AS & none & trace & subterm- \newline convergent & no/no & no \\
 
 \rowcolor{groupfourLight}
-SAT-Equiv \cite{sat_equiv} & applied \newline$\pi$-calculus, SAT & everything & AS, PS & none & trace & encryption/ decryption & no/no & no \\
+SAT-Equiv \cite{sat_equiv} & applied \newline$\pi$-calculus, SAT & everything & AS & none & trace & encryption/ decryption & no/no & no \\
 
 \hline
 \end{tabular}
 \begin{flushleft}
 \vspace{.3em}
-AS $\mapsto$ attack soundness, AC $\mapsto$ attack completeness, PS $\mapsto$ proof soundness, PC $\mapsto$ proof completeness, LIA $\mapsto$ linear integer arithmetic,
+AS $\mapsto$ attack soundness, PS $\mapsto$ proof soundness, PC $\mapsto$ proof completeness, LIA $\mapsto$ linear integer arithmetic,
 FVP $\mapsto$ finite variant property, SRI $\mapsto$ strongly right irreducible \cite{rewrite_systems}, XOR $\mapsto$ exclusive or, DH $\mapsto$ Diffie-Hellman exponentiation, BP $\mapsto$ bilinear pairings \cite{bilinear}, AC $\mapsto$ associative-commutative.
 \newline\newline 
 Formal guarantees describe tool algorithms with respect to the \emph{unbounded} security protocol verification problem. 
@@ -69,7 +69,6 @@ Blue (first group) denotes \emph{modern CPVs with unbounded analyses}. Green (se
 \newline\newline
 $^*$ProVerif's support for these features relies on mutually incompatible extensions (not native).
 \end{flushleft}
-\label{test}
 
 \caption{Symbolic model cryptographic protocol verifiers}
 \label{tab:tools}

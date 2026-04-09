@@ -66,7 +66,7 @@
     \vspace{1in}
 
     {\large
-    April 23, 2026\par
+    April 23rd, 2026\par
     }
 
     \vfill
@@ -250,7 +250,7 @@ The game proceeds as follows (where $\xleftarrow{\$}$ denotes sampling from a pr
     \item The adversary chooses two messages $m_1$
  and $m_2$ such that $|m_1| = |m_2|$ (with $|.|$ denoting string length)
     \item $b \xleftarrow{\$} \{0, 1\}$ uniformly
-    \item $c \xleftarrow{\$} \mathsf{Enc(m_b,k)}$
+    \item $c \xleftarrow{\$} \mathsf{Enc}(m_b,k)$
     \item Adversary is given $c$ and retains oracle access to $\mathsf{Enc}(., k)$
     \item Adversary outputs $b'$ and wins if $b' = b$
  \end{enumerate}
@@ -343,7 +343,7 @@ closer to where the notation is used.
 i.e., the characterization of the adversary's capabilities as well as the security properties to prove. 
 Approaches can generally be split into two camps, 
 the \textit{computational model} and \textit{symbolic model}. 
-Additionally, there a middle ground called the \textit{computationally complete symbolic attacker (CCSA) model}.
+Additionally, there is a middle ground called the \textit{computationally complete symbolic attacker (CCSA) model}.
 
 In the \textit{computational model} \cite{computational_model}, the semantics closely align with the mathematical formalism 
 described in Section \ref{sec:crypto-background}---adversaries are PPT Turing machines, 
@@ -532,8 +532,8 @@ we use \red{red} to denote public terms (e.g., \red{$A$}) and
 \blue{blue} to denote fresh terms (e.g., \blue{$N_a$}).
 We denote the set of well-sorted terms (i.e., terms where function arguments have the correct sort) 
 built from function symbols in $\Sigma$ and data in $D$ by $\mathcal{T}(\Sigma, D)$.
-For example, we could have $(\mathsf{s\_enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}) \in \Sigma_c$ 
-and $\mathsf{s\_enc}(\red{v_1}, \blue{v_2}) \in \mathcal{T}(\Sigma, D)$. 
+For example, we could have $(\mathsf{enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}) \in \Sigma_c$ 
+and $\mathsf{enc}(\red{v_1}, \blue{v_2}) \in \mathcal{T}(\Sigma, D)$. 
 For clarity, we may use a double colon syntax $\mathsf{identifier} :: \mathsf{type}$ to denote the 
 $(\mathsf{identifier}, \mathsf{type})$ pair. 
 We define the \emph{positions} of a term as usual and use $t|_p$ to denote the subterm of $t$ 
@@ -543,11 +543,11 @@ at position $p$ and $t_1[t_2]_p$ to denote substituting $t_2$ for the subterm at
 \textbf{Algebraic properties of cryptographic primitives.} We model cryptographic properties through a set 
 of equations $E$, 
 where each equation is comprised of two terms in $\mathcal{T}(\Sigma, V)$. 
-In the most basic setting, we have $E = \{ \mathsf{s\_dec}(\mathsf{s\_enc}(m, k), k) = m \}$ 
+In the most basic setting, we have $E = \{ \mathsf{dec}(\mathsf{enc}(m, k), k) = m \}$ 
 with 
-$\Sigma = \{ \mathsf{s\_enc} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}, 
-\mathsf{s\_dec} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg} \}$. 
-Intuitively, the equation $\mathsf{s\_dec}(\mathsf{s\_enc}(m, k), k) = m$ states that decrypting a ciphertext 
+$\Sigma = \{ \mathsf{enc} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}, 
+\mathsf{dec} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg} \}$. 
+Intuitively, the equation $\mathsf{dec}(\mathsf{enc}(m, k), k) = m$ states that decrypting a ciphertext 
 using the same key that it was encrypted with yields the underlying plain text. 
 We use $=_E$ to denote \textit{equality modulo E}, where $t_1 =_E t_2$ denotes that $t_1$ and $t_2$ 
 are related in the smallest congruence relation containing $E$ that is closed under substitutions. 
@@ -562,18 +562,18 @@ Given a set of public terms $P$ and an insecure network $N$ (purposefully left i
 we can inductively define the set $\mathcal{K}$ of terms in the knowledge base of a symbolic model attacker, 
 as in Figure \ref{fig:adv-knowledge}. Figure \ref{fig:adv-knowledge} is a collection of inference rules, 
 where the premises (interpreted conjunctively) are on top of the bar, and the conclusion is below. 
-\textsc{Pub} states that if a term $t$ is public, then it in the adversary's knowledge; 
+\textsc{Pub} states that if a term $t$ is public, then it is in the adversary's knowledge; 
 \textsc{Net} states that terms on the public network are in the adversary's knowledge; 
 \textsc{Eq} states that once an attacker knows a term $t$, it knows the whole equivalence class of terms according to $E$;
 \textsc{Fun} states that the adversary can apply functions to terms in the adversary's knowledge; 
 \textsc{Fr} denotes that the adversary can sample fresh terms. 
 The side condition on \textsc{Fr} states that the adversary does not necessarily know \emph{every} fresh term, 
 but only the ones the adversary has freshly sampled. 
-As an example, assume $\textsf{s\_enc}(m, k)$ was sent on $N$ and that $k \in \mathcal{K}$. 
-From this, we can apply \textsc{Net} to $\textsf{s\_enc}(m, k)$ and include it in $\mathcal{K}$. 
-Then, because $k$ and $\textsf{s\_enc}(m, k)$ are both in $\mathcal{K}$, 
-we can add $\textsf{s\_dec}(\textsf{s\_enc}(m, k), k)$ to $\mathcal{K}$ (using \textsc{Fun}). 
-Finally, with \textsc{Eq}, since $\textsf{s\_dec}(\textsf{s\_enc}(m, k), k) =_E m$, 
+As an example, assume $\textsf{enc}(m, k)$ was sent on $N$ and that $k \in \mathcal{K}$. 
+From this, we can apply \textsc{Net} to $\textsf{enc}(m, k)$ and include it in $\mathcal{K}$. 
+Then, because $k$ and $\textsf{enc}(m, k)$ are both in $\mathcal{K}$, 
+we can add $\textsf{dec}(\textsf{enc}(m, k), k)$ to $\mathcal{K}$ (using \textsc{Fun}). 
+Finally, with \textsc{Eq}, since $\textsf{dec}(\textsf{enc}(m, k), k) =_E m$, 
 we can add $m$ to $\mathcal{K}$. 
 Note that \textsc{Eq} implicitly encodes the perfect cryptography assumption---the only way 
 to retrieve the encrypted $m$ is to decrypt with the same key used to encrypt, 
@@ -621,7 +621,7 @@ $P$ denotes public terms, and $D$ denotes data items (e.g., nonces), and $\Sigma
 \textbf{Security properties.} The Dolev-Yao model does not directly inherit security properties from the computational model, 
 as we want to avoid reasoning about probabilities (as one does with perfect secrecy or IND-CPA secrecy). 
 For example, the symbolic model uses a weaker notion of secrecy, aptly called \textit{weak secrecy}. 
-A protocol satisfies weak secrecy the adversary never learns secret terms
+A protocol satisfies weak secrecy if the adversary never learns secret terms
 (where ``secret terms" will be elaborated in Sections \ref{sec:tamarin} and \ref{sec:proverif}). 
 We gave an informal overview of security properties in Section \ref{sec:security-properties}; 
 more detailed encodings will follow in Section \ref{sec:mechanized-reasoning}.
@@ -684,7 +684,7 @@ The roles are depicted by the column labels on top, and the arrows indicate the 
 Symmetric random encryption and decryption is modeled by 
 \begin{gather*}
 \Sigma = \{ \textsf{sr\_enc} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, 
-\textsf{sr\_dec} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg} \} \text{ and} \\ 
+\textsf{sr\_dec} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg} \} \text{ and} \\ 
 E = \{ \textsf{sr\_dec}(\textsf{sr\_enc}(m, k, \textit{IV}), k) = m \}. 
 \end{gather*}
 The protocol is computationally insecure, as an initialization vector should never be reused; in this protocol, 
@@ -759,7 +759,7 @@ Black terms denote intermediate terms illustrating the derivation.
 % s
 
 However, in the symbolic model, there is no attack, 
-as the implementation details of $\textsf{src\_enc}(.,.,.)$ are not specified, and
+as the implementation details of $\textsf{sr\_enc}(.,.,.)$ are not specified, and
 the attacker \emph{requires} knowledge of $k$ to destruct $\textsf{sr\_enc}(s, k, \textit{IV})$ 
 and retrieve $s$. However, $k$ is not derivable by the adversary from the rules in Figure \ref{fig:adv-knowledge}.
 
@@ -924,10 +924,10 @@ Finally, we lift $\mathsf{ginsts}_E(.)$ from single rewrite rules to sets of rew
 From this, we can define a small-step labeled transition relation for a set of rewrite rules $R$, 
 denoted $\xrightarrow{a}_R$, with the following inference rule. 
 Here, assume $S$ denotes the current state (which is a multiset of facts) and $\mathcal{S}$ denotes the set of all states, 
-and hence $\xrightarrow{a}_R \;\subseteq \mathcal{P}(\mathcal{S}) \times \mathcal{P}(\mathcal{S})$. 
+and hence $\xrightarrow{a}_R \;\subseteq \mathcal{S} \times \mathcal{S}$. 
   \begin{mathpar}
     \inferrule*
-      { l \xrightarrow{a} r \in \mathsf{ginsts}_E(R) \quad l \subset^\# S }
+      { l \xrightarrow{a} r \in \mathsf{ginsts}_E(R) \quad l \subseteq^\# S }
       { S \xrightarrow{a}_R (S  \setminus ^\# l) \cup^\# r }
   \end{mathpar}
 Intuitively, the state $S$ evolves at each step through the application of some rewrite rule in $R$ that consumes state facts on the left-hand side of the rule and produces state facts on the right-hand side of the rule.
@@ -940,7 +940,7 @@ Finally, a \textit{trace} of a protocol $R$ is a sequence of states $S_0, \dots,
 E = \{ \mathsf{a\_dec}(\mathsf{a\_enc}(m, \mathsf{pk}(k)), k) = m, \pi_1(\langle t_1, t_2 \rangle) = t_1, \pi_2(\langle t_1, t_2 \rangle) = t_2 \}, \text{ and } \\ \Sigma_{\textsc{Fact}} = \{ \mathsf{In} :: \mathit{msg},\, \mathsf{Out} :: \mathit{msg},\, \mathsf{Fr} :: \mathit{fr},\, \mathsf{K} :: \mathit{msg},\, \mathsf{Pk} :: \mathit{msg} \times \mathit{msg},\, \mathsf{Ltk} :: \mathit{msg} \times \mathit{msg},\, \\
 \mathsf{StA1} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg},\, \mathsf{StB1} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg},\, \mathsf{StA2} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg} \}.
 \end{gather*}
-The protocol is encoded as a set of rewrite rules $R = \{ \mathsf{Register}, A_1, B_1, A_2, B_2 \}$, 
+The protocol is encoded as a set of rewrite rules $R = \{ \mathsf{Register}, \mathsf{Reveal}, A_1, B_1, A_2, B_2 \}$, 
 where the rewrite rules are defined as in Figure 8.
 \begin{figure}[t]
   \centering
@@ -1038,7 +1038,7 @@ in different rule instances.
 Hence, the protocol description can capture an unbounded number of sessions and principals. 
 The \textsf{Ltk} (short for ``long-term key") stores $A$'s (fresh) 
 secret key $sk$, while $\textsf{Pk}$ stores the public key derived from $sk$. 
-Finally, the identity/public key mapping are broadcast along the network channel, 
+Finally, the identity/public key mappings are broadcast along the network channel, 
 as they are public information that should be known by the adversary for realistic modeling.
 
 The second rule, \textsf{Reveal}, leaks a secret key on the network channel. This models \emph{key compromise}, 
@@ -1093,7 +1093,7 @@ $\{\mathsf{Fr}(\blue{sk_A})\} \xrightarrow{\{\}}$ \newline
 $\{\mathsf{Ltk}(\red{A},\blue{sk_A}),\mathsf{Pk}(\red{A},\mathsf{pk}(\blue{sk_A})),
 \mathsf{Out}(\langle \red{A},\mathsf{pk}(\blue{sk_A})\rangle)\}$ &
 $\{\mathsf{Ltk}(\red{A},\blue{sk_A}),
-\mathsf{Pk}(\red{A},\mathsf{pk}(\red{sk_A})),
+\mathsf{Pk}(\red{A},\mathsf{pk}(\blue{sk_A})),
 \mathsf{Out}(\langle \red{A},\mathsf{pk}(\blue{sk_A})\rangle)\}$
 \\[1.6em]
 
@@ -1138,7 +1138,7 @@ As an intuitive example, one can specify a secrecy property as the first-order l
 Intuitively, if $x$ is marked as secret by some action fact in the protocol description (at any time $i$), 
 then $x$ does not appear in the adversary's knowledge base (at any time $j$).
 
-\subsection{$\pi$-calculus-based approaches}\label{sec:apc-approaches}
+\subsection{Applied $\pi$-calculus-based approaches}\label{sec:apc-approaches}
 Symbolic model protocol analysis approaches based on $\pi$-calculus were pioneered by Abadi and Fournet in \cite{apc}, and lay the theoretical foundations for the popular automated reasoning tool ProVerif \cite{proverif}. Additionally, many theoretical results in symbolic model verification (discussed in Section \ref{sec:tractable-reasoning}) are expressed in terms of the $\pi$-calculus. Intuitively, the $\pi$-calculus is a minimal language that captures the concurrent execution of a collection of processes with message passing of atomic names, also supporting the dynamic creation of new communication channels.
 
 When reasoning about cryptographic protocols, we use an extension of the $\pi$-calculus, called the \textit{applied $\pi$-calculus}, where processes exchange symbolic terms in addition to atomic channel names. These terms represent cryptographic messages, and we can use the same set of terms $\mathcal{T}(\Sigma, D)$ as in the multiset rewriting formalization, except that $D$ also contains channel names.
@@ -1342,8 +1342,8 @@ $P(s) \triangleq \textsf{if }s = \textsf{N}\textsf{ then } \bar c \langle \maths
 \textsf{ else } \bar c \langle \mathsf{ko} \rangle $ (assume \textsf{ok},  \textsf{ko}, and \textsf{N} are concrete constants). 
 Here, $P(s)$ branches on $s$, but it never reveals it on the channel. Here, context $C$ can distinguish $c$ 
 from any other value for $s$, where 
-$C[\square] \triangleq (\square \mid c(M). \textsf{if }M=\textsf{ok} \textsf{ then } \bar d(\textsf{ok}) \textsf{ else } 0.)$ 
-In general, the adversary can perform always perform \emph{tests} in the guard of \textsf{if} expressions 
+$C[\square] \triangleq (\square \mid c(M). \textsf{if }M=\textsf{ok} \textsf{ then } \bar d\langle \textsf{ok} \rangle \textsf{ else } 0.)$ 
+In general, the adversary can always perform \emph{tests} in the guard of \textsf{if} expressions 
 and emit a barb in one case and not in the other. Here, $C[P(\mathsf{N})]$ gives a barb on $d$, 
 while $C[P(x)]$ (with $x \neq \mathsf{N}$) does not give a barb on $d$, hence breaking the observational equivalence. 
 Note that an evaluation context $C$ intuitively has the same capabilities as a symbolic adversary shown 
@@ -1418,7 +1418,7 @@ $\pi$-calculus without replication or equality tests. In this setup, freshness i
 (through $\mathcal{N}$, $\mathcal{N}_{\mathcal{W}}$, and the rules above), 
 and equality tests are performed via pattern matching (in this setting, we exchange terms, not just variables).
 
-We denote the transitive closure of $\xrightarrow{\alpha}$ as $\xrightarrow{\alpha_1,\dots,\alpha_n}$. Given $\mathcal{K}\xrightarrow{\alpha_1,\dots,\alpha_n}\mathcal{K}'$, we can extract 
+We denote the multi-step labeled relation (induced from $\xrightarrow{\alpha}$) as $\xrightarrow{\alpha_1,\dots,\alpha_n}$. Given $\mathcal{K}\xrightarrow{\alpha_1,\dots,\alpha_n}\mathcal{K}'$, we can extract 
 a \emph{trace} $\mathsf{tr}$ from $\alpha_1, \dots, \alpha_n$ by removing each $\tau$ label; we use $\mathcal{K}\xrightarrow{\pi:\; \mathsf{tr}} \mathcal{K}'$ to denote that $\mathcal{K}$ computes to $\mathcal{K}'$ with trace $\mathsf{tr}$.
 We define the set of traces starting from configuration $\mathcal{K}$ as follows: 
 $$\mathsf{traces}(\mathcal{K}) = \{\mathsf{tr} \mid \mathcal{K} \xrightarrow{\pi:\; \mathsf{tr}} (\mathcal{P}', \phi', \sigma')\text{ for some configuration } (\mathcal{P}', \phi', \sigma')\}$$
@@ -1461,7 +1461,7 @@ ProVerif's formal foundations, and the original Dolev-Yao threat model.
 While we outline general strategies, gory details 
 of the search algorithms are outside the scope of this document.
 
-\subsection{Naive approach} A general-purpose model checker takes a system model $M$ and a temporal property $\varphi$ and attempts to prove that $\varphi$ is valid in $M$, i.e., $M \models \varphi$. Many modern model checkers can reason about infinite-state systems \cite{nuxmv,kind2}, and hence one would not need to impose a bound on term side, $D$, sessions, or principals as in \cite{satmc}. However, there is no straightforward way to use general-purpose model checkers for security protocol proofs: If cryptographic constructs (like encryption and decryption) are ignored (e.g., replacing encrypted messages with plain texts), then spurious counterexamples are raised; if one attempts to incorporate cryptographic constructs, then one must incorporate adversarial knowledge and capabilities into the system model and/or security property. The former approach is still possible, but it relies on abstraction-refinement techniques that diminish automation potential or miss attacks \cite{lteinspector,5greasoner,uptane_analysis}. The latter approach is difficult, error-prone, and often computationally infeasible without dedicated algorithms. Because of this, dedicated approaches have been developed for cryptographic protocol verification. Today, the most popular approaches are based on developing algorithms for mechanizing the reasoning in the multiset rewriting and applied $\pi$-calculus formalisms, as discussed in Sections \ref{sec:msr-approaches} and \ref{sec:apc-approaches}.
+\subsection{Naive approach} A general-purpose model checker takes a system model $M$ and a temporal property $\varphi$ and attempts to prove that $\varphi$ is valid in $M$, i.e., $M \models \varphi$. Many modern model checkers can reason about infinite-state systems \cite{nuxmv,kind2}, and hence one would not need to impose a bound on term size, $D$, sessions, or principals as in \cite{satmc}. However, there is no straightforward way to use general-purpose model checkers for security protocol proofs: If cryptographic constructs (like encryption and decryption) are ignored (e.g., replacing encrypted messages with plain texts), then spurious counterexamples are raised; if one attempts to incorporate cryptographic constructs, then one must incorporate adversarial knowledge and capabilities into the system model and/or security property. The former approach is still possible, but it relies on abstraction-refinement techniques that diminish automation potential or miss attacks \cite{lteinspector,5greasoner,uptane_analysis}. The latter approach is difficult, error-prone, and often computationally infeasible without dedicated algorithms. Because of this, dedicated approaches have been developed for cryptographic protocol verification. Today, the most popular approaches are based on developing algorithms for mechanizing the reasoning in the multiset rewriting and applied $\pi$-calculus formalisms, as discussed in Sections \ref{sec:msr-approaches} and \ref{sec:apc-approaches}.
 
 \subsection {Tamarin}\label{sec:tamarin} 
 An example tool mechanizing reasoning with formal foundations in multiset rewriting is Tamarin \cite{tamarin}. 
@@ -1471,7 +1471,7 @@ Tamarin creates a constraint system, i.e., a set of constraints $S$
 (which is a subset of the set of all constraints $\mathcal{S}$). 
 Tamarin iteratively applies constraint solving rules from its core calculus 
 (i.e., rules defining a transition relation 
-$\rightsquigarrow \; \subseteq \mathcal{P}(\mathcal{S}) \times \mathcal{P}(\mathcal{S})$) 
+$\rightsquigarrow \; \subseteq \mathcal{S} \times \mathcal{S})$ 
 until either the current set of constraints is trivially satisfiable (resulting in a concrete attack trace), 
 or it is trivially unsatisfiable (meaning that the property is valid in the protocol). 
 The details of $\rightsquigarrow$ will not be discussed in this report for lack of space; however, we outline a few technical challenges.
@@ -1547,12 +1547,12 @@ Tamarin can then use these $\sigma_{i,j}$s to exhaustively
 case split in its search algorithm.
 
 \textbf{Example of unification modulo $E$.}
-Consider the unification problem for terms $\textsf{dec}(x,k)$ and $y$
+Consider the unification problem for terms $y$ and  $\textsf{dec}(x,k)$
 with the equational theory $\{ \textsf{dec}(\textsf{enc}(m, k), k) = m \}$.
 We run the algorithm as follows. 
 \begin{itemize}
     \item[] $E$ is indeed convergent and has the finite variant property.
-    \item[(1)] The variables of $\textsf{dec}(x,k)$ and $y$ are already disjoint.
+    \item[(1)] The variables of $y$ and $\textsf{dec}(x,k)$ are already disjoint.
     \item[(2)] $y$ has a single variant, $(y, \theta_{1,1} = \{\})$. $\textsf{dec}(x,k)$ has two variants, $(m, \theta_{2,1} = \{x \mapsto \textsf{enc}(m, k)\})$ and $(\textsf{dec}(x, k), \theta_{2,2} = \{\})$, intuitively corresponding to the case where $x$ is decryptable and the case where it isn't (respectively).
     \item[(3)] We syntactically unify two pairs $(y, m)$ and $(y, \textsf{dec}(x, k))$, yielding substitutions $\mu_{1,1} = \{ y \mapsto m \}$ and $\mu_{1, 2} =\{ y \mapsto \textsf{dec}(x, k)\}$.
     \item[(4)] Return $\theta_{1,1} \circ \theta_{2,1} \circ \mu_{1,1} = \{ x \mapsto \textsf{enc}(m, k), y \mapsto m \}$ and $\theta_{1,1} \circ \theta_{2,2} \circ \mu_{1,2} = \{ y \mapsto \textsf{dec}(x,k) \}$.
@@ -1589,31 +1589,40 @@ $
    (tr, \theta) \models_E  & f@i & \text{if } \theta(i) \in \mathit{idx}(\mathit{tr}) \text{ and } \theta(f) \in^\#_E tr_{\theta(i)} \\
    (tr, \theta) \models_E  & i^\textsc{Tmp} < j^\textsc{Tmp} & \text{if } \theta(i^\textsc{Tmp}) < \theta(j^\textsc{Tmp}) \\
    (tr, \theta) \models_E  & i^\textsc{Tmp} = j^\textsc{Tmp} & \text{if }\theta(i^\textsc{Tmp}) = \theta(j^\textsc{Tmp}) \\
-   (tr, \theta) \models_E  & t_1 = t_2 &\text{if } \theta(t_1) = \theta(t_2) \\
+   (tr, \theta) \models_E  & t_1 = t_2 &\text{if } \theta(t_1) =_E \theta(t_2) \\
    (tr, \theta) \models_E  & \neg \varphi & \text{if }(tr, \theta) \not\models_E \varphi \\
    (tr, \theta) \models_E  & \varphi_1 \land \varphi_2 & \text{if }(tr, \theta) \models_E \varphi_1 \text{ and }(tr, \theta) \models_E \varphi_2 \\
    (tr, \theta) \models_E  & \exists v. \varphi & \text{if there exists }u\text{ in the domain of  } v \text{ such that } (\mathit{tr}, \theta[v \mapsto u]) \models_E \varphi \\
 \end{array}
 $
 
-The above semantics is standard; the most interesting case is that of $f@i$. It states that $f@i$ is satisfied if action fact $f$ is in the trace at index $i$ (with both $f$ and $i$ interpreted according to the valuation $\theta$). Note that one can support universal quantification and the rest of the standard connectives by desugaring to existential quantification, conjunction, and negation. From the standard satisfaction relation, one can say that a security property $\varphi$ \emph{holds} in a model $R$ if $(\mathit{tr}, \theta) \models_E \varphi$ for every evaluation $\theta$ and every trace \emph{tr} of $R$.
+The above semantics is standard; the most interesting case is that of $f@i$. It states that $f@i$ is satisfied if action fact $f$ is in the trace at index $i$ (with both $f$ and $i$ interpreted according to the valuation $\theta$). Note that one can support universal quantification and the rest of the standard connectives by desugaring to existential quantification, conjunction, and negation. From the standard satisfaction relation, one can say that a security property $\varphi$ \emph{holds} in a model $R$ if $(\mathit{tr}, \theta) \models_E \varphi$ for every valuation $\theta$ and every trace \emph{tr} of $R$.
 
 \textbf{Standard security properties in Tamarin.} Below we present how to formalize standard security properties in Tamarin's logic; variable sort annotations are omitted for brevity.
 \begin{itemize}
     \item \emph{Weak secrecy}: $$\forall x. \; \forall i. \; \mathsf{Secret}(x) @i \Rightarrow \neg (\exists j. \mathsf{K}(x)@j)$$
     We discussed this in Section \ref{sec:msr-approaches}.
     \item \emph{Non-injective agreement}: $$\forall A. \forall B. \forall t. \forall i. \mathsf{Accept}(A,B,t)@i \Rightarrow (\exists j. \mathsf{Sent}(B,A,t)@j \land j < i)$$
-    This closely aligns with the natural language definition of non-injective agreement: if $B$ accepted term $t$ (apparently) from $A$, then $A$ sent term $t$ (apparently) to $B$ at some earlier time.
+    This closely aligns with the natural language definition of non-injective agreement: if $A$ accepted term $t$ (apparently) from $B$, then $B$ sent term $t$ (apparently) to $A$ at some earlier time.
     \item \emph{Injective agreement}: 
 \begin{gather*}
     \forall A. \forall B. \forall t. \forall i. \mathsf{Accept}(A,B,t)@i \Rightarrow (\exists j. \mathsf{Sent}(B,A,t)@j \land j < i \;\land \\ 
     \neg (\exists A_2. \exists B_2. \exists i_2. \mathsf{Accept}(A_2,B_2,t)@i_2 \land \neg(i_2 = i) ))
 \end{gather*}
-The formalization of injective agreement is the same as non-injective agreement, save for the extra conjunct on the second line. It states that if $A$ accepted $t$ from $B$, then $A$ sent $t$ to $B$, \emph{and also} there was not another distinct accept event for the same term $t$. At first glance, the property may seem too strong---for example, what if $A$ sends $t$ twice, and $B$ accepts $t$ twice? It falsifies this property, but should not violate the textbook definition of injective agreement (from Section \ref{sec:security-properties}). Although this trace technically does not violate the textbook definition, one can easily construct another trace from it that \emph{does} violate it---simply replace the second honest send with an adversarial replay. Hence, each term sent by an honest participant must include some notion of freshness (e.g., via a nonce or counter) if a protocol hopes to satisfy injective agreement.
+The formalization of injective agreement is the same as non-injective agreement, 
+save for the extra conjunct on the second line. 
+It states that if $A$ accepted $t$ from $B$, then $B$ sent $t$ to $A$, 
+\emph{and also} there was not another distinct accept event for the same term $t$. 
+At first glance, the property may seem too strong---for example, 
+what if $B$ sends $t$ twice, and $A$ accepts $t$ twice? 
+It falsifies this property, but should not violate the textbook definition 
+of injective agreement (from Section \ref{sec:security-properties}). 
+Although this trace technically does not violate the textbook definition, 
+one can easily construct another trace from it that \emph{does} violate it---simply replace the second honest send with an adversarial replay. Hence, each term sent by an honest participant must include some notion of freshness (e.g., via a nonce or counter) if a protocol hopes to satisfy injective agreement.
 \end{itemize}
 
 One can specify \emph{diff equivalence}, but not through the property specification logic, as it only captures trace properties. To do so, one annotates the input rewriting system with $\textsf{diff}(t_1, t_2)$ terms. Then, one can run Tamarin in \texttt{diff} mode, and Tamarin will auto-generate two versions of the protocol, one with $t_1$ substituted for $\textsf{diff}(t_1, t_2)$ (for each occurrence of $\textsf{diff}(t_1, t_2)$), and one with $t_2$ substituted for $\textsf{diff}(t_1, t_2)$ (for each occurrence of $\textsf{diff}(t_1, t_2)$).
-From these two protocols, Tamarin then attempts to determine their diff equivalence. For example, consider the single-rule protocol $$\{\mathsf{Fr}(ltk), \mathsf{Fr}(a), \mathsf{Fr}(b)\} \rightarrow \{ \mathsf{Out}(\mathsf{pk}(ltk)), \mathsf{Out}(a), \mathsf{Out}(\mathsf{a\_enc}(\mathsf{diff}(a, b), \mathsf{pk}(ltk))\}$$
+From these two protocols, Tamarin then attempts to determine their diff equivalence. For example, consider the single-rule protocol $$\{\mathsf{Fr}(ltk), \mathsf{Fr}(a), \mathsf{Fr}(b)\} \rightarrow \{ \mathsf{Out}(\mathsf{pk}(ltk)), \mathsf{Out}(a), \mathsf{Out}(\mathsf{a\_enc}(\mathsf{diff}(a, b), \mathsf{pk}(ltk)))\}$$
 From this, Tamarin would generate two protocols, each a single rule where the first one substitutes $a$ for $\mathsf{diff}(a,b)$, and the second where $b$ is substituted for $\mathsf{diff}(a, b)$. Intuitively, these protocols are not diff equivalent because the adversary can tell whether $a$ or $b$ was encrypted by computing the encryption of $a$ themself and comparing it to the ciphertext. Hence, even though $b$ is secret, some information about $b$ is leaked.
 
 \subsection{ProVerif} \label{sec:proverif} 
@@ -1631,14 +1640,16 @@ We start with a general discussion of Horn clauses.
 
 \textbf{Horn clauses.} Each \textit{Horn clause} is a first-order logic formula of the form $P_1 \land \dots \land P_n \Rightarrow P_{n+1}$ (or just a unit clause $P$), where each $P_i$ is a predicate.
 Note that the free variables in a Horn clause are all universally quantified, but the quantifiers are typically left implicit presentationally.
-In this setting, we consider the \textit{predicate signature} $ \Sigma_p = \{ (\textsf{Attacker}, \emph{msg}), (\textsf{Message}, \mathit{msg} \times \mathit{msg}) \}$ and predicate arguments from $\mathcal{T}(V, D)$.
+In this setting, we consider the \textit{predicate signature} 
+$ \Sigma_p = \{ (\textsf{Attacker}, \emph{msg}), (\textsf{Message}, \mathit{msg} \times \mathit{msg}) \}$ 
+and predicate arguments from $\mathcal{T}(\Sigma_c, V)$.
 Intuitively, $\textsf{Attacker}(t)$ denotes that the term $t$ is in the adversary's knowledge base, and $\textsf{Message}(m, c)$ denotes that message $m$ is sent on channel $c$. Note that for convenience, we may use notation $H \Rightarrow C$ where $H$ is a multiset, which denotes clause $H_1 \land \dots \land H_n \Rightarrow C$. Here, each $H_i$ is a multiset element of $H$ (including repetitions). 
 
 \textbf{Horn clause semantics.}
 We only consider models with a domain of $\mathcal{T}(\Sigma_c, D)$ that map function and constant symbols to the corresponding constructor symbols. In first-order logic, these are called \emph{Herbrand models}. Herbrand models of a given set of formulas can only differ in the interpretation they give to the predicate symbols, and one can encode a Herbrand model as the set of ground atomic formulas that are true in the model. Then, the \emph{least Herbrand model} of a set of Horn clauses $\psi$ is a Herbrand model $\mathcal{H}$ such that for every other Herbrand model $\mathcal{H}'$ of $\psi$, $\mathcal{H} \subseteq \mathcal{H}'$. Note that least Herbrand models may not exist in general, but they always exist in the context of Horn reasoning \cite{horn_semantics}.
 
 \textbf{Horn clause example.}
-Consider the signature $\Sigma_c = \{ (f, \mathit{msg}), (c_1, \rightarrow \mathit{msg}), (c_2, \rightarrow \mathit{msg}) \}$ with predicate symbols $p_1$ and $p_2$, and consider the Horn clause set $\{ p_1(f(c_1)), p_1(f(x)) \Rightarrow p_2(f(x)) \}$.  Then, an example Herbrand model is $\{ p_1(f(c_1)), p_2(f(c_1)), p_1(f(c_2)) \}$,  and the least Herbrand model is $\{ p_1(f(c_1)), p_2(f(c_1)) \}$. 
+Consider the signature $\Sigma_c = \{ f :: \mathit{msg}, c_1 :: \mathit{msg}, c_2 :: \mathit{msg} \}$ with predicate symbols $p_1$ and $p_2$, and consider the Horn clause set $\{ p_1(f(c_1)), p_1(f(x)) \Rightarrow p_2(f(x)) \}$.  Then, an example Herbrand model is $\{ p_1(f(c_1)), p_2(f(c_1)), p_1(f(c_2)) \}$,  and the least Herbrand model is $\{ p_1(f(c_1)), p_2(f(c_1)) \}$. 
 
 \textbf{Semantics of negation.} In the previous example, $p_1(f(c_2))$ exists in some Herbrand model, 
 but not in the \emph{least} Herbrand model. 
@@ -1670,7 +1681,7 @@ When possible, ProVerif simulates equational theories in the form of \textit{des
 These destructor rules have a natural translation to ProVerif's Horn clause encoding (see case (2) below).
 The differences between destructor rules and equational theories may seem superficial, but they are meaningful and will be discussed further in Section \ref{sec:challenges}.
 
-ProVerif's direct support for equational theories is limited to those than can be partitioned into a set of convergent equations and a set of \emph{linear} equations (where each variable is used at most once on the left-hand side and at most once on the right-hand side). Broadly speaking, ProVerif ``compiles away" the equational theory by transforming the clause set such that Horn clause resolution can still proceed with syntactic unification \cite{proverif_equations}. In principle, ProVerif could augment its unification procedure within Horn clause resolution to support richer equational theories as in Tamarin. However, this clashes with ProVerif's goal of attaining a higher level of automation.
+ProVerif's direct support for equational theories is limited to those that can be partitioned into a set of convergent equations and a set of \emph{linear} equations (where each variable is used at most once on the left-hand side and at most once on the right-hand side). Broadly speaking, ProVerif ``compiles away" the equational theory by transforming the clause set such that Horn clause resolution can still proceed with syntactic unification \cite{proverif_equations}. In principle, ProVerif could augment its unification procedure within Horn clause resolution to support richer equational theories as in Tamarin. However, this clashes with ProVerif's goal of attaining a higher level of automation.
 
 \textbf{Clauses for the adversary.} ProVerif encodes adversarial capabilities into Horn clauses with the following rules, which are parametrized by the signature $\Sigma = \Sigma_c \cup \Sigma_d$:
 
@@ -1735,19 +1746,19 @@ but recovers an exact analysis for the consequents using a custom algorithm (see
 Additionally, the algorithm implements handling for \emph{injective events}
 (with \textsf{Inj-Event})
 which impose one-to-one mappings 
-between consequents and antecents (see injective agreement below), as well as temporal variables and constraints.
+between consequents and antecedents (see injective agreement below), as well as temporal variables and constraints.
 
 
 \textbf{Standard security properties in ProVerif.}
 \begin{itemize}
     \item \emph{Weak secrecy}: $$\mathsf{Attacker}(t)$$
-    We check for the derivability of term $t$ by the adversary.
+    We check for the derivability of term $t$ by the adversary. If so, weak secrecy is violated.
     \item \emph{Non-injective agreement}:
     $$\forall A. \forall B. \forall t.\; \mathsf{Event}(\mathsf{Accept}(A, B, t)) \Rightarrow \mathsf{Event}(\mathsf{Sent}(B, A, t))$$
-    The property is encoded as a correspondence query between a term $t$ being accepted by $A$ from $B$ and being sent from $A$ to $B$.
+    The property is encoded as a correspondence query between a term $t$ being accepted by $A$ from $B$ and being sent from $B$ to $A$.
     \item \emph{Injective agreement}: 
     $$\forall A. \forall B. \forall t.\; \textsf{inj-event}(\mathsf{Accept}(A, B, t)) \Rightarrow \textsf{inj-event}(\textsf{Sent}(B, A, t))$$
-    The encoding is a correspondence analogous to non-injective agreement, but we simply replaces the \textsf{Event} keyword with \textsf{Inj-Event} to denote that the correspondence should be injective.
+    The encoding is a correspondence analogous to non-injective agreement, but we simply replace the \textsf{Event} keyword with \textsf{Inj-Event} to denote that the correspondence should be injective.
     \item \emph{Diff equivalence}: ProVerif has a $\textsf{diff}(., .)$ operator analogously to Tamarin. If any \textsf{diff} is used in the input file, ProVerif automatically checks diff equivalence.
 \end{itemize}
 
@@ -1773,8 +1784,8 @@ The following small (but contrived) protocol exhibits ProVerif's unsoundness:
 
 \begin{enumerate}
     \item[] Assume $k$ is known only to $A$. Each $N_i$ is a fresh nonce.
-    \item[(1)] $A$ sends $\textsf{s\_enc}(\langle N_1, N_3 \rangle, k)$ and $\textsf{s\_enc}(\langle N_2, N_3 \rangle, k)$ to $B$.
-    \item[(2)] $B$ sends a message to $A$. If $A$ receives $\textsf{s\_enc}(\langle x, N_3 \rangle, k)$, respond with $x$.
+    \item[(1)] $A$ sends $\textsf{enc}(\langle N_1, N_3 \rangle, k)$ and $\textsf{enc}(\langle N_2, N_3 \rangle, k)$ to $B$.
+    \item[(2)] $B$ sends a message to $A$. If $A$ receives $\textsf{enc}(\langle x, N_3 \rangle, k)$, respond with $x$.
     \item[(3)] $B$ sends a message to $A$. If $A$ receives $\langle N_1, N_2 \rangle$, respond with secret $s$.
 \end{enumerate}
 
@@ -1785,9 +1796,9 @@ Why does ProVerif report a spurious attack? We can inspect a subset of ProVerif'
 $
 \begin{array}{ccl}
     \mathsf{Attacker}(c) & (i) & \text{attacker knows network channel} \\ 
-   \mathsf{Message}(\mathsf{s\_enc}(\langle N_1, N_3 \rangle, k), c) & (ii)& \text{protocol rule (1) (part one)}\\
-   \mathsf{Message}(\mathsf{s\_enc}(\langle N_2, N_3 \rangle, k), c) & (iii) & \text{protocol rule (1) (part two)}\\ 
-   \mathsf{Message}(\mathsf{s\_enc}(\langle x, N_3 \rangle, k), c) \Rightarrow \textsf{Message}(x, c) & (iv) & \text{protocol rule (2)}\\
+   \mathsf{Message}(\mathsf{enc}(\langle N_1, N_3 \rangle, k), c) & (ii)& \text{protocol rule (1) (part one)}\\
+   \mathsf{Message}(\mathsf{enc}(\langle N_2, N_3 \rangle, k), c) & (iii) & \text{protocol rule (1) (part two)}\\ 
+   \mathsf{Message}(\mathsf{enc}(\langle x, N_3 \rangle, k), c) \Rightarrow \textsf{Message}(x, c) & (iv) & \text{protocol rule (2)}\\
    \mathsf{Message}(\langle N_1, N_2 \rangle, c) \Rightarrow \textsf{Message}(s, c) & (v) & \text{protocol rule (3)}\\
     \dots 
 \end{array}
@@ -1796,7 +1807,7 @@ $
 % {How do the first two Horn clauses work? Does there need to be extra constraint for freshness?}
 % A symbol like k symbolically stands for the set of fresh keys, conceptually. these symbols are translated to function symbols, and are parameterized by previous protocol messages. so if we need to distinguish between k in session 1 and session 2, we can, as long as there is some past context
 
-Above, Horn clauses $(i)$ denotes that the communication channel is public. Clauses $(ii)$ and $(iii)$ denote that the corresponding messages are sent according to protocol rule $(1)$. Clause $(iv)$ denotes  protocol rule $(2)$---with the given input along $c$, the given output along $c$ is produced. Analogously, clause $(v)$ denotes protocol rule $(3)$. With these clauses, along with the adversary deduction clauses, ProVerif will iteratively derive new clauses in an attempt to conclude $\mathsf{Attacker}(s)$. From the Horn clause adversary deduction rule along with clauses $(ii)$ and $(iii)$, the adversary can learn both $\mathsf{s\_enc}(\langle N_2, N_3 \rangle, k)$ and $\mathsf{s\_enc}(\langle N_1, N_3 \rangle, k)$. Next, ProVerif's algorithm will use clause $(iv)$ \textit{twice}, along with adversary deduction rules, to derive both $\mathsf{Attacker}(N_1)$ and $\mathsf{Attacker}(N_2)$. Importantly, the Horn clause abstraction loses the linearity of $A$'s protocol state---once step $(2)$ is executed, in a precise semantics, $A$  would move on to step $(3)$. In contrast, ProVerif's algorithm will reuse clause $(iv)$, representing a repetition of the protocol step.
+Above, Horn clauses $(i)$ denotes that the communication channel is public. Clauses $(ii)$ and $(iii)$ denote that the corresponding messages are sent according to protocol rule $(1)$. Clause $(iv)$ denotes  protocol rule $(2)$---with the given input along $c$, the given output along $c$ is produced. Analogously, clause $(v)$ denotes protocol rule $(3)$. With these clauses, along with the adversary deduction clauses, ProVerif will iteratively derive new clauses in an attempt to conclude $\mathsf{Attacker}(s)$. From the Horn clause adversary deduction rule along with clauses $(ii)$ and $(iii)$, the adversary can learn both $\mathsf{enc}(\langle N_2, N_3 \rangle, k)$ and $\mathsf{enc}(\langle N_1, N_3 \rangle, k)$. Next, ProVerif's algorithm will use clause $(iv)$ \textit{twice}, along with adversary deduction rules, to derive both $\mathsf{Attacker}(N_1)$ and $\mathsf{Attacker}(N_2)$. Importantly, the Horn clause abstraction loses the linearity of $A$'s protocol state---once step $(2)$ is executed, in a precise semantics, $A$  would move on to step $(3)$. In contrast, ProVerif's algorithm will reuse clause $(iv)$, representing a repetition of the protocol step.
 
 On the side, notice that $N_3$ is necessary for the security of the protocol. Say we remove $N_3$ (i.e., convert all pairs containing $N_3$ to just the first element of the pair). Here, the attacker \textit{can} trigger step $(2)$ twice, each time corresponding to a \textit{distinct session} of $A$. But, the existence of $N_3$ binds step $(2)$ to a particular session. So, if $A$ receives $\{\langle x, N_4 \rangle\}_k$ in step $(2)$ for some $N_4 \neq N_3$, the input will not pattern match and $B$ will not respond with $x$. Hence, the adversary will not be able to construct both pair elements for step $(3)$.
 
@@ -1846,7 +1857,20 @@ However, in the context of usable automation, one direction of translation is we
 \subsubsection{Applied $\pi$-calculus to multiset rewriting} 
 The direction from ProVerif's applied $\pi$-calculus to Tamarin's multiset rewriting is easier because ProVerif's applied $\pi$-calculus does not contain any features without a natural translation to Tamarin's multiset rewriting. 
 
-One can realize this translation with a provably sound transpiler, SAPIC$^+$ \cite{sapic}. SAPIC$^+$ stands for \textbf{S}tateful \textbf{A}pplied \textbf{P}i \textbf{C}alculus, and it is an extension of the applied $\pi$-calculus to handle state with the same property specification language as Tamarin. Let $\mathcal{M}$ be a SAPIC$^+$ protocol model, i.e., a process in the applied $\pi$-calculus with state, and let $\varphi$ be a SAPIC$^+$ property. Then, the SAPIC$^+$ paper introduces four functions $\llbracket . \rrbracket^{\textsc{TM}}, \llbracket . \rrbracket^{\textsc{TM}}, \llbracket . \rrbracket^{\textsc{PM}}, \llbracket . \rrbracket^{\textsc{PP}}$, where $\llbracket . \rrbracket^{\textsc{TM}}$ maps SAPIC$^+$ models to Tamarin models (i.e., sets of multiset rewriting rules), $\llbracket . \rrbracket^{\textsc{TP}}$ maps SAPIC$^+$ properties to Tamarin properties, $\llbracket. \rrbracket^{\textsc{PM}}$ maps SAPIC$^+$ models to ProVerif models, and $\llbracket . \rrbracket^{\textsc{PP}}$ maps SAPIC$^+$ properties to ProVerif properties. In the latter two cases, the translation may fail in the case that the SAPIC$^+$ model uses some feature unsupported by ProVerif. 
+One can realize this translation with a provably sound transpiler, SAPIC$^+$ \cite{sapic}. 
+SAPIC$^+$ stands for \textbf{S}tateful \textbf{A}pplied \textbf{P}i \textbf{C}alculus, 
+and it is an extension of the applied $\pi$-calculus to handle state with the same property 
+specification language as Tamarin. Let $\mathcal{M}$ be a SAPIC$^+$ protocol model, 
+i.e., a process in the applied $\pi$-calculus with state, and let $\varphi$ be a SAPIC$^+$ property. 
+Then, the SAPIC$^+$ paper introduces four functions $\llbracket . \rrbracket^{\textsc{TM}}, 
+\llbracket . \rrbracket^{\textsc{TP}}, \llbracket . \rrbracket^{\textsc{PM}}, 
+\llbracket . \rrbracket^{\textsc{PP}}$, where $\llbracket . \rrbracket^{\textsc{TM}}$ maps 
+SAPIC$^+$ models to Tamarin models (i.e., sets of multiset rewriting rules), 
+$\llbracket . \rrbracket^{\textsc{TP}}$ maps SAPIC$^+$ properties to Tamarin properties, 
+$\llbracket. \rrbracket^{\textsc{PM}}$ maps SAPIC$^+$ models to ProVerif models, and 
+$\llbracket . \rrbracket^{\textsc{PP}}$ maps SAPIC$^+$ properties to ProVerif properties. 
+In the latter two cases, the translation may fail in the case that the SAPIC$^+$ model 
+uses some feature unsupported by ProVerif. 
 
 The theoretical contribution is in two main theorems which ensure the correctness of their translation functions. Here, $\models_{\textsc{S}}$ refers to property satisfaction for SAPIC$^+$ models and properties, $\models_{\textsc{T}}$ for Tamarin, and $\models_{\textsc{P}}$ for ProVerif. 
 
@@ -2019,7 +2043,7 @@ $
 \end{array}
 $
 
-Equation $(3)$ appears to be redundant, but it is included for technical 
+Equation $(3)$ is redundant, but it is included for technical 
 reasons outside the scope of this document (\emph{AC-coherence}, which is similar to confluence 
 modulo \emph{AC} \cite{folding_variant_narrowing}).
 First, notice that we cannot soundly phrase these equations as destructor rules (as in Section \ref{sec:proverif-algo}). 
@@ -2027,7 +2051,7 @@ One can attempt: just use Horn clauses
 $\mathsf{Attacker}(x \oplus x) \Rightarrow \mathsf{Attacker}(0), \mathsf{Attacker}(x \oplus 0) \Rightarrow \mathsf{Attacker}(x), \mathsf{Attacker}((x \oplus x) \oplus y) \Rightarrow \mathsf{Attacker}(y)$, and so on. 
 But, we will miss attacks. 
 Suppose we can derive $\textsf{Attacker}(a \oplus (b \oplus (c \oplus 0)))$. 
-Applying the identity law $(x \oplus 0 = 0)$ on $c \oplus 0$, 
+Applying the identity law $(x \oplus 0 = x)$ on $c \oplus 0$, 
 we should be able to derive $\textsf{Attacker}(a \oplus (b \oplus c))$. 
 However, this derivation relies on the equational theory being closed under congruence. 
 But, with destructors, we can only shuffle back and forth with associativity and commutativity,
@@ -2035,9 +2059,9 @@ as the left-hand side of the identity law's destructor does not match $\textsf{A
 (or any term derivable from associativity and commutativity) at the top level.
 
 Why did this limitation not apply to encryption and decryption? 
-Assume $\textsf{Attacker}(\mathsf{s\_enc}(\mathsf{s\_enc}(m, k_2), k_1))$  and $\textsf{Attacker}(k_2)$
+Assume $\textsf{Attacker}(\mathsf{enc}(\mathsf{enc}(m, k_2), k_1))$  and $\textsf{Attacker}(k_2)$
 are derivable. 
-Here, it is not sound to derive $\textsf{Attacker}(\mathsf{s\_enc}(m, k_1))$, 
+Here, it is not sound to derive $\textsf{Attacker}(\mathsf{enc}(m, k_1))$, 
 as (by the semantics of perfect encryption) the adversary cannot manipulate an encrypted subterm.
 
 To deal with exclusive or, an extension to ProVerif converts the input model into one without exclusive or, 
@@ -2063,7 +2087,7 @@ Here, $\mathcal{R}, E$-rewriting for a rewrite system $\mathcal{R}$ refers to
 the rewrite relation $\rightarrow_{\mathcal{R},E}$,
 where $t_1 \rightarrow_{\mathcal{R},E} t_2$ if there is a position $p$ in $t_1$, 
 rewrite rule $l \rightarrow r \in \mathcal{R}$, and substitution $\sigma$ such that 
-$t_1|_p =_E l\sigma$ and $t_1[r\sigma]p = t_2$. In other words, $\mathcal{R},E$-rewriting
+$t_1|_p =_E l\sigma$ and $t_1[r\sigma]_p = t_2$. In other words, $\mathcal{R},E$-rewriting
 is the same as $\mathcal{R}$-rewriting, but the matching on the left-hand side is modulo equational theory $E$.
 The notion of $E$-convergence (alternatively, convergence modulo $E$) generalizes convergence in the expected way, and
 we use $\downarrow_{\mathcal{R},E}$ to denote the normal form of a term with respect to $\mathcal{R},E$-rewriting.
@@ -2097,7 +2121,7 @@ assuming confluence, coherence, and the finite variant property (all modulo \emp
 % }
 
 \subsection{Other challenges}
-Existing approaches have been successful applied to analyze protocols with a variety of cryptographic primitives 
+Existing approaches have been successfully applied to analyze protocols with a variety of cryptographic primitives 
 (e.g. exclusive or, Diffie-Hellman exponentiation, and bilinear pairings), 
 using techniques analogous to those described in the previous subsection.
 However, there are many challenges where surprisingly little progress has been made in the last 15 years 
@@ -2110,7 +2134,7 @@ These questions are elaborated in Section \ref{sec:open-questions}.
 
 
 \section{Tractable Reasoning in the Symbolic Model}\label{sec:tractable-reasoning}
-In this section, we outline efforts to ease reasoning about security protocol verification. While symbolic model security protocol verification problem is undecidable in general \cite{undecidable1,undecidable2}, one may recover decidability by considering a restricted class of protocols or attacks.  First, we focus on typing protocols, and then we expand the discussion to a broad overview of metatheoretical results.
+In this section, we outline efforts to ease reasoning about security protocol verification. While the symbolic model security protocol verification problem is undecidable in general \cite{undecidable1,undecidable2}, one may recover decidability by considering a restricted class of protocols or attacks.  First, we focus on typing protocols, and then we expand the discussion to a broad overview of metatheoretical results.
 
 \subsection{Type confusion attacks and the strong typing assumption}
 
@@ -2211,13 +2235,13 @@ We define $\delta$ as follows:
 that all unifiable encrypted subterms in the protocol description have the same type. 
 Informally, this requirement is similar in spirit to tagging---just 
 as tagging makes distinct messages non-unifiable, 
-type compliance makes encrypted terms of different types non-unifiable. 
+type compliance makes encrypted terms of different types non-unifiable.  
 To state this formally, we need the notion of \textit{transparent} constructor symbols, 
 which intuitively can be freely destructed and constructed by the adversary. 
 More formally, a constructor symbol \textsf{f} is \emph{transparent} if there exists a term 
 $\mathsf{f}(t_1, \dots, t_n) \in \mathcal{T}(\Sigma, \{\square\})$ (denoting holes at data items) 
 such that for any term $t \in \mathcal{T}(\Sigma, D)$ with top-level constructor symbol $\textsf{f}$, 
-we have $\mathsf{f}(t_1, \dots, t_n)\{t \mapsto \square\}$ normalizes to $t$. 
+we have $\mathsf{f}(t_1, \dots, t_n)\{\square \mapsto t\}$ normalizes to $t$. 
 By ``normalizes", we refer to normalization with respect to application 
 of the destructor rules viewed as term rewriting rules, and hence we must have destructors 
 that correspond to a convergent rewrite system. For example, pairing is transparent, 
@@ -2229,19 +2253,23 @@ of a term $t$ as those subterms of $t$ whose top-level constructor symbol is not
 A configuration $(\mathcal{P}, \phi, \sigma)$ is \emph{type compliant} with respect 
 to a well-formed typing system $(T, \delta)$ if, for all encrypted subterms $t, t'$ in $\mathcal{P}$ 
 (in channel outputs or equality tests), the image of $\phi$, or the image of $\sigma$, 
-then we have that there exists some substitution $\theta$ such that $t \theta = t'\theta$ 
+we have that there exists some substitution $\theta$ such that $t \theta = t'\theta$ 
 implies $\delta(t) = \delta(t')$ (i.e., unifiable subterms have the same type). 
 An execution $\mathcal{K} \xrightarrow{\pi:\;\mathsf{tr}} (\mathcal{P}, \phi, \sigma)$ 
 is \emph{well-typed} if $\sigma$ is a well-typed substitution. 
 The notation $\overline{\mathit{tr}}$ denotes the trace skeleton obtained from $\mathsf{tr}$ 
-by replacing each $\mathsf{in}(c, R)$ with $\mathsf{in}(c, \square)$ and each $\mathsf{out}(c, w)$ 
-with $\mathsf{out}(c, \square)$.
+by replacing each $c(R)$ with $c(\square)$ and each $\bar c \langle w \rangle$ 
+with $\bar c \langle \square \rangle$.
 
 \begin{theorem}
 Assume $\mathcal{D}$ is a convergent rewriting system and $(T, \delta)$ is a well-formed typing system. 
 Further, assume configuration $\mathcal{K}$ is type compliant with respect to $(T, \delta)$ and $\mathcal{D}$.
 If $\mathcal{K}\xrightarrow{\pi:\; \mathsf{tr}} \mathcal{K}'$ for some trace $\mathsf{tr}$ and configuration $\mathcal{K}'$, then there exists trace $\mathsf{tr}'$ such that $\mathcal{K}\xrightarrow{\pi:\; \mathsf{tr}'} \mathcal{K}'$, $\mathsf{tr}'$ is well-typed, and $\overline{\mathsf{tr}} = \overline{\mathsf{tr}'}$.
 \end{theorem}
+
+Since $\mathsf{tr}$ and $\mathsf{tr}'$ share the same trace skeleton, 
+they produce the same barbs, and hence $\mathsf{tr}'$ witnesses 
+the same security violation as $\mathsf{tr}$.
 % {Details for the above---executions, barb equivalent and why it's good. For reachability we can phrase it in terms of reaching a barb. From paper, ``For example, secrecy of a data $s$ can easily be encoded by adding
 % a witness process of the form $in(c,v).if\; v = s\; then\; out(secret\_violated,s)$." Double check this though, they don't use the ite.}
 
@@ -2252,7 +2280,7 @@ The first group (in blue) denotes approaches that \emph{sacrifice completeness} 
 
 The second group (in green) \emph{syntactically restricts protocols} to achieve decidability. For example, ping-pong protocols \cite{pingpong} intuitively require that a message be  passed back and forth (``ping-ponged"), where each subsequent message must be derived purely from cryptographic operations and the previous message without introducing extra data (e.g., fresh nonces). Then, the decidability proofs take advantage of the extra structural requirements of the protocol to soundly bound the search space.
 
-The third group (in orange) investigates ways to \emph{heuristically cut the search space} with no decidability guarantee (our discussion of well-typed attacks in Section \ref{sec:typing} falls in this group \cite{typing_for_free}), the problem is still undecidable. Even without decidability, these results can be useful to inform the development of verification tools that perform well in practice.
+The third group (in orange) investigates ways to \emph{heuristically cut the search space} with no decidability guarantee (our discussion of well-typed attacks in Section \ref{sec:typing} falls in this group \cite{typing_for_free}). Even without decidability, these results can be useful to inform the development of verification tools that perform well in practice.
 
 The fourth group (in purple) denotes approaches that \emph{sacrifice soundness} to achieve termination. These papers describe abstract interpretation-based approaches to over-approximate adversarial knowledge. Hence, the tools may raise spurious attacks, similarly to the ``secrecy by typing" approach \cite{f7,dystar}.
 
@@ -2264,28 +2292,28 @@ In light of previous work on symbolic model verification, we now discuss some op
     % \item Strengthening the threat model a la CCSA
     \item[\textsf{RQ1.}] 
     \textbf{How to reason about cryptographic protocols with heavy non-cryptographic aspects in a single formalism, 
-    while also retaining some  automation.} 
+    while retaining some  automation.} 
     As discussed in the introduction, many protocols like 4G LTE/5G 
     (as well as the Uptane \cite{uptane} over-the-air software update protocol) 
     involve heavy non-cryptographic reasoning. 
     Prior work \cite{5greasoner,lteinspector,uptane_analysis} maintains some automation, 
     but it relies on two separate protocol models, 
     one in a standard CPV (like ProVerif or Tamarin) and another in a general-purpose model checker (like Kind 2 or nuXmv). 
-    Ideally, reasoning could proceed with ``one model to rule them all." 
+    Ideally, reasoning could proceed with a single unified model. 
     Note that none of the tools in Table \ref{tab:tools} have robust, 
     dedicated theory reasoning, except for the third group (F7 and DY$^*$). 
     However, these tools raise spurious violations through their usage of manually-annotated security labels.  
     Additionally, one could achieve these goals with an ITP; however, this approach abandons automation.
     \item[\textsf{RQ2.}] 
     \textbf{How to reason about protocols with unbounded loops and recursive datatypes, 
-    without resorting to manually annotated security labels (or more generally, spurious violations).} 
+    without resorting to manually annotated security labels (or more generally, spurious violations), while retaining some automation.} 
     Of the tools in Table \ref{tab:tools}, only Tamarin has \emph{partial} 
     support for protocols with loops (requiring expertise with non-standard modeling techniques 
     in Tamarin \cite{tamarin_looping}), and none natively support recursive datatypes, 
     save for the third group (F7 and DY$^*$). Again, one must either accept spurious violations 
     (from F7 or DY$^*$) or abandon automation (by using an ITP).
     \item[\textsf{RQ3.}] 
-    \textbf{How to reason about cryptographic protocols compositionally.} 
+    \textbf{How to reason about cryptographic protocols compositionally while retaining some automation.} 
     Besides the third group (F7 and DY$^*$), all of the tools in Table \ref{tab:tools} reason monolithically. 
     In the context of compositional verification, \emph{automatically inferring} a good decomposition is a very hard problem 
     in general, 
@@ -2296,15 +2324,17 @@ In light of previous work on symbolic model verification, we now discuss some op
     however, it suffers from the similar downsides as F7 and DY$^*$.
     While automatically inferring decompositions is difficult in general, 
     one might intuit that it could be feasible in the context of security protocols---lots of protocols 
-    have ``similar" shapes with honest steps and an adversaries with similar sets of capabilities. 
-    \item[\textsf{RQ4.}] \textbf{How to reason about the composition of cryptographic protocols.} 
-    Consider two protocols $P_1$ and $P_2$, and assume that $P_1$ satisfies security property 
-    $\varphi$ (i.e., $P_1 \models \varphi$). 
-    What can one say about the asynchronous parallel composition of $P_1$ and $P_2$? 
-    One cannot lift the results of the separate analyses to the composed case in any straightforward way 
-    due to adversarial influence---the adversary may use information learned from some run of $P_2$ 
-    to influence a run of $P_1$, possibly violating $\varphi$.
-    \item[\textsf{RQ5.}] \textbf{How to recover useful interactivity when automated techniques fail to terminate or produce spurious violations.} 
+    have ``similar" shapes with honest steps and adversaries with similar sets of capabilities. 
+    % \item[\textsf{RQ4.}] \textbf{How to reason about the composition of cryptographic protocols.} 
+    % Consider two protocols $P_1$ and $P_2$, and assume that $P_1$ satisfies security property 
+    % $\varphi$ (i.e., $P_1 \models \varphi$). 
+    % What can one say about the asynchronous parallel composition of $P_1$ and $P_2$? 
+    % One cannot lift the results of the separate analyses to the composed case in any straightforward way 
+    % due to adversarial influence---the adversary may use information learned from some run of $P_2$ 
+    % to influence a run of $P_1$, possibly violating $\varphi$.
+    % This problem has been addressed more thoroughly in the setting of (interactive) \emph{computational} model verification 
+    % through the \emph{universal composability} framework \cite{uc}.
+    \item[\textsf{RQ4.}] \textbf{How to recover useful interactivity when automated techniques fail to terminate or produce spurious violations.} 
     A weakness of all tools in Table \ref{tab:tools} is that when verification fails (through nontermination or spurious violations), 
     there is no effective means of isolating the problem. 
     Again, ITPs are strong here, but lack automation.
