@@ -312,7 +312,7 @@ that is allowed according to a given \emph{threat model}
 A \emph{session} is a single logical instance of a protocol, and a protocol \emph{trace} 
 is a log of events associated with the execution of a protocol, possibly containing multiple sessions.
 Each \emph{event} records a protocol action that took place, along with the relevant data items involved 
-(e.g., the event \textsf{Secret}$(A, n_a)$ denotes that nonce $n_a$ was marked as secret by principal $A$).
+(e.g., the event \textsf{Secret}$(A, n_A)$ denotes that nonce $n_A$ was marked as secret by principal $A$).
 
 
 \section{Cryptographic Primitive and Protocol Verification Background}
@@ -450,8 +450,8 @@ For trace properties, we consider \emph{secrecy}-related and \emph{authenticatio
     \item[$A_1.$] A protocol satisfies \emph{non-injective agreement of $B$ to $A$} \cite{lowe_auth} if, 
     whenever principal $A$ accepts data item $d$, apparently from $B$, then at some point in the past, 
     $B$ has sent data item $d$, apparently to $A$. 
-    \item[$A_2.$] A protocol satisfies \emph{injective agreement of $B$ to $A$} \cite{lowe_auth} if, 
-    There is an injective mapping from data items accepted by principal $A$ apparently from principal $B$, 
+    \item[$A_2.$] A protocol satisfies \emph{injective agreement of $B$ to $A$} \cite{lowe_auth} if 
+    there is an injective mapping from data items accepted by principal $A$ apparently from principal $B$, 
     to data items sent from principal $B$ apparently to principal $A$. 
 \end{itemize}
 
@@ -937,7 +937,7 @@ Finally, a \textit{trace} of a protocol $R$ is a sequence of states $S_0, \dots,
 \begin{gather*} 
 \Sigma = \{ \mathsf{a\_enc} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, \mathsf{a\_dec} :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, \mathsf{pk} :: \mathit{msg} \rightarrow \mathit{msg},\, \\ \langle ., . \rangle :: \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg},\, 
 \pi_1 :: \mathit{msg} \rightarrow \mathit{msg},\, \pi_2 :: \mathit{msg} \rightarrow \mathit{msg}  \}, \\
-E = \{ \mathsf{a\_dec}(\mathsf{a\_enc}(m, \mathsf{pk}(k)), k) = k, \pi_1(\langle t_1, t_2 \rangle) = t_1, \pi_2(\langle t_1, t_2 \rangle) = t_2 \}, \text{ and } \\ \Sigma_{\textsc{Fact}} = \{ \mathsf{In} :: \mathit{msg},\, \mathsf{Out} :: \mathit{msg},\, \mathsf{Fr} :: \mathit{fr},\, \mathsf{K} :: \mathit{msg},\, \mathsf{Pk} :: \mathit{msg} \times \mathit{msg},\, \mathsf{Ltk} :: \mathit{msg} \times \mathit{msg},\, \\
+E = \{ \mathsf{a\_dec}(\mathsf{a\_enc}(m, \mathsf{pk}(k)), k) = m, \pi_1(\langle t_1, t_2 \rangle) = t_1, \pi_2(\langle t_1, t_2 \rangle) = t_2 \}, \text{ and } \\ \Sigma_{\textsc{Fact}} = \{ \mathsf{In} :: \mathit{msg},\, \mathsf{Out} :: \mathit{msg},\, \mathsf{Fr} :: \mathit{fr},\, \mathsf{K} :: \mathit{msg},\, \mathsf{Pk} :: \mathit{msg} \times \mathit{msg},\, \mathsf{Ltk} :: \mathit{msg} \times \mathit{msg},\, \\
 \mathsf{StA1} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg},\, \mathsf{StB1} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg},\, \mathsf{StA2} :: \mathit{msg} \times \mathit{msg} \times \mathit{msg} \times \mathit{msg} \}.
 \end{gather*}
 The protocol is encoded as a set of rewrite rules $R = \{ \mathsf{Register}, A_1, B_1, A_2, B_2 \}$, 
@@ -957,7 +957,7 @@ where the rewrite rules are defined as in Figure 8.
   &\triangleq \{ \mathsf{!Ltk}(\red{A}, \blue{sk}) \}
    \xrightarrow{\{\}} \\ 
 &\hspace{14pt}
-   \{ \mathsf{Out}(\blue{sk}) \rangle) \},
+   \{ \mathsf{Out}(\blue{sk}) \},
 \\[0.5em]
 A_1
 &\triangleq \{ \mathsf{Fr}(\blue{n_A}),
@@ -990,36 +990,36 @@ B_1
       \right)
    \},
 \\[0.5em]
-A_2
-&\triangleq \{ \mathsf{In}(c),
+A_2 
+&\triangleq \{ \mathsf{In}(\textsf{a\_enc}(\langle \blue{n_A}, \blue{n_B} \rangle, pk(\blue{sk_A}))),
       !\mathsf{Ltk}(\red{A}, \blue{sk_A}),
       !\mathsf{Pk}(\red{B}, \red{pk_B}),
-      \mathsf{StA1}(\red{A}, \red{B}, \blue{n_A}) \} \xrightarrow{\{\}}
+      \mathsf{StA1}(\red{A}, \red{B}, \blue{n_A}) \} \xrightarrow{\{\mathsf{Sent}(\red{A}, \red{B}, \blue{n_A}, \blue{n_B})\}}
 \\
 & 
    \hspace{14pt}\{ \mathsf{StA2}\!\left(
         \red{A},
         \red{B},
         \blue{n_A},
-        \pi_2(\mathsf{a\_dec}(c, \blue{sk_A}))
+        \blue{n_B}
       \right),
 \\
 & 
       \hspace{28pt}\mathsf{Out}\!\left(
         \mathsf{a\_enc}(
-          \pi_2(\mathsf{a\_dec}(c, \blue{sk_A})),
+          \blue{n_B},
           \red{pk_B}
         )
       \right)
    \}, \text{ and}
 \\[0.5em]
 B_2
-&\triangleq \{ \mathsf{In}(c),
+&\triangleq \{ \mathsf{In}(\mathsf{a\_enc}(\blue{n_B}, \mathsf{pk}(\blue{sk_B}))),
       !\mathsf{Ltk}(\red{B}, \blue{sk_B}),
-      \mathsf{StB1}(\red{B}, \red{A}, \blue{n_A}, \blue{n_B}) \} \xrightarrow{\{\}}
+      \mathsf{StB1}(\red{B}, \red{A}, \blue{n_A}, \blue{n_B}) \} \xrightarrow{\{\mathsf{Accept}(\red{B}, \red{A}, \blue{n_A}, \blue{n_B})\}}
 \\
 & 
-   \hspace{14pt}\{ \mathsf{Commit}(\red{B}, \red{A}, \blue{n_A}, \blue{n_B}) \}.
+   \hspace{14pt}\{  \}.
 \end{align*}
 \label{fig:ns-rules-test}
 \begin{flushleft}
@@ -1048,13 +1048,29 @@ of a protocol with limitations imposed on the \textsf{Reveal} rule (unrestricted
 In the attack on the Needham-Schroeder protocol, \textsf{Reveal} is needed to give intruder $I$ knowledge of their own secret
 key; however, the attack does not rely on revealing the secret key of honest role $A$ or $B$.
 
-Rules $A_1$, $B_1$, and $A_2$ closely mirror the rules in Figure \ref{fig:ns-original}; however, they explicitly reference state to retrieve the corresponding keys. Additionally, state fact symbols \textsf{StA1}, \textsf{StB1}, and \textsf{StA2} are used to ensure that protocol traces follow \textit{ordering constraints} (i.e., that protocol rule $i$ is executed before protocol rule $i+1$ in a given session), as well as to store information about the current session.
+Rules $A_1$, $B_1$, $A_2$, and $B_2$ closely mirror the rules in Figure \ref{fig:ns-original}; 
+however, they explicitly reference state to retrieve the corresponding keys. 
+Terms can be destructed either with destructor symbols (as in $B_1$) or by pattern 
+matching on inputs (as in $A_2$ and $B_2$).
+Additionally, state fact symbols \textsf{StA1}, \textsf{StB1}, and \textsf{StA2} 
+are used to ensure that protocol traces follow \textit{ordering constraints} 
+(i.e., that protocol rule $i$ is executed before protocol rule $i+1$ in a given session), 
+as well as to store information about the current session.
+Notice that in $A_2$ and $B_2$, pattern matching is used to implicitly impose 
+equality constraints (for example, in $A_2$, the $n_A$ returned by $B$ on the network channel matches the $n_A$ 
+stored in \textsf{StA1}).
+Action facts \textsf{Accept} and \textsf{Sent} can later be used to help state 
+an injective or non-injective agreement property.
 
-Rule $B_2$ is used to explicitly denote cases where $B$ believes that $B$ has successfully completed a protocol session with $A$. 
+Rule $B_2$ is used to explicitly denote cases where $B$ believes that $B$ has 
+completed a protocol session with $A$. 
 
 \textbf{Example protocol trace formalization.}
-We can now formalize the attack trace in Figure \ref{fig:ns-lowe-attack} as a trace of $R \cup \mathsf{Adv} \cup \{ \mathsf{Fresh} \}$ (see Figure \ref{fig:ns-lowe-attack-ms-prefix}). The full trace is far too verbose 
-to be useful; we outline the first few steps representing key generation. At each step, we outline the rule used and the updates to state (a multiset of ground facts).
+We can now formalize the attack trace in Figure \ref{fig:ns-lowe-attack} as a trace of $R \cup \mathsf{Adv} \cup \{ \mathsf{Fresh} \}$ (see Figure \ref{fig:ns-lowe-attack-ms-prefix}). 
+The full trace is far too verbose 
+to be useful; 
+we outline the first few steps representing key generation. 
+At each step, we outline the rule used and the updates to state (a multiset of ground facts).
 
 \begin{figure}[h]
 \centering
@@ -1111,8 +1127,6 @@ $\mathsf{Ltk}(\red{I},\blue{sk_I}),
   \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace prefix}
   \label{fig:ns-lowe-attack-ms-prefix}
 \end{figure}
-
-For the full trace, see Figures \ref{fig:ns-lowe-attack-ms-3} and \ref{fig:ns-lowe-attack-ms-4} in the appendix.
 
 \textbf{Security property formalization.} In this setting, given a protocol $R$, weak secrecy of a term $t$ is phrased in terms of the existence of some protocol trace with some step $S_i \xrightarrow{\mathsf{K}(t)} S_{i+1}$ (where $t$ is in the adversary's knowledge base, captured by action fact $\mathsf{K}(t)$). That is, a protocol satisfies weak secrecy of $t$ if there is no trace with such a step.
 
@@ -1255,17 +1269,20 @@ c(y).\;
 \textsf{let } \red{A'} = \pi_1(m_1) \textsf{ in }
 \textsf{let } \blue{n_A} = \pi_2(m_1) \textsf{ in }
 \textbf{\textsf{new }} \blue{n_B}.\;
-\\
-&\hspace{4em}
 c(\langle \red{A''}, \red{pk_A}\rangle).\;
-\textsf{if } \red{A''} = \red{A'} \textsf{ then }
-\bar{c}\langle \mathsf{a\_enc}(\langle \blue{n_A}, \blue{n_B} \rangle, \red{pk_A}) \rangle . 0
-\textsf{ else } 0
 \\
 &\hspace{4em}
-c(z).\;
-\textsf{let } m_3 = \mathsf{a\_dec}(z, \blue{sk_B}) \textsf{ in }
-\textsf{if } m_3 = \blue{n_B} \textsf{ then } \bar c \langle \mathsf{ok} \rangle.0 \textsf{ else } 0
+\textsf{if } \red{A''} = \red{A'} \textsf{ then }
+\\
+&\hspace{6em}
+\bar{c}\langle \mathsf{a\_enc}(\langle \blue{n_A}, \blue{n_B} \rangle, \red{pk_A}) \rangle .\; 
+  c(z).\;
+  \textsf{let } m_3 = \mathsf{a\_dec}(z, \blue{sk_B}) \textsf{ in }
+  \\
+  &\hspace{6em}
+  \textsf{if } m_3 = \blue{n_B} \textsf{ then } \bar c \langle \mathsf{ok} \rangle.0 \textsf{ else } 0
+\\&\hspace{4em}
+\textsf{ else } 0
 \\[1.0em]
 \mathsf{Principal}
 &\;\triangleq\;
@@ -2035,7 +2052,7 @@ Tamarin employs a specialized handling.
 This handling involves partitioning $E_\oplus$ into two equational theories, $E_{\oplus \setminus AC}$ and $E_{AC}$, where 
 \begin{gather*}
 E_{\oplus \setminus AC} = \{ x \oplus x = 0, x \oplus 0 = x, (x \oplus x) \oplus y = y \} \text { and}\\ 
-E_{AC} = \{ (x \oplus y) \oplus z = z \oplus (y \oplus z), x \oplus y = y \oplus x \}.
+E_{AC} = \{ (x \oplus y) \oplus z = x \oplus (y \oplus z), x \oplus y = y \oplus x \}.
 \end{gather*}
 
 To take advantage of this partition of $E_\oplus$, 
@@ -2311,281 +2328,7 @@ from existing approaches in the (general-purpose) verification community.
 
 \bibliographystyle{plain}
 \bibliography{biblio}
-
-\section{Appendix}
-
-\begin{figure}[t]
-  \centering
-\[
-\small
-\begin{aligned}
-&P_0=\emptyset,\ L_0=\emptyset.
-\\[0.6em]
-&\{\} \xrightarrow{\{\}} \{\mathsf{Fr}(sk_A)\}
-\\
-&P_1 = P_0, \qquad L_1 = \{\mathsf{Fr}(sk_A)\}.
-\\[0.6em]
-&\{\mathsf{Fr}(sk_A)\} \xrightarrow{\{\}}
-\{\mathsf{Ltk}(A,sk_A),\mathsf{Pk}(A,\mathsf{pk}(sk_A)),\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle)\}
-\\
-&P_2 = P_1 \cup^\# \{\mathsf{Ltk}(A,sk_A),\mathsf{Pk}(A,\mathsf{pk}(sk_A))\},
-\\
-&L_2 = \{\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle)\}.
-\\[0.6em]
-&\{\} \xrightarrow{\{\}} \{\mathsf{Fr}(sk_I)\}
-\\
-&P_3 = P_2,
-\\
-&L_3 = \{\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),\mathsf{Fr}(sk_I)\}.
-\\[0.6em]
-&\{\mathsf{Fr}(sk_I)\} \xrightarrow{\{\}}
-\{\mathsf{Ltk}(I,sk_I),\mathsf{Pk}(I,\mathsf{pk}(sk_I)),\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle)\}
-\\
-&P_4 = P_3 \cup^\# \{\mathsf{Ltk}(I,sk_I),\mathsf{Pk}(I,\mathsf{pk}(sk_I))\},
-\\
-&L_4 = \{\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle)\}.
-\\[0.6em]
-&\{\} \xrightarrow{\{\}} \{\mathsf{Fr}(sk_B)\}
-\\
-&P_5 = P_4,
-\\
-&L_5 = \{\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),\mathsf{Fr}(sk_B)\}.
-\\[0.6em]
-&\{\mathsf{Fr}(sk_B)\} \xrightarrow{\{\}}
-\{\mathsf{Ltk}(B,sk_B),\mathsf{Pk}(B,\mathsf{pk}(sk_B)),\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle)\}
-\\
-&P_6 = P_5 \cup^\# \{\mathsf{Ltk}(B,sk_B),\mathsf{Pk}(B,\mathsf{pk}(sk_B))\},
-\\
-&L_6 =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle)
-\}.
-\\[0.5em]
-&\{\} \xrightarrow{\{\}} \{\mathsf{Fr}(n_A)\}
-\\
-&P_7 = P_6,
-\\
-&L_7 =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{Fr}(n_A)
-\}.
-\\[0.6em]
-&\{\mathsf{Fr}(n_A)\} \xrightarrow{\{\}}
-\{\mathsf{StA1}(A,I,n_A),\mathsf{Out}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I)))\}
-\\
-&P_8 = P_7,
-\\
-&L_8 =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{StA1}(A,I,n_A),
-\mathsf{Out}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I)))
-\}.
-\\[0.5em]
-&\{\mathsf{Out}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I)))\} \xrightarrow{\{\}} \{\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I)))\}
-\\
-&P_9 = P_8,
-\\
-&L_9 =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{StA1}(A,I,n_A),
-\\
-&\hspace{3em}\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I)))
-\}.
-\\[0.6em]
-&\{\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_B)))\} \xrightarrow{\{\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_B)))\}} \{\mathsf{In}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_B)))\}
-\\
-&P_{10} = P_9,
-\\
-&L_{10} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{StA1}(A,I,n_A),
-\\
-&\hspace{3em}\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\mathsf{In}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_B)))
-\}.
-\end{aligned}
-\]
-\begin{flushleft}
-    {\footnotesize
-    $P_i$ (resp., $L_i$) denotes the persistent (resp., linear) state at step $i$
-    }
-\end{flushleft}
-
-  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace}
-  \label{fig:ns-lowe-attack-ms-3}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-\[
-\small
-\begin{aligned}
-\\[0.5em]
-&\{\} \xrightarrow{\{\}} \{\mathsf{Fr}(n_B)\}
-\\
-&P_{11} = P_{10},
-\\
-&L_{11} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{StA1}(A,I,n_A),
-\\[0.5em]
-&\hspace{3em}\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\mathsf{In}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_B))),
-\mathsf{Fr}(n_B)
-\}.
-\\[0.5em]
-&\{\mathsf{In}(c),\mathsf{Fr}(n_B)\} \xrightarrow{\{\}}
-\{\mathsf{StB1}(B,A,n_A,n_B),\mathsf{Out}(\mathsf{a\_enc}(\langle n_A,n_B\rangle,\mathsf{pk}(sk_A)))\}
-\\
-&(c =_E \mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_B)))
-\\
-&P_{12} = P_{11},
-\\
-&L_{12} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{StA1}(A,I,n_A),
-\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\\
-&\hspace{3em}\mathsf{StB1}(B,A,n_A,n_B),
-\mathsf{Out}(\mathsf{a\_enc}(\langle n_A,n_B\rangle,\mathsf{pk}(sk_A)))
-\}.
-\\[0.5em]
-&\{\mathsf{Out}(m)\} \xrightarrow{\{\}} \{\mathsf{K}(m)\}
-\quad (m = \mathsf{a\_enc}(\langle n_A,n_B\rangle,\mathsf{pk}(sk_A)))
-\\
-&P_{13} = P_{12},
-\\
-&L_{13} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{StA1}(A,I,n_A),
-\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\\
-&\hspace{3em}\mathsf{StB1}(B,A,n_A,n_B),
-\mathsf{K}(\mathsf{a\_enc}(\langle n_A,n_B\rangle,\mathsf{pk}(sk_A)))
-\}.
-\\[0.6em]
-&\{\mathsf{K}(x)\} \xrightarrow{\{\mathsf{K}(x)\}} \{\mathsf{In}(x)\}
-\quad (x = \mathsf{a\_enc}(\langle n_A,n_B\rangle,\mathsf{pk}(sk_A)))
-\\
-&P_{14} = P_{13},
-\\
-&L_{14} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{StA1}(A,I,n_A),
-\\
-&\hspace{3em}\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\mathsf{StB1}(B,A,n_A,n_B),
-\mathsf{In}(\mathsf{a\_enc}(\langle n_A,n_B\rangle,\mathsf{pk}(sk_A)))
-\}.
-\\[0.5em]
-&\{\mathsf{In}(c),\mathsf{StA1}(A,I,n_A)\} \xrightarrow{\{\}}
-\{\mathsf{StA2}(A,I,n_A,n_B),\mathsf{Out}(\mathsf{a\_enc}(n_B,\mathsf{pk}(sk_I)))\}
-\\
-&(c =_E \mathsf{a\_enc}(\langle n_A,n_B\rangle,\mathsf{pk}(sk_A)))
-\\
-&P_{15} = P_{14},
-\\
-&L_{15} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\mathsf{StB1}(B,A,n_A,n_B),
-\\
-&\hspace{3em}\mathsf{StA2}(A,I,n_A,n_B),
-\mathsf{Out}(\mathsf{a\_enc}(n_B,\mathsf{pk}(sk_I)))
-\}.
-\\[0.5em]
-&\{\mathsf{Out}(m)\} \xrightarrow{\{\}} \{\mathsf{K}(m)\}
-\quad (m = \mathsf{a\_enc}(n_B,\mathsf{pk}(sk_I)))
-\\
-&P_{16} = P_{15},
-\\
-&L_{16} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\mathsf{StB1}(B,A,n_A,n_B),
-\\
-&\hspace{3em}\mathsf{StA2}(A,I,n_A,n_B),
-\mathsf{K}(\mathsf{a\_enc}(n_B,\mathsf{pk}(sk_I)))
-\}.
-\\[0.6em]
-&\{\mathsf{K}(x)\} \xrightarrow{\{\mathsf{K}(x)\}} \{\mathsf{In}(x)\}
-\quad (x = \mathsf{a\_enc}(n_B,\mathsf{pk}(sk_B)))
-\\
-&P_{17} = P_{16},
-\\
-&L_{17} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\mathsf{StB1}(B,A,n_A,n_B),
-\\
-&\hspace{3em}\mathsf{StA2}(A,I,n_A,n_B),
-\mathsf{K}(\mathsf{a\_enc}(n_B,\mathsf{pk}(sk_I))),
-\mathsf{In}(\mathsf{a\_enc}(n_B,\mathsf{pk}(sk_B)))
-\}.
-\\[0.5em]
-&\{\mathsf{In}(c)\} \xrightarrow{\{\}} \{\mathsf{Commit}(B,A,n_A,n_B)\}
-\quad (c =_E \mathsf{a\_enc}(n_B,\mathsf{pk}(sk_B)))
-\\
-&P_{18} = P_{17},
-\\
-&L_{18} =
-\{
-\mathsf{Out}(\langle A,\mathsf{pk}(sk_A)\rangle),
-\mathsf{Out}(\langle I,\mathsf{pk}(sk_I)\rangle),
-\mathsf{Out}(\langle B,\mathsf{pk}(sk_B)\rangle),
-\mathsf{K}(\mathsf{a\_enc}(\langle A,n_A\rangle,\mathsf{pk}(sk_I))),
-\mathsf{StB1}(B,A,n_A,n_B),
-\\
-&\hspace{3em}\mathsf{StA2}(A,I,n_A,n_B),
-\mathsf{K}(\mathsf{a\_enc}(n_B,\mathsf{pk}(sk_I))),
-\mathsf{Commit}(B,A,n_A,n_B)
-\}.
-\end{aligned}
-\]
-\begin{flushleft}
-    {\footnotesize
-    $P_i$ (resp., $L_i$) denotes the persistent (resp., linear) state at step $i$
-    }
-\end{flushleft}
-  \caption{ Needham--Schroeder public-key protocol attack as multiset rewriting protocol trace, part 2}
-  \label{fig:ns-lowe-attack-ms-4}
-\end{figure}
-
+ 
 % \section{Questions}
 % \begin{itemize}
 %     % \item {Why does Horn clause representation of adversary knowledge overapproximation not lead to spurious secrecy counterexamples? Why can't we just pick a model where adv(x) holds?}
