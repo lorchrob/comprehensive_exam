@@ -62,6 +62,27 @@ keywords = {Equational unification, narrowing, finite variant property, symbolic
 abstract = {Narrowing is a well-known complete procedure for equational E-unification when E can be decomposed as a union E=Δ⊎B with B a set of axioms for which a finitary unification algorithm exists, and Δ a set of confluent, terminating, and B-coherent rewrite rules. However, when B≠∅, effective narrowing strategies such as basic narrowing easily fail to be complete and cannot be used. This poses two challenges to narrowing-based equational unification: (i) finding effective narrowing strategies that are complete modulo B under mild assumptions on B, and (ii) finding sufficient conditions under which such narrowing strategies yield finitary E-unification algorithms. Inspired by Comon and Delaune's notion of E-variant for a term, we propose a new narrowing strategy called variant narrowing that has a search space potentially much smaller than full narrowing, is complete, and yields a finitary E-unification algorithm when E has the finite variant property. We also discuss applications to symbolic reachability analysis of concurrent systems specified as rewrite theories, and in particular to the formal analysis of cryptographic protocols modulo the algebraic properties of the underlying cryptographic functions.}
 }
 
+@Inbook{smt,
+author="Barrett, Clark
+and Tinelli, Cesare",
+editor="Clarke, Edmund M.
+and Henzinger, Thomas A.
+and Veith, Helmut
+and Bloem, Roderick",
+title="Satisfiability Modulo Theories",
+bookTitle="Handbook of Model Checking",
+year="2018",
+publisher="Springer International Publishing",
+address="Cham",
+pages="305--343",
+abstract="Satisfiability Modulo Theories (SMT) refers to the problem of determining whether a first-order formula is satisfiable with respect to some logical theory. Solvers based on SMT are used as back-end engines in model-checking applications such as bounded, interpolation-based, and predicate-abstraction-based model checking. After a brief illustration of these uses, we survey the predominant techniques for solving SMT problems with an emphasis on the lazy approach, in which a propositional satisfiability (SAT) solver is combined with one or more theory solvers. We discuss the architecture of a lazy SMT solver, give examples of theory solvers, show how to combine such solvers modularly, and mention several extensions of the lazy approach. We also briefly describe the eager approach in which the SMT problem is reduced to a SAT problem. Finally, we discuss how the basic framework for determining satisfiability can be extended with additional functionality such as producing models, proofs, unsatisfiable cores, and interpolants.",
+isbn="978-3-319-10575-8",
+doi="10.1007/978-3-319-10575-8_11",
+url="https://doi.org/10.1007/978-3-319-10575-8_11"
+}
+
+
+
 @article{proverif_2016,
   author  = {Bruno Blanchet},
   title  = {Modeling and Verifying Security Protocols with the Applied Pi Calculus and ProVerif},

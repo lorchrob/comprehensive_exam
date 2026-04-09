@@ -20,6 +20,9 @@
 \newcommand{\xor}[0]{\textsf{xor}}
 \newcommand{\blue}[1]{\textcolor{blue}{#1}}
 \newcommand{\red}[1]{\textcolor{red}{#1}}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\newcommand{\green}[1]{\textcolor{darkgreen}{#1}}
+\newcommand{\purple}[1]{\textcolor{purple}{#1}}
 
 \title{Automated Reasoning for Cryptographic Protocols}
 \author{Rob Lorch}
@@ -183,14 +186,14 @@ Each \textit{plain text} $p \in \mathcal{M}$ intuitively represents a message to
 each \emph{ciphertext} $c \in \mathcal{C}$ represents an obscured plain text, 
 and each \emph{key} $k \in \mathcal{K}$ can be used to help generate ciphertexts from plain texts. 
 A \emph{symmetric-key encryption scheme} is a triple $(\mathsf{Gen}, \mathsf{Enc}, \mathsf{Dec})$ 
-comprised of three functions 
-$\textsf{Gen} : \mathbb{N} \rightarrow \mathcal{K}$, $\textsf{Enc} : \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}$, 
-and $\textsf{Dec} : \mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M}$, 
+comprised of three functions  
+$$\textsf{Gen} : \mathbb{N} \rightarrow \mathcal{K}, \textsf{Enc} : \mathcal{M} \times \mathcal{K} \rightarrow \mathcal{C}, 
+\text{ and }\textsf{Dec} : \mathcal{C} \times \mathcal{K} \rightarrow \mathcal{M},$$
 where $\textsf{Gen}(\lambda)$ probabilistically samples a key of length $\lambda$ from 
 $\mathcal{K}$, and \textsf{Enc} and \textsf{Dec} denote encryption and decryption as expected. 
-We require that for all
-$m \in \mathcal{M}$ and $k \in \mathcal{K}$, $\mathsf{Dec}(\mathsf{Enc}(m, k), k) = m$ 
-(intuitively, decrypting a ciphertext using the same key used to encrypt it yields the underlying plain text).
+We require that 
+$$\forall m \in \mathcal{M}, k \in \mathcal{K}.\;\mathsf{Dec}(\mathsf{Enc}(m, k), k) = m$$ 
+Intuitively, decrypting a ciphertext using the same key used to encrypt it yields the underlying plain text.
 
 \textbf{Kerckhoff's principle.} \textit{Kerckhoff's principle} states that the security of a scheme 
 should only rely on the secrecy of keys and not of  algorithms (in this case, \textsf{Gen}, \textsf{Enc}, and \textsf{Dec}). 
@@ -206,7 +209,7 @@ With Kerckhoff's principle, security becomes a problem that is amenable to mathe
 how does one determine when a symmetric key encryption scheme is secure? 
 The gold standard is \textit{perfect secrecy}---the requirement is that for all probability distributions 
 over $\mathcal{M}$, all $m \in \mathcal{M}$, and all $c \in \mathcal{C}$ such that $\text{Pr}[C=c] > 0$, 
-$\text{Pr}[M=m \mid C=c] = \text{Pr}[M=m]$. 
+$$\text{Pr}[M=m \mid C=c] = \text{Pr}[M=m].$$ 
 Here, $Pr[M=m]$ denotes the probability that random variable $M$ (denoting the plain text) equals $m$
 (a particular plain text), i.e., the probability that the sender sent message $m$ (and analogously for $Pr[C=c]$).
 The bar $|$ denotes conditional probability.
@@ -523,13 +526,14 @@ $\Sigma = \Sigma_c \cup \Sigma_d$ comprised of \textit{constructors} ($\Sigma_c$
 consisting of atomic names $\mathcal{N}$ (representing nonces, messages, IDs, and so on) and variables $V$. 
 Variables syntactically denote their sort ($e.g., v^{\textsc{Fr}}$ has sort \textit{fr}), 
 and $V$ is defined as the disjoint union of every $V_s$ for each sort $s$ (and respectively for $\mathcal{N}$).
-For presentation, we use \red{red} terms to denote public terms (e.g., \red{$A$}), 
-\blue{blue} terms to denote fresh terms (e.g., \blue{$N_a$}); 
-everything else has sort \textsc{Msg}.
+We omit these superscripts for brevity, 
+but in cases where we wish to stress the sort of a term, 
+we use \red{red} to denote public terms (e.g., \red{$A$}) and
+\blue{blue} to denote fresh terms (e.g., \blue{$N_a$}).
 We denote the set of well-sorted terms (i.e., terms where function arguments have the correct sort) 
 built from function symbols in $\Sigma$ and data in $D$ by $\mathcal{T}(\Sigma, D)$.
 For example, we could have $(\mathsf{s\_enc}, \mathit{msg} \times \mathit{msg} \rightarrow \mathit{msg}) \in \Sigma_c$ 
-and $\mathsf{s\_enc}(v_1, \blue{v_2}) \in \mathcal{T}(\Sigma, D)$. 
+and $\mathsf{s\_enc}(\red{v_1}, \blue{v_2}) \in \mathcal{T}(\Sigma, D)$. 
 For clarity, we may use a double colon syntax $\mathsf{identifier} :: \mathsf{type}$ to denote the 
 $(\mathsf{identifier}, \mathsf{type})$ pair. 
 We define the \emph{positions} of a term as usual and use $t|_p$ to denote the subterm of $t$ 
@@ -594,10 +598,10 @@ Although it is not reflected in the knowledge rules, the adversary can additiona
       { t' \in \mathcal{K} }
 
     \inferrule*[right=\textsc{Fun}]
-      { t_1, \dots, t_n \in \mathcal{K} \quad (f, n) \in \Sigma }
-      { f(t_1, \dots, t_n) \in \mathcal{K} }
+      { t_1, \dots, t_{\mathsf{arity}(f)} \in \mathcal{K} \quad (f, \underline{\phantom{n}}) \in \Sigma }
+      { f(t_1, \dots, t_{\mathsf{arity}(f)}) \in \mathcal{K} }
 
-    \inferrule*[right=\textsc{Fr}\ (\textnormal{when }$t$\ \textnormal{is fresh})]
+    \inferrule*[right=\textsc{Fr}\ ($\blue{t}$\ \textnormal{is fresh})]
   { \blue{t} \in D }
   { \blue{t} \in \mathcal{K} }
   \end{mathpar}
@@ -708,7 +712,7 @@ $
 \begin{array}{ccc}
   \text{Justification} & \text{Computation}   & \text{Adversary knowledge} \\[.8em]
   \rowcolor{grouponeDark}
-  & \blue{\mathsf{sr\_enc}(m,k,\mathit{IV})} \oplus \blue{m}  & \blue{m, \textsf{sr\_enc}(m, k, \mathit{IV})}, \blue{\textsf{sr\_enc}(s,k,\mathit{IV})} \\
+  & \green{\mathsf{sr\_enc}(m,k,\mathit{IV})} \oplus \green{m}  & \green{m, \textsf{sr\_enc}(m, k, \mathit{IV})}, \green{\textsf{sr\_enc}(s,k,\mathit{IV})} \\
 
 \rowcolor{grouponeDark}
 \text{definition of }\mathsf{sr\_enc} & = (\mathsf{m} \oplus \mathsf{keystream}(k, IV)) \oplus m& \\
@@ -720,12 +724,12 @@ $
 \text{cancellation of }\oplus & = \mathsf{keystream}(k, IV) \oplus 0& \\
  
 \rowcolor{grouponeDark}
-\text{identity of }\oplus & = \red{\mathsf{keystream}(k, IV)}& \\[.8em]
+\text{identity of }\oplus & = \purple{\mathsf{keystream}(k, IV)}& \\[.8em]
 
   \rowcolor{grouponeLight}
   &
-  \blue{\mathsf{sr\_enc}(s, k, \mathit{IV})} \oplus \blue{\mathsf{keystream}(k, \mathit{IV})}    
-      & \blue{m}, \blue{\textsf{sr\_enc}(m, k, \mathit{IV})}, \blue{\textsf{sr\_enc}(s,k,\mathit{IV})}, \blue{\mathsf{keystream}(k,\mathit{IV})} \\
+  \green{\mathsf{sr\_enc}(s, k, \mathit{IV})} \oplus \green{\mathsf{keystream}(k, \mathit{IV})}    
+      & \green{m}, \green{\textsf{sr\_enc}(m, k, \mathit{IV})}, \green{\textsf{sr\_enc}(s,k,\mathit{IV})}, \green{\mathsf{keystream}(k,\mathit{IV})} \\
     \rowcolor{grouponeLight}
 
   \text{definition of }\mathsf{sr\_enc} &  
@@ -735,13 +739,13 @@ $
    = s \oplus (\mathsf{keystream}(k, \mathit{IV}) \oplus \mathsf{keystream}(k, \mathit{IV})) &  \\ 
    \rowcolor{grouponeLight}
    \text{cancellation, identity of }\oplus & 
-   = \red{s}  &  \\ 
+   = \purple{s}  &  \\ 
 \end{array}
 $
     
 \vspace{.3em}
-\blue{Blue} terms denote terms in the adversary's knowledge at the current step. \newline
-\red{Red} terms denote terms computed by the adversary in this step. \newline
+\green{Green} terms denote terms in the adversary's knowledge at the current step. \newline
+\purple{Purple} terms denote terms computed by the adversary in this step. \newline
 Black terms denote intermediate terms illustrating the derivation.
 \caption{IV reuse attack computing secret $s$}\label{fig:d}
 }
@@ -822,13 +826,13 @@ The Needham-Schroeder protocol is a three-step protocol, and yet it requires car
 
 \section{Formalizing Protocols in the Symbolic Model}\label{sec:formalizing-protocols}
 We aim to mechanize reasoning about cryptographic protocols. To do this, we need to rigorously formalize properties, protocols, and adversarial influence.
-Notice that describing protocols as sequences of rules $A \rightarrow B : M$ (as we have done so far) is insufficient for precise reasoning. For example, the encoding leaves the notion of \textit{public knowledge} implicit (e.g., identities and public keys are initially public). Further, it does not describe the \textit{inputs} and \textit{internal steps} of honest participants. Consider a small protocol as in Figure \ref{fig:protocol-small}.
+Notice that describing protocols as sequences of messages in Alice-Bob notation (as we have done so far) is insufficient for precise reasoning. For example, the encoding leaves the notion of \textit{public knowledge} implicit (e.g., identities and public keys are initially public). Further, it does not describe the \textit{inputs} and \textit{internal steps} of honest participants. Consider a small protocol as in Figure \ref{fig:protocol-small}.
 
 \begin{figure}[h!]
   \centering
   \includegraphics{figs/protocol_small.pdf}
     \begin{flushleft}
-      {\footnotesize Standard security protocol notation leaves some paths unspecified---what happens if 
+      {\footnotesize Alice-Bob notation leaves some paths unspecified---what happens if 
       B cannot retrieve $n_1$?}
 \end{flushleft}
   \caption{Ambiguous toy protocol}
@@ -850,7 +854,13 @@ From these requirements, two approaches have historically dominated the formaliz
 The multiset-rewriting approach to cryptographic protocol formalization was pioneered by Durgin and Mitchell in 1999 \cite{msr_foundations}. It is an important formalism for modern automated reasoning techniques in the symbolic model, as it lays the theoretical foundations for Tamarin \cite{tamarin}, a popular symbolic model verification tool.
 In this approach, a protocol is a set of multiset rewriting rules, where each rewrite rule can be viewed as a state transition in the protocol. 
 
-\textbf{Formalizing protocols.} We superscript standard set operations with $^\#$ to denote multiset operations (e.g., $\cup^\#$ denotes multiset union and $\in^\#$ for multiset membership). To formalize protocols, we consider another signature $\Sigma_{\textsc{Fact}}$ of \textit{fact symbols}, where \textit{facts} are members of the set $\{ F(t_1, \dots, t_n) \mid F \in \Sigma_{\textsc{Fact}} \;\land\; t_1, \dots, t_n \in T(\Sigma, V \cup \mathcal{N}) \}$. A protocol is represented as a set of rewrite rules $R$, where each rule in $R$ is a triple $(l, a, r)$, where $l, a,$ and $r$ are each finite multisets of facts. Sometimes, we use the alternative notation $l \xrightarrow{a} r$ to denote this triple: $l$ and $r$ respectively represent the left-hand side and right-hand side of the rewrite rule (containing \textit{state facts}), while $a$ represents rule labels (containing \textit{action facts}). More formally, for a protocol $R$, the set of action facts $\mathcal{A}$ is defined as $\{ \mathit{af} \mid \exists a. (\_, a, \_) \in R \land \mathit{af} \in^\# a\}$, and the set of state facts $\mathcal{F}$ is defined as $\{ \mathit{sf} \mid \exists l, r. (l, \_, \_) \in R \land (\_, \_, r) \in R \land (\mathit{sf} \in^\# l \lor \mathit{sf} \in^\# r)\}$. For a rewrite rule $l \xrightarrow{a} r$, state facts in $l$ are called \emph{premises} and state facts in $r$ are called \emph{conclusions}.
+\textbf{Formalizing protocols.} We superscript standard set operations with $^\#$ to denote multiset operations (e.g., $\cup^\#$ denotes multiset union and $\in^\#$ for multiset membership). To formalize protocols, we consider another signature $\Sigma_{\textsc{Fact}}$ of \textit{fact symbols}, where \textit{facts} are members of the set $\{ F(t_1, \dots, t_n) \mid F \in \Sigma_{\textsc{Fact}} \;\land\; t_1, \dots, t_n \in T(\Sigma, V \cup \mathcal{N}) \}$. A protocol is represented as a set of rewrite rules $R$, where each rule in $R$ is a triple $(l, a, r)$, where $l, a,$ and $r$ are each finite multisets of facts. Sometimes, we use the alternative notation $l \xrightarrow{a} r$ to denote this triple: $l$ and $r$ respectively represent the left-hand side and right-hand side of the rewrite rule (containing \textit{state facts}), while $a$ represents rule labels (containing \textit{action facts}). 
+% More formally, for a protocol $R$, the set of action facts $\mathcal{A}$ 
+% is defined as $\{ \mathit{af} \mid \exists a. (\_, a, \_) \in R \land \mathit{af} \in^\# a\}$, 
+% and the set of state facts $\mathcal{F}$ 
+% is defined as $\{ \mathit{sf} \mid \exists l, r. (l, \_, \_) \in R \land (\_, \_, r) \in R \land (\mathit{sf} \in^\# l \lor \mathit{sf} \in^\# r)\}$. 
+For a rewrite rule $l \xrightarrow{a} r$, 
+state facts in $l$ are called \emph{premises} and state facts in $r$ are called \emph{conclusions}.
 % A wellformedness requirement of protocols is that no fact symbol is used both for some fact in $\mathcal{A}$ and for some fact in $\mathcal{F}$ (so there is no confusion between action facts and state facts). 
 
 \textbf{Formalizing the adversary.} To formalize adversarial behavior, we assume the existence of four special fact symbols \textsf{In}, \textsf{Out}, \textsf{Fr}, and \textsf{K}. \textsf{In} and \textsf{Out} are included in the protocol's rules to model taking input and sending output to the insecure network channel. \textsf{Fr} represents fresh variables (where freshness is later enforced in the operational semantics), and \textsf{K} represents adversary knowledge and should not be present in protocol rules.
@@ -1020,7 +1030,16 @@ Each triple $l \xrightarrow{a} r$ denotes a multiset rewriting rule from $l$ to 
 \caption{Rewrite rules formalizing Figure \ref{fig:ns-original}}
 \end{figure}
 
-The first rule, \textsf{Register}, represents the registration of an asymmetric key pair to identity $\red{A}$. Note that $A^\textsc{pub}$, along with the other identifiers in the rule descriptions, are \textit{variables} and can be instantiated with different values in different rule instances. Hence, the protocol description can capture an unbounded number of sessions and principals. The \textsf{Ltk} (short for ``long-term key") stores $\red{A}$'s (fresh) secret key $\blue{sk}$, while $\textsf{Pk}$ stores the public key derived from $\blue{sk}$. Finally, the identity/public key mapping are broadcast along the network channel, as they are public information that should be known by the adversary for realistic modeling.
+The first rule, \textsf{Register}, represents the registration of an asymmetric key pair to identity 
+$A$. Note that $A$, 
+along with the other identifiers in the rule descriptions, 
+are \textit{variables} and can be instantiated with different values 
+in different rule instances. 
+Hence, the protocol description can capture an unbounded number of sessions and principals. 
+The \textsf{Ltk} (short for ``long-term key") stores $A$'s (fresh) 
+secret key $sk$, while $\textsf{Pk}$ stores the public key derived from $sk$. 
+Finally, the identity/public key mapping are broadcast along the network channel, 
+as they are public information that should be known by the adversary for realistic modeling.
 
 The second rule, \textsf{Reveal}, leaks a secret key on the network channel. This models \emph{key compromise}, 
 a situation where one or more of the secret keys leaked to the adversary. 
@@ -1207,52 +1226,52 @@ ${c}(x).\textsf{let }A = \pi_1(x) \textsf{ in } \textsf{let }n_A = \pi_2(x) \tex
 
 \[
 \begin{aligned}
-\mathsf{Initiator}(A,sk_A)
+\mathsf{Initiator}(\red{A},\blue{sk_A})
 &\;\triangleq\;
-c(\langle B, pk_B\rangle).\;
-\textbf{\textsf{new }} n_A.\;
-\bar{c}\langle \mathsf{a\_enc}(\langle A, n_A \rangle, pk_B) \rangle .
+c(\langle \red{B}, \red{pk_B}\rangle).\;
+\textbf{\textsf{new }} \blue{n_A}.\;
+\bar{c}\langle \mathsf{a\_enc}(\langle \red{A}, \blue{n_A} \rangle, \red{pk_B}) \rangle .
 \\
 &\hspace{4em}
 c(x).\;
-\textsf{let } m_2 = \mathsf{a\_dec}(x, sk_A) \textsf{ in }
+\textsf{let } m_2 = \mathsf{a\_dec}(x, \blue{sk_A}) \textsf{ in }
 \\
 &\hspace{4em}
-\textsf{if } \pi_1(m_2) = n_A \textsf{ then }
+\textsf{if } \pi_1(m_2) = \blue{n_A} \textsf{ then }
 \big(
-  \textsf{let } n_B = \pi_2(m_2) \textsf{ in }
-  \bar{c}\langle \mathsf{a\_enc}(n_B, pk_B) \rangle . 0
+  \textsf{let } \blue{n_B} = \pi_2(m_2) \textsf{ in }
+  \bar{c}\langle \mathsf{a\_enc}(\blue{n_B}, \red{pk_B}) \rangle . 0
 \big)
 \\
 &\hspace{4em}
 \text{else } 0
 \\[1.0em]
-\mathsf{Responder}(B,sk_B)
+\mathsf{Responder}(\red{B},\blue{sk_B})
 &\;\triangleq\;
 c(y).\;
-\textsf{let } m_1 = \mathsf{a\_dec}(y, sk_B) \textsf{ in }
+\textsf{let } m_1 = \mathsf{a\_dec}(y, \blue{sk_B}) \textsf{ in }
 \\
 &\hspace{4em}
-\textsf{let } A' = \pi_1(m_1) \textsf{ in }
-\textsf{let } n_A = \pi_2(m_1) \textsf{ in }
-\textbf{\textsf{new }} n_B.\;
+\textsf{let } \red{A'} = \pi_1(m_1) \textsf{ in }
+\textsf{let } \blue{n_A} = \pi_2(m_1) \textsf{ in }
+\textbf{\textsf{new }} \blue{n_B}.\;
 \\
 &\hspace{4em}
-c(\langle A'', pk_A\rangle).\;
-\textsf{if } A'' = A' \textsf{ then }
-\bar{c}\langle \mathsf{a\_enc}(\langle n_A, n_B \rangle, pk_A) \rangle . 0
+c(\langle \red{A''}, \red{pk_A}\rangle).\;
+\textsf{if } \red{A''} = \red{A'} \textsf{ then }
+\bar{c}\langle \mathsf{a\_enc}(\langle \blue{n_A}, \blue{n_B} \rangle, \red{pk_A}) \rangle . 0
 \textsf{ else } 0
 \\
 &\hspace{4em}
 c(z).\;
-\textsf{let } m_3 = \mathsf{a\_dec}(z, sk_B) \textsf{ in }
-\textsf{if } m_3 = n_B \textsf{ then } \bar c \langle \mathsf{ok} \rangle.0 \textsf{ else } 0
+\textsf{let } m_3 = \mathsf{a\_dec}(z, \blue{sk_B}) \textsf{ in }
+\textsf{if } m_3 = \blue{n_B} \textsf{ then } \bar c \langle \mathsf{ok} \rangle.0 \textsf{ else } 0
 \\[1.0em]
 \mathsf{Principal}
 &\;\triangleq\;
-\textbf{\textsf{new }}A.\;\textbf{\textsf{new }}sk_A.\;
-\bar{c}\langle \langle A, \mathsf{pk}(sk_A) \rangle \rangle .
-\big(\; !\mathsf{Initiator}(A,sk_A)\ \mid\ !\mathsf{Responder}(A,sk_A)\;\big)
+\textbf{\textsf{new }}\red{A}.\;\textbf{\textsf{new }}\blue{sk_A}.\;
+\bar{c}\langle \langle \red{A}, \mathsf{pk}(\blue{sk_A}) \rangle \rangle .
+\big(\; !\mathsf{Initiator}(\red{A},\blue{sk_A})\ \mid\ !\mathsf{Responder}(\red{A},\blue{sk_A})\;\big)
 \\[1.0em]
 \mathsf{System}
 &\;\triangleq\;
@@ -1945,6 +1964,10 @@ The fourth group (in purple) denotes \emph{CPVs focused on equivalence propertie
 It is much more difficult to automate reasoning with respect to equivalence properties, 
 so these tools use bounded analyses and do not support very complicated protocols 
 (e.g., no stateful protocols, looping protocols, or protocols requiring dedicated theory reasoning). 
+Here, \emph{theory reasoning} refers to reasoning with respect to common domains like 
+integer or real arithmetic, bit vectors, arrays, and so on.
+A common way to incorporate theory reasoning is by using satisfiability modulo theories (SMT) solvers \cite{smt}.
+
 
 \input{tool_table}
 
