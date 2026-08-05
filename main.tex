@@ -44,7 +44,7 @@
     {\large
     Submitted by\par
     \vspace{0.2in}
-    \textbf{Robert Lorch}\par
+    \textbf{Rob Lorch}\par
     }
     \vspace{0.55in}
 
@@ -66,7 +66,7 @@
     \vspace{1in}
 
     {\large
-    April 23rd, 2026\par
+    April 23, 2026\par
     }
 
     \vfill
@@ -192,7 +192,7 @@ $$\textsf{Gen} : \mathbb{N} \rightarrow \mathcal{K}, \textsf{Enc} : \mathcal{M} 
 where $\textsf{Gen}(\lambda)$ probabilistically samples a key of length $\lambda$ from 
 $\mathcal{K}$, and \textsf{Enc} and \textsf{Dec} denote encryption and decryption as expected. 
 We require that 
-$$\forall m \in \mathcal{M}, k \in \mathcal{K}.\;\mathsf{Dec}(\mathsf{Enc}(m, k), k) = m$$ 
+$$\forall m \in \mathcal{M}, k \in \mathcal{K}.\;\mathsf{Dec}(\mathsf{Enc}(m, k), k) = m.$$ 
 Intuitively, decrypting a ciphertext using the same key used to encrypt it yields the underlying plain text.
 
 \textbf{Kerckhoff's principle.} \textit{Kerckhoff's principle} states that the security of a scheme 
@@ -854,7 +854,7 @@ From these requirements, two approaches have historically dominated the formaliz
 The multiset-rewriting approach to cryptographic protocol formalization was pioneered by Durgin and Mitchell in 1999 \cite{msr_foundations}. It is an important formalism for modern automated reasoning techniques in the symbolic model, as it lays the theoretical foundations for Tamarin \cite{tamarin}, a popular symbolic model verification tool.
 In this approach, a protocol is a set of multiset rewriting rules, where each rewrite rule can be viewed as a state transition in the protocol. 
 
-\textbf{Formalizing protocols.} We superscript standard set operations with $^\#$ to denote multiset operations (e.g., $\cup^\#$ denotes multiset union and $\in^\#$ for multiset membership). To formalize protocols, we consider another signature $\Sigma_{\textsc{Fact}}$ of \textit{fact symbols}, where \textit{facts} are members of the set $\{ F(t_1, \dots, t_n) \mid F \in \Sigma_{\textsc{Fact}} \;\land\; t_1, \dots, t_n \in T(\Sigma, V \cup \mathcal{N}) \}$. A protocol is represented as a set of rewrite rules $R$, where each rule in $R$ is a triple $(l, a, r)$, where $l, a,$ and $r$ are each finite multisets of facts. Sometimes, we use the alternative notation $l \xrightarrow{a} r$ to denote this triple: $l$ and $r$ respectively represent the left-hand side and right-hand side of the rewrite rule (containing \textit{state facts}), while $a$ represents rule labels (containing \textit{action facts}). 
+\textbf{Formalizing protocols.} We superscript standard set operations with $^\#$ to denote multiset operations (e.g., $\cup^\#$ denotes multiset union and $\in^\#$ denotes multiset membership). To formalize protocols, we consider another signature $\Sigma_{\textsc{Fact}}$ of \textit{fact symbols}, where \textit{facts} are members of the set $\{ F(t_1, \dots, t_n) \mid F \in \Sigma_{\textsc{Fact}} \;\land\; t_1, \dots, t_n \in T(\Sigma, V \cup \mathcal{N}) \}$. A protocol is represented as a set of rewrite rules $R$, where each rule in $R$ is a triple $(l, a, r)$, where $l, a,$ and $r$ are each finite multisets of facts. Sometimes, we use the alternative notation $l \xrightarrow{a} r$ to denote this triple: $l$ and $r$ respectively represent the left-hand side and right-hand side of the rewrite rule (containing \textit{state facts}), while $a$ represents rule labels (containing \textit{action facts}). 
 % More formally, for a protocol $R$, the set of action facts $\mathcal{A}$ 
 % is defined as $\{ \mathit{af} \mid \exists a. (\_, a, \_) \in R \land \mathit{af} \in^\# a\}$, 
 % and the set of state facts $\mathcal{F}$ 
@@ -894,7 +894,7 @@ In the last rule on the left in Figure \ref{fig:adv-rules}, the bang ($!$) is sh
   \;\cup\;
   \left\{
   \begin{array}{l}
-    \{ \mathsf{K}(t_1), \dots, \mathsf{K}(t_n) \}
+    \{ !\mathsf{K}(t_1), \dots, !\mathsf{K}(t_n) \}
       \xrightarrow{\{\}}
     \{ \mathsf{K}(f(t_1, \dots, t_n)) \} \\[2pt]
     \qquad\text{for all } (f,n) \in \Sigma
@@ -1333,7 +1333,7 @@ $(\approx)$ as the largest symmetric relation between closed extended processes 
 
 Now consider a process $P[s]$ that is supposed to keep free variable $s$ secret 
 (e.g., $s$ is encrypted and sent along a channel). 
-We say that $P$ satisfies the (strong) secrecy of $s$ if for all terms $t$ and  $t'$, $P{s \mapsto t} \approx P{s \mapsto t'}$.
+We say that $P$ satisfies the (strong) secrecy of $s$ if for all terms $t$ and  $t'$, $P\{s \mapsto t\} \approx P\{s \mapsto t'\}$.
 
 While we did not explicitly encode attacker rules as in Figure \ref{fig:adv-rules}, 
 the attacker is played by the arbitrary context $C$ in point $(iii)$ above. 
@@ -1807,7 +1807,7 @@ $
 % {How do the first two Horn clauses work? Does there need to be extra constraint for freshness?}
 % A symbol like k symbolically stands for the set of fresh keys, conceptually. these symbols are translated to function symbols, and are parameterized by previous protocol messages. so if we need to distinguish between k in session 1 and session 2, we can, as long as there is some past context
 
-Above, Horn clauses $(i)$ denotes that the communication channel is public. Clauses $(ii)$ and $(iii)$ denote that the corresponding messages are sent according to protocol rule $(1)$. Clause $(iv)$ denotes  protocol rule $(2)$---with the given input along $c$, the given output along $c$ is produced. Analogously, clause $(v)$ denotes protocol rule $(3)$. With these clauses, along with the adversary deduction clauses, ProVerif will iteratively derive new clauses in an attempt to conclude $\mathsf{Attacker}(s)$. From the Horn clause adversary deduction rule along with clauses $(ii)$ and $(iii)$, the adversary can learn both $\mathsf{enc}(\langle N_2, N_3 \rangle, k)$ and $\mathsf{enc}(\langle N_1, N_3 \rangle, k)$. Next, ProVerif's algorithm will use clause $(iv)$ \textit{twice}, along with adversary deduction rules, to derive both $\mathsf{Attacker}(N_1)$ and $\mathsf{Attacker}(N_2)$. Importantly, the Horn clause abstraction loses the linearity of $A$'s protocol state---once step $(2)$ is executed, in a precise semantics, $A$  would move on to step $(3)$. In contrast, ProVerif's algorithm will reuse clause $(iv)$, representing a repetition of the protocol step.
+Above, Horn clause $(i)$ denotes that the communication channel is public. Clauses $(ii)$ and $(iii)$ denote that the corresponding messages are sent according to protocol rule $(1)$. Clause $(iv)$ denotes  protocol rule $(2)$---with the given input along $c$, the given output along $c$ is produced. Analogously, clause $(v)$ denotes protocol rule $(3)$. With these clauses, along with the adversary deduction clauses, ProVerif will iteratively derive new clauses in an attempt to conclude $\mathsf{Attacker}(s)$. From the Horn clause adversary deduction rule along with clauses $(ii)$ and $(iii)$, the adversary can learn both $\mathsf{enc}(\langle N_2, N_3 \rangle, k)$ and $\mathsf{enc}(\langle N_1, N_3 \rangle, k)$. Next, ProVerif's algorithm will use clause $(iv)$ \textit{twice}, along with adversary deduction rules, to derive both $\mathsf{Attacker}(N_1)$ and $\mathsf{Attacker}(N_2)$. Importantly, the Horn clause abstraction loses the linearity of $A$'s protocol state---once step $(2)$ is executed, in a precise semantics, $A$  would move on to step $(3)$. In contrast, ProVerif's algorithm will reuse clause $(iv)$, representing a repetition of the protocol step.
 
 On the side, notice that $N_3$ is necessary for the security of the protocol. Say we remove $N_3$ (i.e., convert all pairs containing $N_3$ to just the first element of the pair). Here, the attacker \textit{can} trigger step $(2)$ twice, each time corresponding to a \textit{distinct session} of $A$. But, the existence of $N_3$ binds step $(2)$ to a particular session. So, if $A$ receives $\{\langle x, N_4 \rangle\}_k$ in step $(2)$ for some $N_4 \neq N_3$, the input will not pattern match and $B$ will not respond with $x$. Hence, the adversary will not be able to construct both pair elements for step $(3)$.
 
@@ -2346,7 +2346,7 @@ In light of previous work on symbolic model verification, we now discuss some op
 
 Symbolic model cryptographic protocol verification has developed into a killer application 
 for formal methods and automated reasoning, as it focuses on problems that are hard to get right but still tractable for 
-(semi-)automated techniques. Multiset rewriting and applied $\pi$-calculus have been intensely studied to that end for many years, 
+semi-automated techniques. Multiset rewriting and applied $\pi$-calculus have been intensely studied to that end for many years, 
 both in terms of theory and practical algorithms. 
 However, there are fundamental obstacles to advancing symbolic model verification in these settings. 
 One major obstacle is that these formalisms are inherently monolithic, which is in conflict with usable 
